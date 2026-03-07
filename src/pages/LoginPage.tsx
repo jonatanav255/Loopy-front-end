@@ -1,3 +1,4 @@
+// Dependencies: FormEvent, useState, Link, useNavigate — see DEPENDENCY_GUIDE.md
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
@@ -16,8 +17,10 @@ export function LoginPage() {
     setSubmitting(true);
     try {
       await login(email, password);
-      navigate('/');
+      navigate('/'); // redirect to dashboard on success
     } catch (err: unknown) {
+      // Extract the error message from the backend response ({ "error": "..." }),
+      // or fall back to a generic message if the response shape is unexpected
       const message =
         err && typeof err === 'object' && 'response' in err
           ? (err as { response: { data: { error: string } } }).response?.data?.error

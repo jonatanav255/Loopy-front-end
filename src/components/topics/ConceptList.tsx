@@ -27,10 +27,13 @@ interface ConceptListProps {
 export function ConceptList({ topicId, concepts, onEdit, onDelete }: ConceptListProps) {
   return (
     <div className="space-y-2">
-      {concepts.map(concept => (
+      {concepts.map((concept, index) => (
         <div key={concept.id} className="group flex items-center justify-between rounded-lg border border-line bg-surface px-4 py-3 transition-shadow hover:shadow-sm">
           <Link to={`/topics/${topicId}/concepts/${concept.id}`} className="flex-1">
             <div className="flex items-center gap-3">
+              {index < 9 && (
+                <span className="flex h-5 w-5 items-center justify-center rounded bg-surface-alt text-[10px] font-medium text-content-faint">{index + 1}</span>
+              )}
               <span className="font-medium text-content">{concept.title}</span>
               <Badge label={statusLabel[concept.status]} color={statusColor[concept.status]} />
             </div>

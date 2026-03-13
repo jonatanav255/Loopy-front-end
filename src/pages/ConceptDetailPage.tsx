@@ -1,6 +1,6 @@
-// Dependencies: useState, useEffect, useParams, Link, useCallback — see DEPENDENCY_GUIDE.md
+// Dependencies: useState, useEffect, useParams, Link, useNavigate, useCallback — see DEPENDENCY_GUIDE.md
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { topicsApi } from '../api/topics';
 import { conceptsApi } from '../api/concepts';
 import { useCards } from '../hooks/useCards';
@@ -31,6 +31,7 @@ export function ConceptDetailPage() {
   const { cards, loading, createCard, updateCard, deleteCard, switchAlgorithm } = useCards(conceptId);
   const { addToast } = useToast();
   const { t } = useI18n();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<CardResponse | null>(null);
   const [deleting, setDeleting] = useState<CardResponse | null>(null);
@@ -71,11 +72,15 @@ export function ConceptDetailPage() {
       e.preventDefault();
       setShowForm(true);
     } else if (key === 'Escape') {
-      setShowForm(false);
-      setEditing(null);
-      setDeleting(null);
+      if (showForm || editing || deleting) {
+        setShowForm(false);
+        setEditing(null);
+        setDeleting(null);
+      } else {
+        navigate(`/topics/${topicId}`);
+      }
     }
-  }, []);
+  }, [showForm, editing, deleting, navigate, topicId]);
 
   useKeyboard(handleKeyboard);
 
@@ -86,7 +91,7 @@ export function ConceptDetailPage() {
       <div className="mb-1 flex gap-2 text-sm text-indigo-400">
         <Link to="/topics" className="hover:text-indigo-300">{t.topics.title}</Link>
         <span className="text-content-faint">/</span>
-        <Link to={`/topics/${topicId}`} className="hover:text-indigo-300">{topic?.name ?? t.topics.title}</Link>
+        <Link to={`/topics/${topicId}`} className="hover:text-indigo-300">{topic?.name ?? t.topics.title} <span className="text-xs opacity-60">(Esc)</span></Link>
       </div>
 
       <div className="mb-6 flex items-center justify-between">

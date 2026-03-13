@@ -1,6 +1,6 @@
-// Dependencies: useState, useEffect, useParams, Link, useCallback — see DEPENDENCY_GUIDE.md
+// Dependencies: useState, useEffect, useParams, Link, useNavigate, useCallback — see DEPENDENCY_GUIDE.md
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { topicsApi } from '../api/topics';
 import { useConcepts } from '../hooks/useConcepts';
 import { useToast } from '../contexts/ToastContext';
@@ -20,6 +20,7 @@ export function TopicDetailPage() {
   const { concepts, loading, createConcept, updateConcept, deleteConcept } = useConcepts(topicId);
   const { addToast } = useToast();
   const { t } = useI18n();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<ConceptResponse | null>(null);
   const [deleting, setDeleting] = useState<ConceptResponse | null>(null);
@@ -55,11 +56,20 @@ export function TopicDetailPage() {
       e.preventDefault();
       setShowForm(true);
     } else if (key === 'Escape') {
-      setShowForm(false);
-      setEditing(null);
-      setDeleting(null);
+      if (showForm || editing || deleting) {
+        setShowForm(false);
+        setEditing(null);
+        setDeleting(null);
+      } else {
+        navigate('/topics');
+      }
+    } else {
+      const num = parseInt(key);
+      if (num >= 1 && num <= 9 && num <= concepts.length) {
+        navigate(`/topics/${topicId}/concepts/${concepts[num - 1].id}`);
+      }
     }
-  }, []);
+  }, [showForm, editing, deleting, navigate, concepts, topicId]);
 
   useKeyboard(handleKeyboard);
 
@@ -69,7 +79,7 @@ export function TopicDetailPage() {
     <div>
       <div className="mb-1">
         <Link to="/topics" className="text-sm text-indigo-400 hover:text-indigo-300">
-          {t.common.back.replace('←', '←')} {t.topics.title}
+          {t.common.back.replace('←', '←')} {t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
         </Link>
       </div>
       <div className="mb-6 flex items-center justify-between">

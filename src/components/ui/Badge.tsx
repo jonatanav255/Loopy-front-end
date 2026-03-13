@@ -4,7 +4,7 @@ const variants: Record<string, string> = {
   blue: 'bg-blue-500/20 text-blue-300',
   red: 'bg-red-500/20 text-red-300',
   gray: 'bg-surface-active text-content-secondary',
-  indigo: 'bg-accent-subtle text-accent-text',
+  indigo: 'bg-primary-subtle text-primary-text',
   cyan: 'bg-cyan-500/20 text-cyan-300',
   teal: 'bg-teal-500/20 text-teal-300',
 };

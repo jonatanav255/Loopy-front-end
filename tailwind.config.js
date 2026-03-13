@@ -25,7 +25,7 @@ export default {
           strong: 'var(--line-strong)',
           subtle: 'var(--line-subtle)',
         },
-        accent: {
+        primary: {
           DEFAULT: 'var(--accent)',
           hover: 'var(--accent-hover)',
           subtle: 'var(--accent-subtle)',

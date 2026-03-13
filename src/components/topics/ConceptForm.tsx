@@ -41,7 +41,7 @@ export function ConceptForm({ initial, onSubmit, onCancel }: ConceptFormProps) {
           onChange={e => setTitle(e.target.value)}
           maxLength={200}
           required
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           autoFocus
         />
       </div>
@@ -51,7 +51,7 @@ export function ConceptForm({ initial, onSubmit, onCancel }: ConceptFormProps) {
           value={notes}
           onChange={e => setNotes(e.target.value)}
           rows={3}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
       {initial && (
@@ -61,7 +61,7 @@ export function ConceptForm({ initial, onSubmit, onCancel }: ConceptFormProps) {
             value={referenceExplanation}
             onChange={e => setReferenceExplanation(e.target.value)}
             rows={3}
-            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       )}
@@ -69,7 +69,7 @@ export function ConceptForm({ initial, onSubmit, onCancel }: ConceptFormProps) {
         <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
           {t.common.cancel} <span className="text-xs opacity-60">(Esc)</span>
         </button>
-        <button type="submit" disabled={saving || !title.trim()} className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50">
+        <button type="submit" disabled={saving || !title.trim()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50">
           {saving ? t.common.loading : initial ? t.common.update : t.common.create}
         </button>
       </div>

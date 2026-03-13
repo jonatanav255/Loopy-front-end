@@ -57,7 +57,7 @@ export function SelfEvalScreen({ concept, explanation, onSubmit, onBack }: SelfE
               onClick={() => setRating(r.value)}
               className={`w-full rounded-lg border px-4 py-2 text-left text-sm transition-colors ${
                 rating === r.value
-                  ? 'border-accent bg-accent-subtle text-accent-text'
+                  ? 'border-primary bg-primary-subtle text-primary-text'
                   : 'border-line text-content-secondary hover:bg-surface-alt'
               }`}
             >
@@ -76,7 +76,7 @@ export function SelfEvalScreen({ concept, explanation, onSubmit, onBack }: SelfE
           onChange={e => setGaps(e.target.value)}
           rows={3}
           placeholder={t.teachBack.gapsPlaceholder}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
@@ -84,7 +84,7 @@ export function SelfEvalScreen({ concept, explanation, onSubmit, onBack }: SelfE
         <button
           onClick={handleSubmit}
           disabled={rating === null}
-          className="rounded-md bg-accent px-6 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
+          className="rounded-md bg-primary px-6 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50"
         >
           {t.teachBack.submit}
         </button>

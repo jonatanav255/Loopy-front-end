@@ -18,7 +18,7 @@ export function SessionSummary({ results, onDone, onPracticeAgain }: SessionSumm
       <h2 className="text-2xl font-bold text-content">{t.review.sessionComplete}</h2>
       <div className="mt-6 grid grid-cols-3 gap-4">
         <div className="rounded-lg bg-surface p-4 shadow-sm">
-          <p className="text-2xl font-bold text-accent">{total}</p>
+          <p className="text-2xl font-bold text-primary">{total}</p>
           <p className="text-xs text-content-muted">{t.dashboard.reviewed}</p>
         </div>
         <div className="rounded-lg bg-surface p-4 shadow-sm">
@@ -32,11 +32,11 @@ export function SessionSummary({ results, onDone, onPracticeAgain }: SessionSumm
       </div>
       <div className="mt-8 flex gap-3 justify-center">
         {onPracticeAgain && (
-          <button onClick={onPracticeAgain} className="rounded-lg border border-accent px-6 py-3 text-sm font-medium text-accent-text hover:bg-accent-subtle">
+          <button onClick={onPracticeAgain} className="rounded-lg border border-primary px-6 py-3 text-sm font-medium text-primary-text hover:bg-primary-subtle">
             {t.review.practiceAgain} <span className="text-xs opacity-60">(P)</span>
           </button>
         )}
-        <button onClick={onDone} className="rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white hover:bg-accent-hover">
+        <button onClick={onDone} className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white hover:bg-primary-hover">
           {t.review.backToDashboard} <span className="text-xs opacity-60">(Enter)</span>
         </button>
       </div>

@@ -31,7 +31,7 @@ export function DashboardPage() {
         {overview && overview.cardsDueToday > 0 && (
           <Link
             to="/review"
-            className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover"
           >
             {t.dashboard.reviewCards.replace('{count}', String(overview.cardsDueToday))} <span className="ml-1 text-xs opacity-60">(Enter)</span>
           </Link>

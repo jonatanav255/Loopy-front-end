@@ -53,7 +53,7 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
         <select
           value={cardType}
           onChange={e => setCardType(e.target.value as CardType)}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         >
           {CARD_TYPES.map(ct => (
             <option key={ct.value} value={ct.value}>{ct.label}</option>
@@ -70,7 +70,7 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
           onChange={e => setFront(e.target.value)}
           required
           rows={isCode ? 6 : 3}
-          className={`mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent ${isCode ? 'font-mono' : ''}`}
+          className={`mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary ${isCode ? 'font-mono' : ''}`}
         />
       </div>
       <div>
@@ -80,7 +80,7 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
           onChange={e => setBack(e.target.value)}
           required
           rows={isCode ? 6 : 3}
-          className={`mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent ${isCode ? 'font-mono' : ''}`}
+          className={`mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary ${isCode ? 'font-mono' : ''}`}
         />
       </div>
       <div>
@@ -89,7 +89,7 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
           type="text"
           value={hint}
           onChange={e => setHint(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
       <div>
@@ -98,14 +98,14 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
           type="url"
           value={sourceUrl}
           onChange={e => setSourceUrl(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
       <div className="flex justify-end gap-3">
         <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
           {t.common.cancel} <span className="text-xs opacity-60">(Esc)</span>
         </button>
-        <button type="submit" disabled={saving || !front.trim() || !back.trim()} className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50">
+        <button type="submit" disabled={saving || !front.trim() || !back.trim()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50">
           {saving ? t.common.loading : initial ? t.common.update : t.common.create}
         </button>
       </div>

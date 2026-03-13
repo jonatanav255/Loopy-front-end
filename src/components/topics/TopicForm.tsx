@@ -39,7 +39,7 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
           onChange={e => setName(e.target.value)}
           maxLength={100}
           required
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           autoFocus
         />
       </div>
@@ -50,7 +50,7 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
           onChange={e => setDescription(e.target.value)}
           maxLength={500}
           rows={3}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
       <div>
@@ -71,7 +71,7 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
         <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
           {t.common.cancel} <span className="text-xs opacity-60">(Esc)</span>
         </button>
-        <button type="submit" disabled={saving || !name.trim()} className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50">
+        <button type="submit" disabled={saving || !name.trim()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50">
           {saving ? t.common.loading : initial ? t.common.update : t.common.create}
         </button>
       </div>

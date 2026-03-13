@@ -54,7 +54,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
           <select
             value={topicId}
             onChange={e => setTopicId(e.target.value)}
-            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="">{t.ai.selectTopic}</option>
             {topics.map(tp => <option key={tp.id} value={tp.id}>{tp.name}</option>)}
@@ -66,7 +66,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
             value={conceptId}
             onChange={e => setConceptId(e.target.value)}
             disabled={!topicId}
-            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-50"
+            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
           >
             <option value="">{t.ai.selectConcept}</option>
             {concepts.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
@@ -82,7 +82,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
           required
           maxLength={5000}
           placeholder={t.ai.contentPlaceholder}
-          className="mt-1 block w-full resize-none rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full resize-none rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
         <p className={`mt-1 text-right text-xs ${content.length > 4500 ? 'text-yellow-400' : 'text-content-faint'}`}>
           {content.length} / 5,000
@@ -93,7 +93,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
         <select
           value={numCards}
           onChange={e => setNumCards(Number(e.target.value))}
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         >
           <option value={5}>5</option>
           <option value={10}>10</option>
@@ -103,7 +103,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
         <button
           type="submit"
           disabled={generating || !conceptId || !content.trim()}
-          className="rounded-md bg-accent px-6 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
+          className="rounded-md bg-primary px-6 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50"
         >
           {generating ? t.ai.generating : t.ai.generate} {!generating && <span className="text-xs opacity-60">(Enter)</span>}
         </button>

@@ -75,7 +75,7 @@ export function GeneratedCardPreview({ conceptId, cards, onDone }: GeneratedCard
               <button
                 onClick={() => handleSave(card, i)}
                 disabled={saving === i}
-                className="text-xs font-medium text-accent-text hover:text-accent-muted disabled:opacity-50"
+                className="text-xs font-medium text-primary-text hover:text-primary-muted disabled:opacity-50"
               >
                 {saving === i ? t.ai.saving : t.ai.save}
               </button>

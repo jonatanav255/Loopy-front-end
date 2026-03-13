@@ -28,7 +28,7 @@ export function Sidebar() {
   return (
     <aside className="flex h-screen w-56 flex-col border-r border-line bg-surface">
       <div className="flex items-center justify-between border-b border-line px-4 py-5">
-        <h1 className="text-xl font-bold text-accent-text">{t.appName}</h1>
+        <h1 className="text-xl font-bold text-primary-text">{t.appName}</h1>
         <button
           onClick={toggleLang}
           className="rounded border border-line-strong px-2 py-0.5 text-xs font-medium text-content-secondary hover:bg-surface-hover"
@@ -48,7 +48,7 @@ export function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-accent-subtle text-accent-text'
+                  ? 'bg-primary-subtle text-primary-text'
                   : 'text-content-secondary hover:bg-surface-hover'
               }`
             }

@@ -17,7 +17,7 @@ export function GapMarking({ result, onDone }: GapMarkingProps) {
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <div className="rounded-lg border border-line bg-surface p-4">
           <p className="text-sm font-medium text-content-secondary">{t.teachBack.selfRating}</p>
-          <p className="mt-1 text-3xl font-bold text-accent">{result.selfRating}/5</p>
+          <p className="mt-1 text-3xl font-bold text-primary">{result.selfRating}/5</p>
         </div>
         <div className="rounded-lg border border-line bg-surface p-4">
           <p className="text-sm font-medium text-content-secondary">{t.teachBack.gapsFound}</p>
@@ -38,7 +38,7 @@ export function GapMarking({ result, onDone }: GapMarkingProps) {
 
       <button
         onClick={onDone}
-        className="mt-6 rounded-md bg-accent px-6 py-2 text-sm font-medium text-white hover:bg-accent-hover"
+        className="mt-6 rounded-md bg-primary px-6 py-2 text-sm font-medium text-white hover:bg-primary-hover"
       >
         {t.teachBack.done} <span className="text-xs opacity-60">(Enter)</span>
       </button>

@@ -68,7 +68,7 @@ export function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 shadow-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
@@ -82,7 +82,7 @@ export function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 shadow-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
@@ -91,7 +91,7 @@ export function LoginPage() {
               type="checkbox"
               checked={rememberMe}
               onChange={e => setRememberMe(e.target.checked)}
-              className="accent-accent"
+              className="accent-primary"
             />
             <span className="text-sm text-content-secondary">{t.auth.rememberMe}</span>
           </label>
@@ -99,14 +99,14 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-md bg-accent px-4 py-2 text-white hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 disabled:opacity-50"
+            className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
           >
             {submitting ? t.auth.signingIn : t.auth.signInBtn}
           </button>
 
           <p className="text-center text-sm text-content-tertiary">
             {t.auth.noAccount}{' '}
-            <Link to="/register" className="text-accent-text hover:text-accent-muted">
+            <Link to="/register" className="text-primary-text hover:text-primary-muted">
               {t.auth.register}
             </Link>
           </p>

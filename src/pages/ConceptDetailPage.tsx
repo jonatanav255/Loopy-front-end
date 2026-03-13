@@ -89,7 +89,7 @@ export function ConceptDetailPage() {
   return (
     <div>
       <div className="mb-1">
-        <Link to={`/topics/${topicId}`} className="text-sm text-accent-text hover:text-accent-muted">
+        <Link to={`/topics/${topicId}`} className="text-sm text-primary-text hover:text-primary-muted">
           ← {t.common.backTo} {topic?.name ?? t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
         </Link>
       </div>
@@ -104,7 +104,7 @@ export function ConceptDetailPage() {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover"
         >
           {t.cards.newCard} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>

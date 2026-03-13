@@ -38,7 +38,7 @@ export function ConceptList({ topicId, concepts, onEdit, onDelete }: ConceptList
               <Badge label={statusLabel[concept.status]} color={statusColor[concept.status]} />
             </div>
             {concept.notes && (
-              <p className="mt-0.5 line-clamp-1 text-sm text-accent-text">{concept.notes}</p>
+              <p className="mt-0.5 line-clamp-1 text-sm text-primary-text">{concept.notes}</p>
             )}
           </Link>
           <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">

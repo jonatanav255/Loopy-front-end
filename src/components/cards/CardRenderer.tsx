@@ -46,7 +46,7 @@ function renderContent(text: string) {
         {inlineParts.map((seg, j) => {
           if (seg.startsWith('`') && seg.endsWith('`')) {
             return (
-              <code key={j} className="rounded bg-surface-active px-1.5 py-0.5 font-mono text-sm text-accent-text">
+              <code key={j} className="rounded bg-surface-active px-1.5 py-0.5 font-mono text-sm text-primary-text">
                 {seg.slice(1, -1)}
               </code>
             );

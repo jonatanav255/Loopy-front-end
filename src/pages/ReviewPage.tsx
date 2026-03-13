@@ -102,7 +102,7 @@ export function ReviewPage() {
                     type="checkbox"
                     checked={allSelected}
                     onChange={toggleAll}
-                    className="accent-accent"
+                    className="accent-primary"
                   />
                   <span className="text-sm text-content">{t.review.allTopics}</span>
                 </label>
@@ -114,7 +114,7 @@ export function ReviewPage() {
                         type="checkbox"
                         checked={selectedTopicIds.includes(topic.id)}
                         onChange={() => toggleTopic(topic.id)}
-                        className="accent-accent"
+                        className="accent-primary"
                       />
                       <span
                         className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0"
@@ -131,7 +131,7 @@ export function ReviewPage() {
           <button
             onClick={handleStart}
             disabled={selectedTopicIds.length === 0}
-            className="mt-6 w-full rounded-lg bg-accent px-8 py-3 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full rounded-lg bg-primary px-8 py-3 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t.review.startReview} <span className="text-xs opacity-60">(Enter)</span>
           </button>
@@ -150,10 +150,10 @@ export function ReviewPage() {
           <h2 className="text-2xl font-semibold text-content">{t.review.allCaughtUp}</h2>
           <p className="mt-2 text-content-tertiary">{t.review.noCardsDue}</p>
           <div className="mt-6 flex gap-3">
-            <button onClick={() => session.startPractice()} className="rounded-lg border border-accent px-6 py-3 text-sm font-medium text-accent-text hover:bg-accent-subtle">
+            <button onClick={() => session.startPractice()} className="rounded-lg border border-primary px-6 py-3 text-sm font-medium text-primary-text hover:bg-primary-subtle">
               {t.review.practiceAll} <span className="text-xs opacity-60">(P)</span>
             </button>
-            <button onClick={() => navigate('/')} className="rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white hover:bg-accent-hover">
+            <button onClick={() => navigate('/')} className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white hover:bg-primary-hover">
               {t.review.backToDashboard} <span className="text-xs opacity-60">(Enter)</span>
             </button>
           </div>

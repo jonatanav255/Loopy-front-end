@@ -35,14 +35,14 @@ export function TeachBackPrompt({ concept, onSubmit, onCancel }: TeachBackPrompt
           rows={8}
           required
           placeholder={t.teachBack.placeholder}
-          className="block w-full rounded-lg border border-line-strong px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="block w-full rounded-lg border border-line-strong px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           autoFocus
         />
         <div className="mt-4 flex justify-end gap-3">
           <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
             {t.teachBack.cancel}
           </button>
-          <button type="submit" disabled={!explanation.trim()} className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50">
+          <button type="submit" disabled={!explanation.trim()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50">
             {t.teachBack.continueToEval}
           </button>
         </div>

@@ -32,20 +32,20 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-surface-alt px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">Loopy</h1>
-          <p className="mt-2 text-gray-600">Sign in to your account</p>
+          <h1 className="text-3xl font-bold text-content">Loopy</h1>
+          <p className="mt-2 text-content-tertiary">Sign in to your account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 rounded-lg bg-white p-8 shadow">
+        <form onSubmit={handleSubmit} className="space-y-6 rounded-lg bg-surface p-8 shadow">
           {error && (
-            <div className="rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
+            <div className="rounded bg-red-500/10 p-3 text-sm text-red-400">{error}</div>
           )}
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-content-secondary">
               Email
             </label>
             <input
@@ -54,12 +54,12 @@ export function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-content-secondary">
               Password
             </label>
             <input
@@ -68,7 +68,7 @@ export function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>
 
@@ -80,9 +80,9 @@ export function LoginPage() {
             {submitting ? 'Signing in...' : 'Sign in'}
           </button>
 
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-content-tertiary">
             Don't have an account?{' '}
-            <Link to="/register" className="text-indigo-600 hover:text-indigo-500">
+            <Link to="/register" className="text-indigo-400 hover:text-indigo-500">
               Register
             </Link>
           </p>

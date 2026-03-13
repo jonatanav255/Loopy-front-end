@@ -32,8 +32,8 @@ export function ReviewPage() {
   if (session.phase === 'idle') {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <h2 className="text-2xl font-semibold text-gray-900">Review Session</h2>
-        <p className="mt-2 text-gray-600">Review your due flashcards with spaced repetition.</p>
+        <h2 className="text-2xl font-semibold text-content">Review Session</h2>
+        <p className="mt-2 text-content-tertiary">Review your due flashcards with spaced repetition.</p>
         <button
           onClick={session.loadCards}
           className="mt-6 rounded-lg bg-indigo-600 px-8 py-3 text-sm font-medium text-white hover:bg-indigo-700"
@@ -51,8 +51,8 @@ export function ReviewPage() {
     if (session.results.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center py-20">
-          <h2 className="text-2xl font-semibold text-gray-900">All caught up!</h2>
-          <p className="mt-2 text-gray-600">No cards due for review today.</p>
+          <h2 className="text-2xl font-semibold text-content">All caught up!</h2>
+          <p className="mt-2 text-content-tertiary">No cards due for review today.</p>
           <button onClick={() => navigate('/')} className="mt-6 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
             Back to Dashboard
           </button>
@@ -68,10 +68,10 @@ export function ReviewPage() {
 
   // Active session — full-screen overlay
   return (
-    <div className="fixed inset-0 z-40 flex flex-col bg-gray-50">
-      <div className="border-b border-gray-200 bg-white px-6 py-4">
+    <div className="fixed inset-0 z-40 flex flex-col bg-surface-alt">
+      <div className="border-b border-line bg-surface px-6 py-4">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
-          <button onClick={session.reset} className="text-sm text-gray-500 hover:text-gray-700">
+          <button onClick={session.reset} className="text-sm text-content-muted hover:text-content-secondary">
             ✕ End Session
           </button>
           <ProgressBar current={session.reviewed} total={session.total} />

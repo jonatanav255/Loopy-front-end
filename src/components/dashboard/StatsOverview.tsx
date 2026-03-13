@@ -17,9 +17,9 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
       {cards.map(c => (
-        <div key={c.label} className="rounded-lg border border-gray-200 bg-white p-4">
+        <div key={c.label} className="rounded-lg border border-line bg-surface p-4">
           <p className={`text-2xl font-bold ${c.color}`}>{c.value}</p>
-          <p className="text-xs text-gray-500">{c.label}</p>
+          <p className="text-xs text-content-muted">{c.label}</p>
         </div>
       ))}
     </div>

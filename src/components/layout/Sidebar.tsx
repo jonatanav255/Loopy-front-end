@@ -14,9 +14,9 @@ export function Sidebar() {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="flex h-screen w-56 flex-col border-r border-gray-200 bg-white">
-      <div className="border-b border-gray-200 px-4 py-5">
-        <h1 className="text-xl font-bold text-indigo-600">Loopy</h1>
+    <aside className="flex h-screen w-56 flex-col border-r border-line bg-surface">
+      <div className="border-b border-line px-4 py-5">
+        <h1 className="text-xl font-bold text-indigo-400">Loopy</h1>
       </div>
 
       <nav className="flex-1 space-y-1 px-2 py-4">
@@ -28,8 +28,8 @@ export function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-indigo-50 text-indigo-700'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  ? 'bg-indigo-500/20 text-indigo-300'
+                  : 'text-content-secondary hover:bg-surface-hover'
               }`
             }
           >
@@ -39,11 +39,11 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="border-t border-gray-200 p-4">
-        <p className="truncate text-sm text-gray-600">{user?.email}</p>
+      <div className="border-t border-line p-4">
+        <p className="truncate text-sm text-content-tertiary">{user?.email}</p>
         <button
           onClick={logout}
-          className="mt-2 text-sm text-gray-500 hover:text-gray-700"
+          className="mt-2 text-sm text-content-muted hover:text-content-secondary"
         >
           Sign out
         </button>

@@ -30,43 +30,43 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Name</label>
+        <label className="block text-sm font-medium text-content-secondary">Name</label>
         <input
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
           maxLength={100}
           required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           autoFocus
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <label className="block text-sm font-medium text-content-secondary">Description</label>
         <textarea
           value={description}
           onChange={e => setDescription(e.target.value)}
           maxLength={500}
           rows={3}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Color</label>
+        <label className="block text-sm font-medium text-content-secondary">Color</label>
         <div className="mt-2 flex gap-2">
           {COLORS.map(c => (
             <button
               key={c}
               type="button"
               onClick={() => setColorHex(c)}
-              className={`h-8 w-8 rounded-full border-2 ${colorHex === c ? 'border-gray-900' : 'border-transparent'}`}
+              className={`h-8 w-8 rounded-full border-2 ${colorHex === c ? 'border-content' : 'border-transparent'}`}
               style={{ backgroundColor: c }}
             />
           ))}
         </div>
       </div>
       <div className="flex justify-end gap-3">
-        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
           Cancel
         </button>
         <button type="submit" disabled={saving || !name.trim()} className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50">

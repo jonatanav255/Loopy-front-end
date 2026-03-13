@@ -17,23 +17,23 @@ export function CardItem({ card, onEdit, onDelete, onSwitchAlgorithm }: CardItem
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
+    <div className="rounded-lg border border-line bg-surface p-4">
       <div className="flex items-start justify-between">
         <div className="flex-1 cursor-pointer" onClick={() => setExpanded(!expanded)}>
           <CardRenderer front={card.front} back={card.back} cardType={card.cardType} hint={card.hint} showBack={expanded} />
         </div>
         <div className="ml-4 flex flex-shrink-0 gap-1">
-          <button onClick={onEdit} className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600" title="Edit">
+          <button onClick={onEdit} className="rounded p-1 text-content-faint hover:bg-surface-hover hover:text-content-tertiary" title="Edit">
             ✎
           </button>
-          <button onClick={onDelete} className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-600" title="Delete">
+          <button onClick={onDelete} className="rounded p-1 text-content-faint hover:bg-red-500/10 hover:text-red-400" title="Delete">
             ✕
           </button>
         </div>
       </div>
-      <div className="mt-3 flex items-center gap-3 border-t border-gray-100 pt-3">
+      <div className="mt-3 flex items-center gap-3 border-t border-line-subtle pt-3">
         <Badge label={card.schedulingAlgorithm} color={card.schedulingAlgorithm === 'FSRS' ? 'indigo' : 'blue'} />
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-content-faint">
           Next: {new Date(card.nextReviewDate).toLocaleDateString()} · Interval: {card.intervalDays}d
         </span>
         <AlgorithmToggle current={card.schedulingAlgorithm} onSwitch={onSwitchAlgorithm} />

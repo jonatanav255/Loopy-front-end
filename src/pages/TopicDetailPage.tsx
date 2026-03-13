@@ -52,14 +52,14 @@ export function TopicDetailPage() {
   return (
     <div>
       <div className="mb-1">
-        <Link to="/topics" className="text-sm text-indigo-600 hover:text-indigo-800">
+        <Link to="/topics" className="text-sm text-indigo-400 hover:text-indigo-300">
           ← Topics
         </Link>
       </div>
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           {topic && <div className="h-4 w-4 rounded-full" style={{ backgroundColor: topic.colorHex }} />}
-          <h2 className="text-2xl font-semibold text-gray-900">{topic?.name ?? 'Topic'}</h2>
+          <h2 className="text-2xl font-semibold text-content">{topic?.name ?? 'Topic'}</h2>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -70,12 +70,12 @@ export function TopicDetailPage() {
       </div>
 
       {topic?.description && (
-        <p className="mb-6 text-sm text-gray-600">{topic.description}</p>
+        <p className="mb-6 text-sm text-content-tertiary">{topic.description}</p>
       )}
 
       {(showForm || editing) && (
-        <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">
+        <div className="mb-6 rounded-lg border border-line bg-surface p-6">
+          <h3 className="mb-4 text-lg font-medium text-content">
             {editing ? 'Edit Concept' : 'New Concept'}
           </h3>
           <ConceptForm

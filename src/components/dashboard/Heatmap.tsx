@@ -50,23 +50,23 @@ export function Heatmap({ data }: HeatmapProps) {
   }, [data]);
 
   const getColor = (count: number) => {
-    if (count === 0) return 'bg-gray-100';
+    if (count === 0) return 'bg-surface-active';
     const intensity = count / maxCount;
-    if (intensity <= 0.25) return 'bg-green-200';
-    if (intensity <= 0.5) return 'bg-green-400';
+    if (intensity <= 0.25) return 'bg-green-900';
+    if (intensity <= 0.5) return 'bg-green-700';
     if (intensity <= 0.75) return 'bg-green-500';
-    return 'bg-green-700';
+    return 'bg-green-400';
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5">
-      <h3 className="mb-4 font-medium text-gray-900">Activity</h3>
+    <div className="rounded-lg border border-line bg-surface p-5">
+      <h3 className="mb-4 font-medium text-content">Activity</h3>
       <div className="overflow-x-auto">
         <div className="mb-1 flex gap-[3px]" style={{ paddingLeft: '16px' }}>
           {months.map(m => (
             <span
               key={m.label + m.col}
-              className="text-[10px] text-gray-400"
+              className="text-[10px] text-content-faint"
               style={{ position: 'relative', left: `${m.col * 15}px` }}
             >
               {m.label}

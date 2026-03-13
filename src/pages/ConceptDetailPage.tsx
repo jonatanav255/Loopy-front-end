@@ -67,19 +67,19 @@ export function ConceptDetailPage() {
 
   return (
     <div>
-      <div className="mb-1 flex gap-2 text-sm text-indigo-600">
-        <Link to="/topics" className="hover:text-indigo-800">Topics</Link>
-        <span className="text-gray-400">/</span>
-        <Link to={`/topics/${topicId}`} className="hover:text-indigo-800">{topic?.name ?? 'Topic'}</Link>
+      <div className="mb-1 flex gap-2 text-sm text-indigo-400">
+        <Link to="/topics" className="hover:text-indigo-300">Topics</Link>
+        <span className="text-content-faint">/</span>
+        <Link to={`/topics/${topicId}`} className="hover:text-indigo-300">{topic?.name ?? 'Topic'}</Link>
       </div>
 
       <div className="mb-6 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-semibold text-gray-900">{concept?.title ?? 'Concept'}</h2>
+            <h2 className="text-2xl font-semibold text-content">{concept?.title ?? 'Concept'}</h2>
             {concept && <Badge label={concept.status.replace('_', ' ')} color={statusColor[concept.status]} />}
           </div>
-          {concept?.notes && <p className="mt-1 text-sm text-gray-600">{concept.notes}</p>}
+          {concept?.notes && <p className="mt-1 text-sm text-content-tertiary">{concept.notes}</p>}
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -90,8 +90,8 @@ export function ConceptDetailPage() {
       </div>
 
       {(showForm || editing) && (
-        <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">
+        <div className="mb-6 rounded-lg border border-line bg-surface p-6">
+          <h3 className="mb-4 text-lg font-medium text-content">
             {editing ? 'Edit Card' : 'New Card'}
           </h3>
           <CardForm

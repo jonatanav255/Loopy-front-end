@@ -67,8 +67,8 @@ export function TeachBackPage() {
 
   return (
     <div>
-      <h2 className="mb-6 text-2xl font-semibold text-gray-900">Teach-Back</h2>
-      <p className="mb-4 text-sm text-gray-600">
+      <h2 className="mb-6 text-2xl font-semibold text-content">Teach-Back</h2>
+      <p className="mb-4 text-sm text-content-tertiary">
         Concepts flagged for teach-back — explain them in your own words to deepen understanding.
       </p>
 

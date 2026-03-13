@@ -41,7 +41,7 @@ export function TopicsPage() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-semibold text-gray-900">Topics</h2>
+        <h2 className="text-2xl font-semibold text-content">Topics</h2>
         <button
           onClick={() => setShowForm(true)}
           className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
@@ -51,8 +51,8 @@ export function TopicsPage() {
       </div>
 
       {(showForm || editing) && (
-        <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">
+        <div className="mb-6 rounded-lg border border-line bg-surface p-6">
+          <h3 className="mb-4 text-lg font-medium text-content">
             {editing ? 'Edit Topic' : 'New Topic'}
           </h3>
           <TopicForm

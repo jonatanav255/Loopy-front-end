@@ -12,10 +12,10 @@ export function PendingList({ concepts, onSelect }: PendingListProps) {
         <button
           key={concept.id}
           onClick={() => onSelect(concept)}
-          className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-left transition-shadow hover:shadow-sm"
+          className="w-full rounded-lg border border-line bg-surface px-4 py-3 text-left transition-shadow hover:shadow-sm"
         >
-          <p className="font-medium text-gray-900">{concept.title}</p>
-          {concept.notes && <p className="mt-0.5 line-clamp-1 text-sm text-gray-500">{concept.notes}</p>}
+          <p className="font-medium text-content">{concept.title}</p>
+          {concept.notes && <p className="mt-0.5 line-clamp-1 text-sm text-content-muted">{concept.notes}</p>}
         </button>
       ))}
     </div>

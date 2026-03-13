@@ -42,27 +42,27 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-gray-200 bg-white p-6">
-      <h3 className="font-medium text-gray-900">Generate Cards with AI</h3>
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-line bg-surface p-6">
+      <h3 className="font-medium text-content">Generate Cards with AI</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Topic</label>
+          <label className="block text-sm font-medium text-content-secondary">Topic</label>
           <select
             value={topicId}
             onChange={e => setTopicId(e.target.value)}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           >
             <option value="">Select topic...</option>
             {topics.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Concept</label>
+          <label className="block text-sm font-medium text-content-secondary">Concept</label>
           <select
             value={conceptId}
             onChange={e => setConceptId(e.target.value)}
             disabled={!topicId}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50"
+            className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50"
           >
             <option value="">Select concept...</option>
             {concepts.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
@@ -70,14 +70,14 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Content / Notes</label>
+        <label className="block text-sm font-medium text-content-secondary">Content / Notes</label>
         <textarea
           value={content}
           onChange={e => setContent(e.target.value)}
           rows={6}
           required
           placeholder="Paste study material, notes, or text to generate flashcards from..."
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
       <div className="flex justify-end">

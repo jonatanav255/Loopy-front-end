@@ -43,7 +43,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             className={`rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg transition-all ${
               toast.type === 'success' ? 'bg-green-600' :
               toast.type === 'error' ? 'bg-red-600' :
-              'bg-gray-800'
+              'bg-surface-hover'
             }`}
             onClick={() => removeToast(toast.id)}
           >

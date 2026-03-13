@@ -1,5 +1,6 @@
 // Dependencies: useState, FormEvent — see DEPENDENCY_GUIDE.md
 import { useState, type FormEvent } from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import type { TopicResponse, CreateTopicRequest } from '../../types/topic';
 
 interface TopicFormProps {
@@ -11,6 +12,7 @@ interface TopicFormProps {
 const COLORS = ['#6366F1', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#EF4444', '#8B5CF6', '#14B8A6'];
 
 export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
+  const { t } = useI18n();
   const [name, setName] = useState(initial?.name ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
   const [colorHex, setColorHex] = useState(initial?.colorHex ?? '#6366F1');
@@ -30,7 +32,7 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Name</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.topics.name}</label>
         <input
           type="text"
           value={name}
@@ -42,7 +44,7 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Description</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.topics.description}</label>
         <textarea
           value={description}
           onChange={e => setDescription(e.target.value)}
@@ -52,7 +54,7 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Color</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.topics.color}</label>
         <div className="mt-2 flex gap-2">
           {COLORS.map(c => (
             <button
@@ -67,10 +69,10 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
       </div>
       <div className="flex justify-end gap-3">
         <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
-          Cancel
+          {t.common.cancel} <span className="text-xs opacity-60">(Esc)</span>
         </button>
         <button type="submit" disabled={saving || !name.trim()} className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50">
-          {saving ? 'Saving...' : initial ? 'Update' : 'Create'}
+          {saving ? t.common.loading : initial ? t.common.update : t.common.create}
         </button>
       </div>
     </form>

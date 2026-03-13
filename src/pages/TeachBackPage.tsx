@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useTeachBack } from '../hooks/useTeachBack';
 import { useToast } from '../contexts/ToastContext';
+import { useI18n } from '../contexts/I18nContext';
 import { PendingList } from '../components/teachback/PendingList';
 import { TeachBackPrompt } from '../components/teachback/TeachBackPrompt';
 import { SelfEvalScreen } from '../components/teachback/SelfEvalScreen';
@@ -16,6 +17,7 @@ type Step = 'list' | 'write' | 'eval' | 'result';
 export function TeachBackPage() {
   const { pending, loading, submit, refetch } = useTeachBack();
   const { addToast } = useToast();
+  const { t } = useI18n();
   const [step, setStep] = useState<Step>('list');
   const [selected, setSelected] = useState<ConceptResponse | null>(null);
   const [explanation, setExplanation] = useState('');
@@ -37,9 +39,9 @@ export function TeachBackPage() {
       const res = await submit({ conceptId: selected.id, userExplanation: explanation, selfRating, gapsFound });
       setResult(res);
       setStep('result');
-      addToast('Teach-back submitted', 'success');
+      addToast(t.teachBack.submitted, 'success');
     } catch {
-      addToast('Failed to submit teach-back', 'error');
+      addToast(t.teachBack.submitFailed, 'error');
     }
   };
 
@@ -67,15 +69,15 @@ export function TeachBackPage() {
 
   return (
     <div>
-      <h2 className="mb-3 text-2xl font-semibold text-content">Teach-Back</h2>
+      <h2 className="mb-3 text-2xl font-semibold text-content">{t.teachBack.title}</h2>
       <p className="mb-4 text-sm text-content-tertiary">
-        Concepts flagged for teach-back — explain them in your own words to deepen understanding.
+        {t.teachBack.description}
       </p>
 
       {pending.length === 0 ? (
         <EmptyState
-          title="No teach-backs pending"
-          description="Concepts requiring teach-back will appear here after reviews."
+          title={t.teachBack.noPending}
+          description={t.teachBack.noPendingDesc}
         />
       ) : (
         <PendingList concepts={pending} onSelect={handleSelect} />

@@ -1,3 +1,4 @@
+import { useI18n } from '../../contexts/I18nContext';
 import type { FragileCard } from '../../types/stats';
 import { Badge } from '../ui/Badge';
 
@@ -6,12 +7,14 @@ interface FragileCardsProps {
 }
 
 export function FragileCards({ cards }: FragileCardsProps) {
+  const { t } = useI18n();
+
   if (cards.length === 0) return null;
 
   return (
     <div className="rounded-lg border border-line bg-surface p-5">
-      <h3 className="mb-4 font-medium text-content">Fragile Cards</h3>
-      <p className="mb-3 text-sm text-content-muted">Cards you got right but with low confidence.</p>
+      <h3 className="mb-4 font-medium text-content">{t.stats.fragileCards}</h3>
+      <p className="mb-3 text-sm text-content-muted">{t.stats.fragileDesc}</p>
       <div className="space-y-2">
         {cards.map(fc => (
           <div key={fc.card.id} className="flex items-center justify-between rounded-md bg-surface-alt px-3 py-2">

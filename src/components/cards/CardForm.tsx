@@ -1,5 +1,6 @@
 // Dependencies: useState, FormEvent — see DEPENDENCY_GUIDE.md
 import { useState, type FormEvent } from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import type { CardResponse, CardType } from '../../types/card';
 
 const CARD_TYPES: { value: CardType; label: string; description: string }[] = [
@@ -18,6 +19,7 @@ interface CardFormProps {
 }
 
 export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
+  const { t } = useI18n();
   const [front, setFront] = useState(initial?.front ?? '');
   const [back, setBack] = useState(initial?.back ?? '');
   const [cardType, setCardType] = useState<CardType>(initial?.cardType ?? 'STANDARD');
@@ -47,44 +49,42 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Type</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.cards.cardType}</label>
         <select
           value={cardType}
           onChange={e => setCardType(e.target.value as CardType)}
           className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
-          {CARD_TYPES.map(t => (
-            <option key={t.value} value={t.value}>{t.label}</option>
+          {CARD_TYPES.map(ct => (
+            <option key={ct.value} value={ct.value}>{ct.label}</option>
           ))}
         </select>
         <p className="mt-1 text-xs text-content-muted">
-          {CARD_TYPES.find(t => t.value === cardType)?.description}
+          {CARD_TYPES.find(ct => ct.value === cardType)?.description}
         </p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Front</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.cards.front}</label>
         <textarea
           value={front}
           onChange={e => setFront(e.target.value)}
           required
           rows={isCode ? 6 : 3}
           className={`mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${isCode ? 'font-mono' : ''}`}
-          placeholder={isCode ? 'Paste code here...' : 'Question or prompt'}
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Back</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.cards.back}</label>
         <textarea
           value={back}
           onChange={e => setBack(e.target.value)}
           required
           rows={isCode ? 6 : 3}
           className={`mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${isCode ? 'font-mono' : ''}`}
-          placeholder="Answer"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Hint (optional)</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.cards.hint}</label>
         <input
           type="text"
           value={hint}
@@ -93,7 +93,7 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Source URL (optional)</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.cards.sourceUrl}</label>
         <input
           type="url"
           value={sourceUrl}
@@ -103,10 +103,10 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
       </div>
       <div className="flex justify-end gap-3">
         <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
-          Cancel
+          {t.common.cancel} <span className="text-xs opacity-60">(Esc)</span>
         </button>
         <button type="submit" disabled={saving || !front.trim() || !back.trim()} className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50">
-          {saving ? 'Saving...' : initial ? 'Update' : 'Create'}
+          {saving ? t.common.loading : initial ? t.common.update : t.common.create}
         </button>
       </div>
     </form>

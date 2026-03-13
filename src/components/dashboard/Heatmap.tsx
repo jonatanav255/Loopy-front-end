@@ -1,5 +1,6 @@
 // Dependencies: useMemo, useState — see DEPENDENCY_GUIDE.md
 import { useMemo, useState } from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import type { HeatmapEntry } from '../../types/stats';
 
 interface HeatmapProps {
@@ -24,6 +25,7 @@ function normalizeDate(date: string | number[]): string {
 
 export function Heatmap({ data }: HeatmapProps) {
   const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null);
+  const { t } = useI18n();
 
   const { grid, maxCount, months, year } = useMemo(() => {
     const countMap = new Map(data.map(d => [normalizeDate(d.date as string | number[]), d.count]));
@@ -32,10 +34,9 @@ export function Heatmap({ data }: HeatmapProps) {
     const cells: { date: string; count: number; dayOfWeek: number }[] = [];
     let max = 1;
 
-    // Current year: start from the Sunday on or before Jan 1 through today
     const jan1 = new Date(yr, 0, 1);
     const start = new Date(jan1);
-    start.setDate(start.getDate() - start.getDay()); // back to Sunday
+    start.setDate(start.getDate() - start.getDay());
     const end = new Date(yr, today.getMonth(), today.getDate());
 
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
@@ -45,7 +46,6 @@ export function Heatmap({ data }: HeatmapProps) {
       cells.push({ date: dateStr, count, dayOfWeek: d.getDay() });
     }
 
-    // Group into weeks (columns)
     const weeks: typeof cells[] = [];
     let week: typeof cells = [];
     for (const cell of cells) {
@@ -57,7 +57,6 @@ export function Heatmap({ data }: HeatmapProps) {
     }
     if (week.length > 0) weeks.push(week);
 
-    // Month labels — only for current year, placed at the week containing the 1st of each month
     const monthLabels: { label: string; col: number }[] = [];
     let lastMonth = -1;
     weeks.forEach((w, i) => {
@@ -87,7 +86,7 @@ export function Heatmap({ data }: HeatmapProps) {
     return 'bg-green-400';
   };
 
-  const cellSize = 16; // h-4 w-4
+  const cellSize = 16;
   const gap = 4;
   const colWidth = cellSize + gap;
 
@@ -96,15 +95,14 @@ export function Heatmap({ data }: HeatmapProps) {
     setTooltip({
       x: rect.left + rect.width / 2,
       y: rect.top,
-      text: `${cell.date}: ${cell.count} reviews`,
+      text: `${cell.date}: ${cell.count} ${t.stats.reviews}`,
     });
   };
 
   return (
     <div className="rounded-lg border border-line bg-surface p-5">
-      <h3 className="mb-4 font-medium text-content">Activity {year}</h3>
+      <h3 className="mb-4 font-medium text-content">{t.stats.activity} {year}</h3>
       <div className="overflow-x-auto">
-        {/* Month labels positioned absolutely over the grid */}
         <div className="relative mb-1" style={{ height: 16 }}>
           {months.map(m => (
             <span

@@ -1,3 +1,4 @@
+import { useI18n } from '../../contexts/I18nContext';
 import type { StatsOverview as StatsOverviewType } from '../../types/stats';
 
 interface StatsOverviewProps {
@@ -5,13 +6,15 @@ interface StatsOverviewProps {
 }
 
 export function StatsOverview({ stats }: StatsOverviewProps) {
+  const { t } = useI18n();
+
   const cards = [
-    { label: 'Due Today', value: stats.cardsDueToday, color: 'text-indigo-400' },
-    { label: 'Reviewed Today', value: stats.cardsReviewedToday, color: 'text-green-400' },
-    { label: 'Total Cards', value: stats.totalCards, color: 'text-blue-400' },
-    { label: 'Accuracy', value: `${Math.round(stats.accuracyToday)}%`, color: 'text-emerald-400' },
-    { label: 'Current Streak', value: `${stats.currentStreak}d`, color: 'text-orange-400' },
-    { label: 'Longest Streak', value: `${stats.longestStreak}d`, color: 'text-purple-400' },
+    { label: t.stats.dueToday, value: stats.cardsDueToday, color: 'text-indigo-400' },
+    { label: t.stats.reviewsToday, value: stats.cardsReviewedToday, color: 'text-green-400' },
+    { label: t.stats.totalCards, value: stats.totalCards, color: 'text-blue-400' },
+    { label: t.stats.avgAccuracy, value: `${Math.round(stats.accuracyToday)}%`, color: 'text-emerald-400' },
+    { label: 'Streak', value: `${stats.currentStreak}d`, color: 'text-orange-400' },
+    { label: 'Best', value: `${stats.longestStreak}d`, color: 'text-purple-400' },
   ];
 
   return (

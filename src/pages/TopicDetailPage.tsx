@@ -1,9 +1,11 @@
-// Dependencies: useState, useEffect, useParams, Link — see DEPENDENCY_GUIDE.md
-import { useState, useEffect } from 'react';
+// Dependencies: useState, useEffect, useParams, Link, useCallback — see DEPENDENCY_GUIDE.md
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { topicsApi } from '../api/topics';
 import { useConcepts } from '../hooks/useConcepts';
 import { useToast } from '../contexts/ToastContext';
+import { useI18n } from '../contexts/I18nContext';
+import { useKeyboard } from '../hooks/useKeyboard';
 import { ConceptList } from '../components/topics/ConceptList';
 import { ConceptForm } from '../components/topics/ConceptForm';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
@@ -17,6 +19,7 @@ export function TopicDetailPage() {
   const [topic, setTopic] = useState<TopicResponse | null>(null);
   const { concepts, loading, createConcept, updateConcept, deleteConcept } = useConcepts(topicId);
   const { addToast } = useToast();
+  const { t } = useI18n();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<ConceptResponse | null>(null);
   const [deleting, setDeleting] = useState<ConceptResponse | null>(null);
@@ -30,22 +33,34 @@ export function TopicDetailPage() {
     if (!topicId) return;
     await createConcept({ topicId, title: data.title, notes: data.notes });
     setShowForm(false);
-    addToast('Concept created', 'success');
+    addToast(t.concepts.conceptCreated, 'success');
   };
 
   const handleUpdate = async (data: { title: string; notes?: string; referenceExplanation?: string }) => {
     if (!editing) return;
     await updateConcept(editing.id, data);
     setEditing(null);
-    addToast('Concept updated', 'success');
+    addToast(t.concepts.conceptUpdated, 'success');
   };
 
   const handleDelete = async () => {
     if (!deleting) return;
     await deleteConcept(deleting.id);
     setDeleting(null);
-    addToast('Concept deleted', 'success');
+    addToast(t.concepts.conceptDeleted, 'success');
   };
+
+  const handleKeyboard = useCallback((key: string) => {
+    if (key === 'n' || key === 'N') {
+      setShowForm(true);
+    } else if (key === 'Escape') {
+      setShowForm(false);
+      setEditing(null);
+      setDeleting(null);
+    }
+  }, []);
+
+  useKeyboard(handleKeyboard);
 
   if (loading) return <LoadingSpinner className="py-20" />;
 
@@ -53,14 +68,14 @@ export function TopicDetailPage() {
     <div>
       <div className="mb-1">
         <Link to="/topics" className="text-sm text-indigo-400 hover:text-indigo-300">
-          ← Topics
+          {t.common.back.replace('←', '←')} {t.topics.title}
         </Link>
       </div>
       <div className="mb-6 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3">
             {topic && <div className="h-4 w-4 rounded-full" style={{ backgroundColor: topic.colorHex }} />}
-            <h2 className="text-2xl font-semibold text-content">{topic?.name ?? 'Topic'}</h2>
+            <h2 className="text-2xl font-semibold text-content">{topic?.name ?? t.topics.title}</h2>
           </div>
           {topic?.description && (
             <p className="mt-1 ml-7 text-sm text-content-tertiary">{topic.description}</p>
@@ -70,14 +85,14 @@ export function TopicDetailPage() {
           onClick={() => setShowForm(true)}
           className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
-          New Concept
+          {t.concepts.newConcept} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>
       </div>
 
       {(showForm || editing) && (
         <div className="mb-6 rounded-lg border border-line bg-surface p-6">
           <h3 className="mb-4 text-lg font-medium text-content">
-            {editing ? 'Edit Concept' : 'New Concept'}
+            {editing ? t.concepts.editConcept : t.concepts.newConcept}
           </h3>
           <ConceptForm
             initial={editing ?? undefined}
@@ -89,9 +104,9 @@ export function TopicDetailPage() {
 
       {concepts.length === 0 ? (
         <EmptyState
-          title="No concepts yet"
-          description="Add concepts to this topic to start creating flashcards."
-          action={{ label: 'New Concept', onClick: () => setShowForm(true) }}
+          title={t.concepts.noConcepts}
+          description={t.concepts.noConceptsDesc}
+          action={{ label: t.concepts.newConcept, onClick: () => setShowForm(true) }}
         />
       ) : (
         <ConceptList
@@ -104,8 +119,8 @@ export function TopicDetailPage() {
 
       <ConfirmDialog
         open={!!deleting}
-        title="Delete concept?"
-        message={`This will permanently delete "${deleting?.title}" and all its cards.`}
+        title={t.concepts.deleteConcept}
+        message={t.concepts.deleteConceptMsg.replace('{name}', deleting?.title ?? '')}
         onConfirm={handleDelete}
         onCancel={() => setDeleting(null)}
       />

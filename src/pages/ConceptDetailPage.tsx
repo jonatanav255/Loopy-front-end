@@ -1,10 +1,12 @@
-// Dependencies: useState, useEffect, useParams, Link — see DEPENDENCY_GUIDE.md
-import { useState, useEffect } from 'react';
+// Dependencies: useState, useEffect, useParams, Link, useCallback — see DEPENDENCY_GUIDE.md
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { topicsApi } from '../api/topics';
 import { conceptsApi } from '../api/concepts';
 import { useCards } from '../hooks/useCards';
 import { useToast } from '../contexts/ToastContext';
+import { useI18n } from '../contexts/I18nContext';
+import { useKeyboard } from '../hooks/useKeyboard';
 import { CardList } from '../components/cards/CardList';
 import { CardForm } from '../components/cards/CardForm';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
@@ -28,6 +30,7 @@ export function ConceptDetailPage() {
   const [concept, setConcept] = useState<ConceptResponse | null>(null);
   const { cards, loading, createCard, updateCard, deleteCard, switchAlgorithm } = useCards(conceptId);
   const { addToast } = useToast();
+  const { t } = useI18n();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<CardResponse | null>(null);
   const [deleting, setDeleting] = useState<CardResponse | null>(null);
@@ -41,36 +44,48 @@ export function ConceptDetailPage() {
     if (!conceptId) return;
     await createCard({ conceptId, ...data });
     setShowForm(false);
-    addToast('Card created', 'success');
+    addToast(t.cards.cardCreated, 'success');
   };
 
   const handleUpdate = async (data: { front: string; back: string; cardType: CardType; hint?: string; sourceUrl?: string }) => {
     if (!editing) return;
     await updateCard(editing.id, data);
     setEditing(null);
-    addToast('Card updated', 'success');
+    addToast(t.cards.cardUpdated, 'success');
   };
 
   const handleDelete = async () => {
     if (!deleting) return;
     await deleteCard(deleting.id);
     setDeleting(null);
-    addToast('Card deleted', 'success');
+    addToast(t.cards.cardDeleted, 'success');
   };
 
   const handleSwitchAlgorithm = async (id: string, algorithm: SchedulingAlgorithm) => {
     await switchAlgorithm(id, algorithm);
-    addToast(`Switched to ${algorithm}`, 'success');
+    addToast(t.cards.switchedTo.replace('{algorithm}', algorithm), 'success');
   };
+
+  const handleKeyboard = useCallback((key: string) => {
+    if (key === 'n' || key === 'N') {
+      setShowForm(true);
+    } else if (key === 'Escape') {
+      setShowForm(false);
+      setEditing(null);
+      setDeleting(null);
+    }
+  }, []);
+
+  useKeyboard(handleKeyboard);
 
   if (loading) return <LoadingSpinner className="py-20" />;
 
   return (
     <div>
       <div className="mb-1 flex gap-2 text-sm text-indigo-400">
-        <Link to="/topics" className="hover:text-indigo-300">Topics</Link>
+        <Link to="/topics" className="hover:text-indigo-300">{t.topics.title}</Link>
         <span className="text-content-faint">/</span>
-        <Link to={`/topics/${topicId}`} className="hover:text-indigo-300">{topic?.name ?? 'Topic'}</Link>
+        <Link to={`/topics/${topicId}`} className="hover:text-indigo-300">{topic?.name ?? t.topics.title}</Link>
       </div>
 
       <div className="mb-6 flex items-center justify-between">
@@ -85,14 +100,14 @@ export function ConceptDetailPage() {
           onClick={() => setShowForm(true)}
           className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
-          New Card
+          {t.cards.newCard} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>
       </div>
 
       {(showForm || editing) && (
         <div className="mb-6 rounded-lg border border-line bg-surface p-6">
           <h3 className="mb-4 text-lg font-medium text-content">
-            {editing ? 'Edit Card' : 'New Card'}
+            {editing ? t.cards.editCard : t.cards.newCard}
           </h3>
           <CardForm
             initial={editing ?? undefined}
@@ -104,9 +119,9 @@ export function ConceptDetailPage() {
 
       {cards.length === 0 ? (
         <EmptyState
-          title="No cards yet"
-          description="Create flashcards to start reviewing this concept."
-          action={{ label: 'New Card', onClick: () => setShowForm(true) }}
+          title={t.cards.noCards}
+          description={t.cards.noCardsDesc}
+          action={{ label: t.cards.newCard, onClick: () => setShowForm(true) }}
         />
       ) : (
         <CardList
@@ -119,8 +134,8 @@ export function ConceptDetailPage() {
 
       <ConfirmDialog
         open={!!deleting}
-        title="Delete card?"
-        message="This will permanently delete this card and its review history."
+        title={t.cards.deleteCard}
+        message={t.cards.deleteCardMsg}
         onConfirm={handleDelete}
         onCancel={() => setDeleting(null)}
       />

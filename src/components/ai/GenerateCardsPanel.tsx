@@ -1,5 +1,6 @@
 // Dependencies: useState, useEffect, FormEvent — see DEPENDENCY_GUIDE.md
 import { useState, useEffect, type FormEvent } from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import { topicsApi } from '../../api/topics';
 import { conceptsApi } from '../../api/concepts';
 import type { TopicResponse } from '../../types/topic';
@@ -12,6 +13,7 @@ interface GenerateCardsPanelProps {
 }
 
 export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCardsPanelProps) {
+  const { t } = useI18n();
   const [topics, setTopics] = useState<TopicResponse[]>([]);
   const [concepts, setConcepts] = useState<ConceptResponse[]>([]);
   const [topicId, setTopicId] = useState('');
@@ -44,41 +46,41 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-line bg-surface p-6">
-      <h3 className="font-medium text-content">Generate Cards with AI</h3>
+      <h3 className="font-medium text-content">{t.ai.generateTitle}</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-content-secondary">Topic</label>
+          <label className="block text-sm font-medium text-content-secondary">{t.ai.topic}</label>
           <select
             value={topicId}
             onChange={e => setTopicId(e.target.value)}
             className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           >
-            <option value="">Select topic...</option>
-            {topics.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+            <option value="">{t.ai.selectTopic}</option>
+            {topics.map(tp => <option key={tp.id} value={tp.id}>{tp.name}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-content-secondary">Concept</label>
+          <label className="block text-sm font-medium text-content-secondary">{t.ai.concept}</label>
           <select
             value={conceptId}
             onChange={e => setConceptId(e.target.value)}
             disabled={!topicId}
             className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50"
           >
-            <option value="">Select concept...</option>
+            <option value="">{t.ai.selectConcept}</option>
             {concepts.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
           </select>
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Content / Notes</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.ai.contentLabel}</label>
         <textarea
           value={content}
           onChange={e => setContent(e.target.value)}
           rows={6}
           required
           maxLength={5000}
-          placeholder="Paste study material, notes, or text to generate flashcards from..."
+          placeholder={t.ai.contentPlaceholder}
           className="mt-1 block w-full resize-none rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
         <p className={`mt-1 text-right text-xs ${content.length > 4500 ? 'text-yellow-400' : 'text-content-faint'}`}>
@@ -86,7 +88,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
         </p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-content-secondary">Number of Cards</label>
+        <label className="block text-sm font-medium text-content-secondary">{t.ai.numCards}</label>
         <select
           value={numCards}
           onChange={e => setNumCards(Number(e.target.value))}
@@ -102,7 +104,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
           disabled={generating || !conceptId || !content.trim()}
           className="rounded-md bg-indigo-600 px-6 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
         >
-          {generating ? 'Generating...' : 'Generate Cards'}
+          {generating ? t.ai.generating : t.ai.generate}
         </button>
       </div>
     </form>

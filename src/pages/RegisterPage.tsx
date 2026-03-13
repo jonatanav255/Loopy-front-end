@@ -2,6 +2,7 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useI18n } from '../contexts/I18nContext';
 
 export function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -11,34 +12,32 @@ export function RegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const { t, lang, toggleLang } = useI18n();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Client-side validation before hitting the API
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError(t.auth.passwordMismatch);
       return;
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+      setError(t.auth.passwordMinLength);
       return;
     }
 
     setSubmitting(true);
     try {
       await register(email, password);
-      navigate('/'); // redirect to dashboard on success (auto-login)
+      navigate('/');
     } catch (err: unknown) {
-      // Extract the error message from the backend response ({ "error": "..." }),
-      // or fall back to a generic message if the response shape is unexpected
       const message =
         err && typeof err === 'object' && 'response' in err
           ? (err as { response: { data: { error: string } } }).response?.data?.error
-          : 'Registration failed';
-      setError(message || 'Registration failed');
+          : t.auth.registrationFailed;
+      setError(message || t.auth.registrationFailed);
     } finally {
       setSubmitting(false);
     }
@@ -48,8 +47,16 @@ export function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center bg-surface-alt px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-content">Loopy</h1>
-          <p className="mt-2 text-content-tertiary">Create your account</p>
+          <div className="flex items-center justify-center gap-3">
+            <h1 className="text-3xl font-bold text-content">{t.appName}</h1>
+            <button
+              onClick={toggleLang}
+              className="rounded border border-line-strong px-2 py-0.5 text-xs font-medium text-content-secondary hover:bg-surface-hover"
+            >
+              {lang === 'en' ? t.language.es : t.language.en}
+            </button>
+          </div>
+          <p className="mt-2 text-content-tertiary">{t.auth.createAccount}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 rounded-lg bg-surface p-8 shadow">
@@ -59,7 +66,7 @@ export function RegisterPage() {
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-content-secondary">
-              Email
+              {t.auth.email}
             </label>
             <input
               id="email"
@@ -73,7 +80,7 @@ export function RegisterPage() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-content-secondary">
-              Password
+              {t.auth.password}
             </label>
             <input
               id="password"
@@ -87,7 +94,7 @@ export function RegisterPage() {
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-content-secondary">
-              Confirm Password
+              {t.auth.confirmPassword}
             </label>
             <input
               id="confirmPassword"
@@ -104,13 +111,13 @@ export function RegisterPage() {
             disabled={submitting}
             className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
           >
-            {submitting ? 'Creating account...' : 'Create account'}
+            {submitting ? t.auth.creatingAccount : t.auth.createAccountBtn}
           </button>
 
           <p className="text-center text-sm text-content-tertiary">
-            Already have an account?{' '}
+            {t.auth.hasAccount}{' '}
             <Link to="/login" className="text-indigo-400 hover:text-indigo-500">
-              Sign in
+              {t.auth.signInBtn}
             </Link>
           </p>
         </form>

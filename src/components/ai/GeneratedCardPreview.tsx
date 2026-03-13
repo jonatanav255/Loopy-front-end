@@ -1,5 +1,6 @@
 // Dependencies: useState — see DEPENDENCY_GUIDE.md
 import { useState } from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import { cardsApi } from '../../api/cards';
 import { useToast } from '../../contexts/ToastContext';
 import type { GeneratedCard } from '../../types/ai';
@@ -13,6 +14,7 @@ interface GeneratedCardPreviewProps {
 
 export function GeneratedCardPreview({ conceptId, cards, onDone }: GeneratedCardPreviewProps) {
   const { addToast } = useToast();
+  const { t } = useI18n();
   const [saved, setSaved] = useState<Set<number>>(new Set());
   const [saving, setSaving] = useState<number | null>(null);
 
@@ -27,9 +29,9 @@ export function GeneratedCardPreview({ conceptId, cards, onDone }: GeneratedCard
         hint: card.hint ?? undefined,
       });
       setSaved(prev => new Set(prev).add(index));
-      addToast('Card saved', 'success');
+      addToast(t.ai.cardSaved, 'success');
     } catch {
-      addToast('Failed to save card', 'error');
+      addToast(t.ai.saveFailed, 'error');
     } finally {
       setSaving(null);
     }
@@ -46,19 +48,19 @@ export function GeneratedCardPreview({ conceptId, cards, onDone }: GeneratedCard
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-medium text-content">Generated Cards ({cards.length})</h3>
+        <h3 className="font-medium text-content">{t.ai.generatedTitle.replace('{count}', String(cards.length))}</h3>
         <div className="flex gap-3">
           <button
             onClick={handleSaveAll}
             className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
           >
-            Save All
+            {t.ai.saveAll}
           </button>
           <button
             onClick={onDone}
             className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover"
           >
-            Done
+            {t.teachBack.done}
           </button>
         </div>
       </div>
@@ -68,14 +70,14 @@ export function GeneratedCardPreview({ conceptId, cards, onDone }: GeneratedCard
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-content-faint">{card.cardType}</span>
             {saved.has(i) ? (
-              <span className="text-xs font-medium text-green-300">Saved</span>
+              <span className="text-xs font-medium text-green-300">{t.ai.saved}</span>
             ) : (
               <button
                 onClick={() => handleSave(card, i)}
                 disabled={saving === i}
                 className="text-xs font-medium text-indigo-400 hover:text-indigo-300 disabled:opacity-50"
               >
-                {saving === i ? 'Saving...' : 'Save'}
+                {saving === i ? t.ai.saving : t.ai.save}
               </button>
             )}
           </div>

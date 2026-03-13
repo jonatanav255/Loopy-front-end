@@ -3,6 +3,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useReviewSession } from '../hooks/useReviewSession';
 import { useKeyboard } from '../hooks/useKeyboard';
+import { useI18n } from '../contexts/I18nContext';
 import { topicsApi } from '../api/topics';
 import type { TopicResponse } from '../types/topic';
 import { ReviewCard } from '../components/review/ReviewCard';
@@ -15,6 +16,7 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 export function ReviewPage() {
   const navigate = useNavigate();
   const session = useReviewSession();
+  const { t } = useI18n();
 
   const [topics, setTopics] = useState<TopicResponse[]>([]);
   const [loadingTopics, setLoadingTopics] = useState(true);
@@ -65,8 +67,10 @@ export function ReviewPage() {
     } else if (session.phase === 'confidence') {
       const num = parseInt(key);
       if (num >= 1 && num <= 3) session.submitConfidence(num);
+    } else if (session.phase === 'idle' && key === 'Enter') {
+      if (selectedTopicIds.length > 0) handleStart();
     }
-  }, [session]);
+  }, [session, selectedTopicIds, handleStart]);
 
   useKeyboard(handleKeyboard);
 
@@ -74,18 +78,17 @@ export function ReviewPage() {
   if (session.phase === 'idle') {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <h2 className="mb-3 text-2xl font-semibold text-content">Review Session</h2>
-        <p className="text-content-tertiary">Configure your review session.</p>
+        <h2 className="mb-3 text-2xl font-semibold text-content">{t.review.title}</h2>
+        <p className="text-content-tertiary">{t.review.configure}</p>
 
         <div className="mt-6 w-full max-w-md rounded-lg border border-line bg-surface p-6">
-          {/* Topic Selection */}
           <div>
-            <label className="text-sm font-medium text-content-secondary">Topics</label>
+            <label className="text-sm font-medium text-content-secondary">{t.review.topicsLabel}</label>
 
             {loadingTopics ? (
-              <p className="mt-2 text-sm text-content-tertiary">Loading topics...</p>
+              <p className="mt-2 text-sm text-content-tertiary">{t.review.loadingTopics}</p>
             ) : topics.length === 0 ? (
-              <p className="mt-2 text-sm text-content-tertiary">No topics found. Create a topic first.</p>
+              <p className="mt-2 text-sm text-content-tertiary">{t.review.noTopicsFound}</p>
             ) : (
               <>
                 <label className="mt-2 flex items-center gap-2 cursor-pointer">
@@ -95,7 +98,7 @@ export function ReviewPage() {
                     onChange={toggleAll}
                     className="accent-indigo-600"
                   />
-                  <span className="text-sm text-content">All Topics</span>
+                  <span className="text-sm text-content">{t.review.allTopics}</span>
                 </label>
 
                 <div className="mt-2 grid grid-cols-2 gap-2">
@@ -119,13 +122,12 @@ export function ReviewPage() {
             )}
           </div>
 
-          {/* Start button */}
           <button
             onClick={handleStart}
             disabled={selectedTopicIds.length === 0}
             className="mt-6 w-full rounded-lg bg-indigo-600 px-8 py-3 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Start Review
+            {t.review.startReview} <span className="text-xs opacity-60">(Enter)</span>
           </button>
         </div>
       </div>
@@ -139,14 +141,14 @@ export function ReviewPage() {
     if (session.results.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center py-20">
-          <h2 className="text-2xl font-semibold text-content">All caught up!</h2>
-          <p className="mt-2 text-content-tertiary">No cards due for review today.</p>
+          <h2 className="text-2xl font-semibold text-content">{t.review.allCaughtUp}</h2>
+          <p className="mt-2 text-content-tertiary">{t.review.noCardsDue}</p>
           <div className="mt-6 flex gap-3">
             <button onClick={() => session.startPractice()} className="rounded-lg border border-indigo-600 px-6 py-3 text-sm font-medium text-indigo-400 hover:bg-indigo-600/10">
-              Practice All Cards
+              {t.review.practiceAll}
             </button>
             <button onClick={() => navigate('/')} className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
-              Back to Dashboard
+              {t.review.backToDashboard}
             </button>
           </div>
         </div>
@@ -165,9 +167,9 @@ export function ReviewPage() {
       <div className="border-b border-line bg-surface px-6 py-4">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <button onClick={session.reset} className="text-sm text-content-muted hover:text-content-secondary">
-            ✕ End Session
+            ✕ {t.review.endSession} <span className="text-xs opacity-60">(Esc)</span>
           </button>
-          {session.practiceMode && <span className="text-xs text-yellow-400">Practice Mode</span>}
+          {session.practiceMode && <span className="text-xs text-yellow-400">{t.review.practiceMode}</span>}
           <ProgressBar current={session.reviewed} total={session.total} />
         </div>
       </div>

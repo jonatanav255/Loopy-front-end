@@ -2,13 +2,12 @@
 import { Link } from 'react-router-dom';
 import { useStats } from '../hooks/useStats';
 import { StatsOverview } from '../components/dashboard/StatsOverview';
-import { AccuracyChart } from '../components/dashboard/AccuracyChart';
 import { Heatmap } from '../components/dashboard/Heatmap';
 import { FragileCards } from '../components/dashboard/FragileCards';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
 export function DashboardPage() {
-  const { overview, accuracy, heatmap, fragile, loading } = useStats();
+  const { overview, heatmap, fragile, loading } = useStats();
 
   if (loading) return <LoadingSpinner className="py-20" />;
 
@@ -28,8 +27,7 @@ export function DashboardPage() {
 
       {overview && <StatsOverview stats={overview} />}
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <AccuracyChart data={accuracy} />
+      <div className="mt-6">
         <FragileCards cards={fragile} />
       </div>
 

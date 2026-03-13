@@ -18,7 +18,7 @@ import type { ConceptResponse } from '../types/concept';
 export function TopicDetailPage() {
   const { topicId } = useParams<{ topicId: string }>();
   const [topic, setTopic] = useState<TopicResponse | null>(null);
-  const { concepts, loading, createConcept, updateConcept, deleteConcept } = useConcepts(topicId);
+  const { concepts, loading, createConcept, updateConcept, deleteConcept, reorderConcepts } = useConcepts(topicId);
   const { addToast } = useToast();
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -146,6 +146,7 @@ export function TopicDetailPage() {
           concepts={concepts}
           onEdit={setEditing}
           onDelete={setDeleting}
+          onReorder={reorderConcepts}
         />
       )}
 

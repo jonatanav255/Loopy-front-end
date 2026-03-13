@@ -3,6 +3,7 @@ export interface TopicResponse {
   name: string;
   description: string;
   colorHex: string;
+  sortOrder: number;
   createdAt: string;
   updatedAt: string;
   cardCount: number;

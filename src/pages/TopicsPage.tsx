@@ -1,11 +1,26 @@
-// Dependencies: useState, useCallback, useNavigate — see DEPENDENCY_GUIDE.md
-import { useState, useCallback } from 'react';
+// Dependencies: useState, useCallback, useNavigate, DndContext, closestCenter, PointerSensor, KeyboardSensor, useSensor, useSensors, SortableContext, rectSortingStrategy, sortableKeyboardCoordinates, arrayMove — see DEPENDENCY_GUIDE.md
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+  arrayMove,
+} from '@dnd-kit/sortable';
 import { useTopics } from '../hooks/useTopics';
 import { useToast } from '../contexts/ToastContext';
 import { useI18n } from '../contexts/I18nContext';
 import { useKeyboard } from '../hooks/useKeyboard';
-import { TopicCard } from '../components/topics/TopicCard';
+import { SortableTopicCard } from '../components/topics/SortableTopicCard';
 import { TopicForm } from '../components/topics/TopicForm';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -14,13 +29,34 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import type { TopicResponse, CreateTopicRequest } from '../types/topic';
 
 export function TopicsPage() {
-  const { topics, loading, createTopic, updateTopic, deleteTopic } = useTopics();
+  const { topics, loading, createTopic, updateTopic, deleteTopic, reorderTopics } = useTopics();
   const { addToast } = useToast();
   const { t } = useI18n();
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<TopicResponse | null>(null);
   const [deleting, setDeleting] = useState<TopicResponse | null>(null);
+  const [items, setItems] = useState<TopicResponse[]>([]);
+
+  useEffect(() => {
+    setItems(topics);
+  }, [topics]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = items.findIndex(t => t.id === active.id);
+    const newIndex = items.findIndex(t => t.id === over.id);
+    const newItems = arrayMove(items, oldIndex, newIndex);
+    setItems(newItems);
+    reorderTopics(newItems.map(t => t.id));
+  }
 
   const handleCreate = async (data: CreateTopicRequest) => {
     await createTopic(data);
@@ -52,11 +88,11 @@ export function TopicsPage() {
       setDeleting(null);
     } else {
       const num = parseInt(key);
-      if (num >= 1 && num <= 9 && num <= topics.length) {
-        navigate(`/topics/${topics[num - 1].id}`);
+      if (num >= 1 && num <= 9 && num <= items.length) {
+        navigate(`/topics/${items[num - 1].id}`);
       }
     }
-  }, [topics, navigate]);
+  }, [items, navigate]);
 
   useKeyboard(handleKeyboard);
 
@@ -94,24 +130,28 @@ export function TopicsPage() {
         </button>
       </div>
 
-      {topics.length === 0 ? (
+      {items.length === 0 ? (
         <EmptyState
           title={t.topics.noTopics}
           description={t.topics.noTopicsDesc}
           action={{ label: t.topics.newTopic, onClick: () => setShowForm(true) }}
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {topics.map((topic, i) => (
-            <TopicCard
-              key={topic.id}
-              topic={topic}
-              index={i < 9 ? i + 1 : undefined}
-              onEdit={() => setEditing(topic)}
-              onDelete={() => setDeleting(topic)}
-            />
-          ))}
-        </div>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={items.map(t => t.id)} strategy={rectSortingStrategy}>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {items.map((topic, i) => (
+                <SortableTopicCard
+                  key={topic.id}
+                  topic={topic}
+                  index={i < 9 ? i + 1 : undefined}
+                  onEdit={() => setEditing(topic)}
+                  onDelete={() => setDeleting(topic)}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
 
       <ConfirmDialog

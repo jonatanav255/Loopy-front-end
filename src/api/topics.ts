@@ -17,4 +17,7 @@ export const topicsApi = {
 
   delete: (id: string) =>
     api.delete(`/topics/${id}`),
+
+  reorder: (orderedIds: string[]) =>
+    api.put<TopicResponse[]>('/topics/reorder', { orderedIds }),
 };

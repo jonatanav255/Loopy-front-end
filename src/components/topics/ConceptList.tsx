@@ -1,57 +1,70 @@
-// Dependencies: Link — see DEPENDENCY_GUIDE.md
-import { Link } from 'react-router-dom';
+// Dependencies: DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, SortableContext, verticalListSortingStrategy, sortableKeyboardCoordinates — see DEPENDENCY_GUIDE.md
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  sortableKeyboardCoordinates,
+  arrayMove,
+} from '@dnd-kit/sortable';
+import { useState, useEffect } from 'react';
 import type { ConceptResponse } from '../../types/concept';
-import { Badge } from '../ui/Badge';
-
-
-const statusColor: Record<string, 'blue' | 'yellow' | 'green' | 'red'> = {
-  LEARNING: 'blue',
-  REVIEW: 'yellow',
-  MASTERED: 'green',
-  TEACH_BACK_REQUIRED: 'red',
-};
-
-const statusLabel: Record<string, string> = {
-  LEARNING: 'Learning',
-  REVIEW: 'Review',
-  MASTERED: 'Mastered',
-  TEACH_BACK_REQUIRED: 'Teach-Back',
-};
+import { SortableConceptItem } from './SortableConceptItem';
 
 interface ConceptListProps {
   topicId: string;
   concepts: ConceptResponse[];
   onEdit: (concept: ConceptResponse) => void;
   onDelete: (concept: ConceptResponse) => void;
+  onReorder?: (orderedIds: string[]) => void;
 }
 
-export function ConceptList({ topicId, concepts, onEdit, onDelete }: ConceptListProps) {
+export function ConceptList({ topicId, concepts, onEdit, onDelete, onReorder }: ConceptListProps) {
+  const [items, setItems] = useState(concepts);
+
+  useEffect(() => {
+    setItems(concepts);
+  }, [concepts]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = items.findIndex(c => c.id === active.id);
+    const newIndex = items.findIndex(c => c.id === over.id);
+    const newItems = arrayMove(items, oldIndex, newIndex);
+    setItems(newItems);
+    onReorder?.(newItems.map(c => c.id));
+  }
+
   return (
-    <div className="space-y-2">
-      {concepts.map((concept, index) => (
-        <div key={concept.id} className="group flex items-center justify-between rounded-lg border border-line bg-surface px-4 py-3 transition-shadow hover:shadow-sm">
-          <Link to={`/topics/${topicId}/concepts/${concept.id}`} className="flex-1">
-            <div className="flex items-center gap-3">
-              <span className="font-medium text-content">{concept.title}</span>
-              <Badge label={statusLabel[concept.status]} color={statusColor[concept.status]} />
-              {index < 9 && (
-                <span className="flex h-5 w-5 items-center justify-center rounded bg-surface-alt text-[10px] font-medium text-content-faint">{index + 1}</span>
-              )}
-            </div>
-            {concept.notes && (
-              <p className="mt-0.5 line-clamp-1 text-sm text-primary-text">{concept.notes}</p>
-            )}
-          </Link>
-          <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-            <button onClick={() => onEdit(concept)} className="rounded p-1 text-content-secondary hover:bg-surface-hover hover:text-content" title="Edit">
-              ✎
-            </button>
-            <button onClick={() => onDelete(concept)} className="rounded p-1 text-content-secondary hover:bg-red-500/10 hover:text-red-400" title="Delete">
-              ✕
-            </button>
-          </div>
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={items.map(c => c.id)} strategy={verticalListSortingStrategy}>
+        <div className="space-y-2">
+          {items.map((concept, index) => (
+            <SortableConceptItem
+              key={concept.id}
+              topicId={topicId}
+              concept={concept}
+              index={index}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          ))}
         </div>
-      ))}
-    </div>
+      </SortableContext>
+    </DndContext>
   );
 }

@@ -292,3 +292,73 @@ Used to persist JWT tokens so the user stays logged in.
 **Used in:** `api/client.ts`
 
 Setting this to a URL causes a full page reload and navigation. Used in the Axios response interceptor because at that point we're outside the React component tree and can't use `useNavigate()`. React Router's navigation preserves state; `window.location.href` destroys it.
+
+---
+
+## @dnd-kit (drag-and-drop)
+
+### `DndContext`
+**From:** `@dnd-kit/core`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+The root context provider for drag-and-drop. Wraps the area where dragging occurs. Accepts `sensors`, `collisionDetection`, and event handlers like `onDragEnd`.
+
+### `closestCenter`
+**From:** `@dnd-kit/core`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+A collision detection algorithm that finds the droppable element whose center is closest to the pointer. Works well for grids and lists.
+
+### `PointerSensor`
+**From:** `@dnd-kit/core`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+Detects drag starts from mouse/touch pointer events. `activationConstraint: { distance: 8 }` prevents accidental drags by requiring 8px of movement first.
+
+### `KeyboardSensor`
+**From:** `@dnd-kit/core`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+Allows drag-and-drop via keyboard (arrow keys + Enter). Used with `sortableKeyboardCoordinates` for accessible reordering.
+
+### `useSensor` / `useSensors`
+**From:** `@dnd-kit/core`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+`useSensor` configures a single sensor with options. `useSensors` combines multiple sensors (pointer + keyboard) into a single array for `DndContext`.
+
+### `SortableContext`
+**From:** `@dnd-kit/sortable`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+Provides the sortable context for a list of items. Takes an `items` array of IDs and a `strategy` (layout algorithm). Each child must use `useSortable` with a matching ID.
+
+### `useSortable`
+**From:** `@dnd-kit/sortable`
+**Used in:** `SortableTopicCard.tsx`, `SortableConceptItem.tsx`
+
+Hook that makes an element draggable and droppable within a `SortableContext`. Returns `attributes`, `listeners` (spread onto the drag handle), `setNodeRef`, `transform`, `transition`, and `isDragging`.
+
+### `rectSortingStrategy` / `verticalListSortingStrategy`
+**From:** `@dnd-kit/sortable`
+**Used in:** `TopicsPage.tsx` (rect), `ConceptList.tsx` (vertical)
+
+Sorting strategies that tell dnd-kit how items are laid out. `rectSortingStrategy` works for grid layouts; `verticalListSortingStrategy` works for vertical lists.
+
+### `sortableKeyboardCoordinates`
+**From:** `@dnd-kit/sortable`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+Coordinate getter for `KeyboardSensor` that maps arrow keys to the correct movement direction based on the current sorting strategy.
+
+### `arrayMove`
+**From:** `@dnd-kit/sortable`
+**Used in:** `TopicsPage.tsx`, `ConceptList.tsx`
+
+Utility that returns a new array with an element moved from one index to another. Used in `onDragEnd` to compute the new order after a drag.
+
+### `CSS.Transform.toString`
+**From:** `@dnd-kit/utilities`
+**Used in:** `SortableTopicCard.tsx`, `SortableConceptItem.tsx`
+
+Converts a `Transform` object (from `useSortable`) into a CSS `transform` string (e.g. `translate3d(0px, 50px, 0)`). Applied as an inline style to animate the dragged element.

@@ -54,6 +54,7 @@ describe('ConceptForm', () => {
       notes: 'Some notes',
       referenceExplanation: 'Ref explanation',
       status: 'LEARNING' as const,
+      sortOrder: 1,
       createdAt: '',
       updatedAt: '',
     };

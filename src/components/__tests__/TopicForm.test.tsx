@@ -71,6 +71,7 @@ describe('TopicForm', () => {
       name: 'Existing',
       description: 'Desc',
       colorHex: '#EF4444',
+      sortOrder: 1,
       createdAt: '',
       updatedAt: '',
       cardCount: 0,

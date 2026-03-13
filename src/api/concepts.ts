@@ -17,4 +17,7 @@ export const conceptsApi = {
 
   delete: (id: string) =>
     api.delete(`/concepts/${id}`),
+
+  reorder: (topicId: string, orderedIds: string[]) =>
+    api.put<ConceptResponse[]>('/concepts/reorder', { orderedIds }, { params: { topicId } }),
 };

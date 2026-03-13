@@ -7,6 +7,7 @@ export interface ConceptResponse {
   notes: string | null;
   referenceExplanation: string | null;
   status: ConceptStatus;
+  sortOrder: number;
   createdAt: string;
   updatedAt: string;
 }

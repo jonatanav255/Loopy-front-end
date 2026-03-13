@@ -40,5 +40,20 @@ export function useTopics() {
     setTopics(prev => prev.filter(t => t.id !== id));
   };
 
-  return { topics, loading, error, createTopic, updateTopic, deleteTopic, refetch: fetchTopics };
+  const reorderTopics = async (orderedIds: string[]) => {
+    // Optimistic update
+    setTopics(prev => {
+      const map = new Map(prev.map(t => [t.id, t]));
+      return orderedIds.map(id => map.get(id)!).filter(Boolean);
+    });
+    try {
+      const res = await topicsApi.reorder(orderedIds);
+      setTopics(res.data);
+    } catch {
+      // Revert on failure
+      await fetchTopics();
+    }
+  };
+
+  return { topics, loading, error, createTopic, updateTopic, deleteTopic, reorderTopics, refetch: fetchTopics };
 }

@@ -41,5 +41,21 @@ export function useConcepts(topicId: string | undefined) {
     setConcepts(prev => prev.filter(c => c.id !== id));
   };
 
-  return { concepts, loading, error, createConcept, updateConcept, deleteConcept, refetch: fetchConcepts };
+  const reorderConcepts = async (orderedIds: string[]) => {
+    if (!topicId) return;
+    // Optimistic update
+    setConcepts(prev => {
+      const map = new Map(prev.map(c => [c.id, c]));
+      return orderedIds.map(id => map.get(id)!).filter(Boolean);
+    });
+    try {
+      const res = await conceptsApi.reorder(topicId, orderedIds);
+      setConcepts(res.data);
+    } catch {
+      // Revert on failure
+      await fetchConcepts();
+    }
+  };
+
+  return { concepts, loading, error, createConcept, updateConcept, deleteConcept, reorderConcepts, refetch: fetchConcepts };
 }

@@ -191,6 +191,7 @@ export const en = {
     update: 'Update',
     loading: 'Loading...',
     back: '← Back',
+    backTo: 'Back to',
   },
 
   // Keyboard shortcuts

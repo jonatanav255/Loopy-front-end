@@ -79,7 +79,7 @@ export function TopicDetailPage() {
     <div>
       <div className="mb-1">
         <Link to="/topics" className="text-sm text-indigo-400 hover:text-indigo-300">
-          {t.common.back.replace('←', '←')} {t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
+          ← {t.common.backTo} {t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
         </Link>
       </div>
       <div className="mb-6 flex items-center justify-between">

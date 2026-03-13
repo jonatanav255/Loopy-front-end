@@ -182,6 +182,7 @@ export const es: Translations = {
     update: 'Actualizar',
     loading: 'Cargando...',
     back: '← Volver',
+    backTo: 'Volver a',
   },
 
   shortcuts: {

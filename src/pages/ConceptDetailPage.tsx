@@ -88,10 +88,10 @@ export function ConceptDetailPage() {
 
   return (
     <div>
-      <div className="mb-1 flex gap-2 text-sm text-indigo-400">
-        <Link to="/topics" className="hover:text-indigo-300">{t.topics.title}</Link>
-        <span className="text-content-faint">/</span>
-        <Link to={`/topics/${topicId}`} className="hover:text-indigo-300">{topic?.name ?? t.topics.title} <span className="text-xs opacity-60">(Esc)</span></Link>
+      <div className="mb-1">
+        <Link to={`/topics/${topicId}`} className="text-sm text-indigo-400 hover:text-indigo-300">
+          ← {t.common.backTo} {topic?.name ?? t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
+        </Link>
       </div>
 
       <div className="mb-6 flex items-center justify-between">

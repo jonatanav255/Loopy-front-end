@@ -1,5 +1,6 @@
-// Dependencies: useState, useCallback — see DEPENDENCY_GUIDE.md
+// Dependencies: useState, useCallback, useNavigate — see DEPENDENCY_GUIDE.md
 import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTopics } from '../hooks/useTopics';
 import { useToast } from '../contexts/ToastContext';
 import { useI18n } from '../contexts/I18nContext';
@@ -15,6 +16,7 @@ export function TopicsPage() {
   const { topics, loading, createTopic, updateTopic, deleteTopic } = useTopics();
   const { addToast } = useToast();
   const { t } = useI18n();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<TopicResponse | null>(null);
   const [deleting, setDeleting] = useState<TopicResponse | null>(null);
@@ -47,8 +49,13 @@ export function TopicsPage() {
       setShowForm(false);
       setEditing(null);
       setDeleting(null);
+    } else {
+      const num = parseInt(key);
+      if (num >= 1 && num <= 9 && num <= topics.length) {
+        navigate(`/topics/${topics[num - 1].id}`);
+      }
     }
-  }, []);
+  }, [topics, navigate]);
 
   useKeyboard(handleKeyboard);
 
@@ -87,10 +94,11 @@ export function TopicsPage() {
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {topics.map(topic => (
+          {topics.map((topic, i) => (
             <TopicCard
               key={topic.id}
               topic={topic}
+              index={i < 9 ? i + 1 : undefined}
               onEdit={() => setEditing(topic)}
               onDelete={() => setDeleting(topic)}
             />

@@ -45,6 +45,14 @@
     @apply text-content-muted;
   }
 
+  button, a, [role="button"] {
+    @apply cursor-pointer;
+  }
+
+  button:disabled {
+    @apply cursor-not-allowed;
+  }
+
   * {
     --tw-ring-offset-color: var(--surface-alt);
   }

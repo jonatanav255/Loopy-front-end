@@ -4,21 +4,25 @@ import type { TopicResponse } from '../../types/topic';
 
 interface TopicCardProps {
   topic: TopicResponse;
+  index?: number;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export function TopicCard({ topic, onEdit, onDelete }: TopicCardProps) {
+export function TopicCard({ topic, index, onEdit, onDelete }: TopicCardProps) {
   return (
     <div className="group relative overflow-hidden rounded-lg border border-line bg-surface shadow-sm transition-shadow hover:shadow-md">
       <div className="h-1.5" style={{ backgroundColor: topic.colorHex }} />
       <div className="p-5">
         <div className="absolute right-3 top-5 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-          <button onClick={onEdit} className="rounded p-1 text-content-secondary hover:bg-surface-hover hover:text-content" title="Edit">✎</button>
-          <button onClick={onDelete} className="rounded p-1 text-content-secondary hover:bg-red-500/10 hover:text-red-400" title="Delete">✕</button>
+          <button onClick={onEdit} className="cursor-pointer rounded p-1 text-content-secondary hover:bg-surface-hover hover:text-content" title="Edit">✎</button>
+          <button onClick={onDelete} className="cursor-pointer rounded p-1 text-content-secondary hover:bg-red-500/10 hover:text-red-400" title="Delete">✕</button>
         </div>
-        <Link to={`/topics/${topic.id}`} className="block">
+        <Link to={`/topics/${topic.id}`} className="block cursor-pointer">
           <div className="flex items-center gap-2">
+            {index !== undefined && (
+              <span className="flex h-5 w-5 items-center justify-center rounded bg-surface-alt text-[10px] font-medium text-content-faint">{index}</span>
+            )}
             <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: topic.colorHex }} />
             <h3 className="text-lg font-semibold text-content">{topic.name}</h3>
           </div>

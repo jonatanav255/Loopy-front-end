@@ -46,11 +46,11 @@ export function KeyboardShortcutsHelp({ open, onClose }: KeyboardShortcutsHelpPr
               {t.shortcuts.navigation}
             </h4>
             <div className="divide-y divide-line">
-              <Row keys={['Alt', '1']} label={t.shortcuts.goToDashboard} />
-              <Row keys={['Alt', '2']} label={t.shortcuts.goToTopics} />
-              <Row keys={['Alt', '3']} label={t.shortcuts.goToReview} />
-              <Row keys={['Alt', '4']} label={t.shortcuts.goToTeachBack} />
-              <Row keys={['Alt', '5']} label={t.shortcuts.goToAI} />
+              <Row keys={['Shift', 'D']} label={t.shortcuts.goToDashboard} />
+              <Row keys={['Shift', 'T']} label={t.shortcuts.goToTopics} />
+              <Row keys={['Shift', 'R']} label={t.shortcuts.goToReview} />
+              <Row keys={['Shift', 'B']} label={t.shortcuts.goToTeachBack} />
+              <Row keys={['Shift', 'A']} label={t.shortcuts.goToAI} />
             </div>
           </div>
 

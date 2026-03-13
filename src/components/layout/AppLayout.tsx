@@ -5,21 +5,23 @@ import { Sidebar } from './Sidebar';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import { KeyboardShortcutsHelp } from '../ui/KeyboardShortcutsHelp';
 
-const navRoutes = ['/', '/topics', '/review', '/teach-back', '/ai'];
+const shiftNavKeys: Record<string, string> = {
+  D: '/',
+  T: '/topics',
+  R: '/review',
+  B: '/teach-back',
+  A: '/ai',
+};
 
 export function AppLayout() {
   const navigate = useNavigate();
   const [showShortcuts, setShowShortcuts] = useState(false);
 
   const handleKeyboard = useCallback((key: string, e: KeyboardEvent) => {
-    // Alt+1-5 for navigation
-    if (e.altKey) {
-      const num = parseInt(key);
-      if (num >= 1 && num <= 5) {
-        e.preventDefault();
-        navigate(navRoutes[num - 1]);
-        return;
-      }
+    // Shift+letter for navigation
+    if (e.shiftKey && shiftNavKeys[key]) {
+      navigate(shiftNavKeys[key]);
+      return;
     }
 
     // ? to show shortcuts help

@@ -39,8 +39,9 @@ export function TopicsPage() {
     addToast(t.topics.topicDeleted, 'success');
   };
 
-  const handleKeyboard = useCallback((key: string) => {
+  const handleKeyboard = useCallback((key: string, e: KeyboardEvent) => {
     if (key === 'n' || key === 'N') {
+      e.preventDefault();
       setShowForm(true);
     } else if (key === 'Escape') {
       setShowForm(false);

@@ -39,7 +39,7 @@ export function TeachBackPrompt({ concept, onSubmit, onCancel }: TeachBackPrompt
           autoFocus
         />
         <div className="mt-4 flex justify-end gap-3">
-          <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
+          <button type="button" onClick={onCancel} className="rounded-md border border-content-muted px-4 py-2 text-sm font-medium text-content hover:bg-surface-hover">
             {t.teachBack.cancel}
           </button>
           <button type="submit" disabled={!explanation.trim()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50">

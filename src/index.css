@@ -41,7 +41,11 @@
   }
 
   input, textarea, select {
-    @apply bg-surface text-content border-line-strong;
+    @apply bg-surface text-content border-line-strong cursor-pointer;
+  }
+
+  input:disabled, textarea:disabled, select:disabled {
+    @apply cursor-not-allowed;
   }
 
   select {

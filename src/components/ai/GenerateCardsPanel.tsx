@@ -80,12 +80,12 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
           onChange={e => setContent(e.target.value)}
           rows={6}
           required
-          maxLength={5000}
+          maxLength={10000}
           placeholder={t.ai.contentPlaceholder}
           className="mt-1 block w-full resize-none rounded-md border border-line-strong px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
-        <p className={`mt-1 text-right text-xs ${content.length > 4500 ? 'text-yellow-400' : 'text-content-faint'}`}>
-          {content.length} / 5,000
+        <p className={`mt-1 text-right text-xs ${content.length > 9500 ? 'text-yellow-400' : 'text-content-faint'}`}>
+          {content.length} / 10,000
         </p>
       </div>
       <div>
@@ -97,6 +97,8 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
         >
           <option value={5}>5</option>
           <option value={10}>10</option>
+          <option value={15}>15</option>
+          <option value={20}>20</option>
         </select>
       </div>
       <div className="flex justify-end">

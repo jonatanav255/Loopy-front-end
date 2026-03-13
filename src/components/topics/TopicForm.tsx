@@ -9,7 +9,10 @@ interface TopicFormProps {
   onCancel: () => void;
 }
 
-const COLORS = ['#6366F1', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#EF4444', '#8B5CF6', '#14B8A6'];
+const COLORS = [
+  '#6366F1', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#EF4444', '#8B5CF6', '#14B8A6',
+  '#F97316', '#06B6D4', '#84CC16', '#E879F9', '#FB7185', '#A78BFA', '#FBBF24', '#34D399',
+];
 
 export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
   const { t } = useI18n();
@@ -68,11 +71,11 @@ export function TopicForm({ initial, onSubmit, onCancel }: TopicFormProps) {
         </div>
       </div>
       <div className="flex justify-end gap-3">
-        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-sm font-medium text-content-secondary hover:bg-surface-hover">
+        <button type="button" onClick={onCancel} className="rounded-md border border-content-muted px-4 py-2 text-sm font-medium text-content hover:bg-surface-hover">
           {t.common.cancel} <span className="text-xs opacity-60">(Esc)</span>
         </button>
         <button type="submit" disabled={saving || !name.trim()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50">
-          {saving ? t.common.loading : initial ? t.common.update : t.common.create}
+          {saving ? t.common.loading : initial ? t.common.update : t.common.create} <span className="text-xs opacity-60">(Enter)</span>
         </button>
       </div>
     </form>

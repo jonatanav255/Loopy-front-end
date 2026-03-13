@@ -69,14 +69,23 @@ export function ReviewPage() {
     } else if (session.phase === 'confidence') {
       const num = parseInt(key);
       if (num >= 1 && num <= 3) session.submitConfidence(num);
-    } else if (session.phase === 'idle' && key === 'Enter') {
-      if (selectedTopicIds.length > 0) handleStart();
+    } else if (session.phase === 'idle') {
+      if (key === 'Enter') {
+        if (selectedTopicIds.length > 0) handleStart();
+      } else if (key === 'a' || key === 'A') {
+        toggleAll();
+      } else {
+        const num = parseInt(key);
+        if (num >= 1 && num <= topics.length) {
+          toggleTopic(topics[num - 1].id);
+        }
+      }
     } else if (session.phase === 'done') {
       if (key === 'Enter') navigate('/');
       if ((key === 'p' || key === 'P') && session.results.length === 0) session.startPractice();
       if ((key === 'p' || key === 'P') && session.results.length > 0) session.practiceAgain();
     }
-  }, [session, selectedTopicIds, handleStart, navigate]);
+  }, [session, selectedTopicIds, topics, handleStart, toggleAll, toggleTopic, navigate]);
 
   useKeyboard(handleKeyboard);
 
@@ -105,10 +114,11 @@ export function ReviewPage() {
                     className="accent-primary"
                   />
                   <span className="text-sm text-content">{t.review.allTopics}</span>
+                  <span className="text-xs opacity-60">(A)</span>
                 </label>
 
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  {topics.map(topic => (
+                  {topics.map((topic, idx) => (
                     <label key={topic.id} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -121,6 +131,7 @@ export function ReviewPage() {
                         style={{ backgroundColor: topic.colorHex }}
                       />
                       <span className="text-sm text-content truncate">{topic.name}</span>
+                      {idx < 9 && <span className="text-xs opacity-60">({idx + 1})</span>}
                     </label>
                   ))}
                 </div>

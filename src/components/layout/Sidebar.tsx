@@ -17,8 +17,15 @@ export function Sidebar() {
 
   return (
     <aside className="flex h-screen w-56 flex-col border-r border-line bg-surface">
-      <div className="border-b border-line px-4 py-5">
+      <div className="flex items-center justify-between border-b border-line px-4 py-5">
         <h1 className="text-xl font-bold text-indigo-400">{t.appName}</h1>
+        <button
+          onClick={toggleLang}
+          className="rounded border border-line-strong px-2 py-0.5 text-xs font-medium text-content-secondary hover:bg-surface-hover"
+          title={lang === 'en' ? 'Cambiar a Español' : 'Switch to English'}
+        >
+          {lang === 'en' ? t.language.es : t.language.en}
+        </button>
       </div>
 
       <nav className="flex-1 space-y-1 px-2 py-4">
@@ -43,16 +50,7 @@ export function Sidebar() {
       </nav>
 
       <div className="border-t border-line-strong p-4">
-        <div className="flex items-center justify-between mb-2">
-          <p className="truncate text-sm text-content">{user?.email}</p>
-          <button
-            onClick={toggleLang}
-            className="rounded border border-line-strong px-2 py-0.5 text-xs font-medium text-content-secondary hover:bg-surface-hover"
-            title={lang === 'en' ? 'Cambiar a Español' : 'Switch to English'}
-          >
-            {lang === 'en' ? t.language.es : t.language.en}
-          </button>
-        </div>
+        <p className="truncate text-sm text-content mb-2">{user?.email}</p>
         <button
           onClick={logout}
           className="text-sm text-red-400 hover:text-red-300"

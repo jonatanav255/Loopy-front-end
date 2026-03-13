@@ -3,9 +3,10 @@ import type { ReviewResponse } from '../../types/review';
 interface SessionSummaryProps {
   results: ReviewResponse[];
   onDone: () => void;
+  onPracticeAgain?: () => void;
 }
 
-export function SessionSummary({ results, onDone }: SessionSummaryProps) {
+export function SessionSummary({ results, onDone, onPracticeAgain }: SessionSummaryProps) {
   const total = results.length;
   const passed = results.filter(r => r.rating >= 3).length;
   const accuracy = total > 0 ? Math.round((passed / total) * 100) : 0;
@@ -27,9 +28,16 @@ export function SessionSummary({ results, onDone }: SessionSummaryProps) {
           <p className="text-xs text-content-muted">Accuracy</p>
         </div>
       </div>
-      <button onClick={onDone} className="mt-8 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
-        Back to Dashboard
-      </button>
+      <div className="mt-8 flex gap-3 justify-center">
+        {onPracticeAgain && (
+          <button onClick={onPracticeAgain} className="rounded-lg border border-indigo-600 px-6 py-3 text-sm font-medium text-indigo-400 hover:bg-indigo-600/10">
+            Practice Again
+          </button>
+        )}
+        <button onClick={onDone} className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
+          Back to Dashboard
+        </button>
+      </div>
     </div>
   );
 }

@@ -61,6 +61,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /** Authenticates, stores tokens, then fetches user profile. */
   const login = async (email: string, password: string, rememberMe = true) => {
     const { data } = await authApi.login({ email, password });
+    // Clear both storages first to avoid stale tokens confusing getStorage()
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
     const storage = rememberMe ? localStorage : sessionStorage;
     storage.setItem('accessToken', data.accessToken);
     storage.setItem('refreshToken', data.refreshToken);

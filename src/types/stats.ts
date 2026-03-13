@@ -18,7 +18,7 @@ export interface TopicAccuracy {
 }
 
 export interface HeatmapEntry {
-  date: string;
+  date: string | number[];
   count: number;
 }
 

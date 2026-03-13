@@ -5,6 +5,7 @@ export interface TopicResponse {
   colorHex: string;
   createdAt: string;
   updatedAt: string;
+  cardCount: number;
 }
 
 export interface CreateTopicRequest {

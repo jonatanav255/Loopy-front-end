@@ -39,11 +39,11 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="border-t border-line p-4">
-        <p className="truncate text-sm text-content-tertiary">{user?.email}</p>
+      <div className="border-t border-line-strong p-4">
+        <p className="truncate text-sm text-content">{user?.email}</p>
         <button
           onClick={logout}
-          className="mt-2 text-sm text-content-muted hover:text-content-secondary"
+          className="mt-2 text-sm text-red-400 hover:text-red-300"
         >
           Sign out
         </button>

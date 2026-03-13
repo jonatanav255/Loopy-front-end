@@ -9,4 +9,7 @@ export const reviewsApi = {
 
   submit: (cardId: string, data: SubmitReviewRequest) =>
     api.post<ReviewResponse>(`/reviews/${cardId}`, data),
+
+  getPracticeCards: (params?: { topicIds?: string[] }) =>
+    api.get<CardResponse[]>('/reviews/practice', { params }),
 };

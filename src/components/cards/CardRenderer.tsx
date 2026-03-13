@@ -1,3 +1,6 @@
+// Dependencies: SyntaxHighlighter, vscDarkPlus — see DEPENDENCY_GUIDE.md
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { CardType } from '../../types/card';
 
 const typeConfig: Record<CardType, { label: string; description: string; color: string }> = {
@@ -9,24 +12,35 @@ const typeConfig: Record<CardType, { label: string; description: string; color: 
   COMPARE: { label: 'Compare', description: 'Compare and contrast two or more concepts', color: 'bg-orange-500/20 text-orange-300' },
 };
 
-/** Renders text with inline `code` and ```code blocks``` styled properly. */
+/** Extracts the language tag from a code block opening (e.g. "java" from "```java"). */
+function extractLang(raw: string): string {
+  const match = raw.slice(3).match(/^(\w+)/);
+  return match ? match[1] : 'java';
+}
+
+/** Renders text with inline `code`, ```code blocks```, and **bold** styled properly. */
 function renderContent(text: string) {
-  // Split on triple-backtick code blocks first
   const blockParts = text.split(/(```[\s\S]*?```)/g);
 
   return blockParts.map((part, i) => {
-    // Triple-backtick code block
     if (part.startsWith('```') && part.endsWith('```')) {
-      const inner = part.slice(3, -3).replace(/^\w*\n?/, ''); // strip optional language tag
+      const lang = extractLang(part);
+      const inner = part.slice(3, -3).replace(/^\w*\n?/, '');
       return (
-        <pre key={i} className="my-2 whitespace-pre-wrap rounded-md bg-gray-900 p-4 font-mono text-sm text-green-400">
-          {inner}
-        </pre>
+        <SyntaxHighlighter
+          key={i}
+          language={lang}
+          style={vscDarkPlus}
+          customStyle={{ margin: '0.5rem 0', borderRadius: '0.5rem', fontSize: '22px', lineHeight: '1.5' }}
+          codeTagProps={{ style: { fontSize: '22px' } }}
+          showLineNumbers
+        >
+          {inner.trim()}
+        </SyntaxHighlighter>
       );
     }
 
-    // Process inline backticks within regular text
-    const inlineParts = part.split(/(`[^`]+`)/g);
+    const inlineParts = part.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
     return (
       <span key={i}>
         {inlineParts.map((seg, j) => {
@@ -35,6 +49,13 @@ function renderContent(text: string) {
               <code key={j} className="rounded bg-surface-active px-1.5 py-0.5 font-mono text-sm text-indigo-300">
                 {seg.slice(1, -1)}
               </code>
+            );
+          }
+          if (seg.startsWith('**') && seg.endsWith('**')) {
+            return (
+              <strong key={j} className="font-bold text-amber-300">
+                {seg.slice(2, -2)}
+              </strong>
             );
           }
           return <span key={j}>{seg}</span>;
@@ -53,15 +74,13 @@ interface CardRendererProps {
 }
 
 export function CardRenderer({ front, back, cardType, hint, showBack = false }: CardRendererProps) {
-  const isCode = cardType === 'CODE_OUTPUT' || cardType === 'SPOT_THE_BUG';
-
   return (
     <div>
       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${typeConfig[cardType].color}`}>
         {typeConfig[cardType].label}
       </span>
-      <div className={`mt-2 ${isCode ? 'whitespace-pre-wrap rounded-md bg-gray-900 p-4 font-mono text-sm text-green-400' : 'text-content'}`}>
-        {isCode ? front : renderContent(front)}
+      <div className="mt-2 text-content">
+        {renderContent(front)}
       </div>
       {hint && !showBack && (
         <p className="mt-2 text-sm italic text-content-faint">Hint: {hint}</p>
@@ -69,8 +88,8 @@ export function CardRenderer({ front, back, cardType, hint, showBack = false }: 
       {showBack && back && (
         <div className="mt-4 border-t border-line pt-4">
           <span className="text-xs font-medium uppercase tracking-wider text-content-faint">Answer</span>
-          <div className={`mt-2 ${isCode ? 'whitespace-pre-wrap rounded-md bg-gray-900 p-4 font-mono text-sm text-green-400' : 'text-content'}`}>
-            {isCode ? back : renderContent(back)}
+          <div className="mt-2 text-content">
+            {renderContent(back)}
           </div>
         </div>
       )}

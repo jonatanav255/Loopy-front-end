@@ -25,8 +25,9 @@ export function ReviewPage() {
     setLoadingTopics(true);
     topicsApi.list().then(res => {
       if (cancelled) return;
-      setTopics(res.data);
-      setSelectedTopicIds(res.data.map(t => t.id));
+      const withCards = res.data.filter(t => t.cardCount > 0);
+      setTopics(withCards);
+      setSelectedTopicIds(withCards.map(t => t.id));
     }).finally(() => {
       if (!cancelled) setLoadingTopics(false);
     });
@@ -140,15 +141,20 @@ export function ReviewPage() {
         <div className="flex flex-col items-center justify-center py-20">
           <h2 className="text-2xl font-semibold text-content">All caught up!</h2>
           <p className="mt-2 text-content-tertiary">No cards due for review today.</p>
-          <button onClick={() => navigate('/')} className="mt-6 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
-            Back to Dashboard
-          </button>
+          <div className="mt-6 flex gap-3">
+            <button onClick={() => session.startPractice()} className="rounded-lg border border-indigo-600 px-6 py-3 text-sm font-medium text-indigo-400 hover:bg-indigo-600/10">
+              Practice All Cards
+            </button>
+            <button onClick={() => navigate('/')} className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
+              Back to Dashboard
+            </button>
+          </div>
         </div>
       );
     }
     return (
       <div className="py-20">
-        <SessionSummary results={session.results} onDone={() => navigate('/')} />
+        <SessionSummary results={session.results} onDone={() => navigate('/')} onPracticeAgain={session.practiceAgain} />
       </div>
     );
   }
@@ -161,6 +167,7 @@ export function ReviewPage() {
           <button onClick={session.reset} className="text-sm text-content-muted hover:text-content-secondary">
             ✕ End Session
           </button>
+          {session.practiceMode && <span className="text-xs text-yellow-400">Practice Mode</span>}
           <ProgressBar current={session.reviewed} total={session.total} />
         </div>
       </div>

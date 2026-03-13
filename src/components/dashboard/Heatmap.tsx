@@ -1,5 +1,5 @@
-// Dependencies: useMemo — see DEPENDENCY_GUIDE.md
-import { useMemo } from 'react';
+// Dependencies: useMemo, useState — see DEPENDENCY_GUIDE.md
+import { useMemo, useState } from 'react';
 import type { HeatmapEntry } from '../../types/stats';
 
 interface HeatmapProps {
@@ -13,9 +13,20 @@ function formatLocalDate(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
+/** Normalizes a date value that may be a string "2026-03-13" or array [2026,3,13] into "YYYY-MM-DD". */
+function normalizeDate(date: string | number[]): string {
+  if (Array.isArray(date)) {
+    const [y, m, d] = date;
+    return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  }
+  return date;
+}
+
 export function Heatmap({ data }: HeatmapProps) {
+  const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null);
+
   const { grid, maxCount, months, year } = useMemo(() => {
-    const countMap = new Map(data.map(d => [d.date, d.count]));
+    const countMap = new Map(data.map(d => [normalizeDate(d.date as string | number[]), d.count]));
     const today = new Date();
     const yr = today.getFullYear();
     const cells: { date: string; count: number; dayOfWeek: number }[] = [];
@@ -80,6 +91,15 @@ export function Heatmap({ data }: HeatmapProps) {
   const gap = 4;
   const colWidth = cellSize + gap;
 
+  const handleMouseEnter = (e: React.MouseEvent, cell: { date: string; count: number }) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setTooltip({
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+      text: `${cell.date}: ${cell.count} reviews`,
+    });
+  };
+
   return (
     <div className="rounded-lg border border-line bg-surface p-5">
       <h3 className="mb-4 font-medium text-content">Activity {year}</h3>
@@ -103,13 +123,23 @@ export function Heatmap({ data }: HeatmapProps) {
                 <div
                   key={cell.date}
                   className={`h-4 w-4 rounded-sm ${getColor(cell.count)}`}
-                  title={`${cell.date}: ${cell.count} reviews`}
+                  onMouseEnter={e => handleMouseEnter(e, cell)}
+                  onMouseLeave={() => setTooltip(null)}
                 />
               ))}
             </div>
           ))}
         </div>
       </div>
+
+      {tooltip && (
+        <div
+          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded bg-surface-alt px-2 py-1 text-xs text-content shadow-lg border border-line"
+          style={{ left: tooltip.x, top: tooltip.y - 4 }}
+        >
+          {tooltip.text}
+        </div>
+      )}
     </div>
   );
 }

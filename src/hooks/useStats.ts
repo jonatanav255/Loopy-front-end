@@ -12,22 +12,18 @@ export function useStats() {
 
   useEffect(() => {
     async function load() {
-      try {
-        const [ov, acc, hm, fr] = await Promise.all([
-          statsApi.overview(),
-          statsApi.accuracy(),
-          statsApi.heatmap(),
-          statsApi.fragile(),
-        ]);
-        setOverview(ov.data);
-        setAccuracy(acc.data);
-        setHeatmap(hm.data);
-        setFragile(fr.data);
-      } catch {
-        // Stats may be empty for new users — not critical
-      } finally {
-        setLoading(false);
-      }
+      // Each call is independent — one failure shouldn't block the others
+      const results = await Promise.allSettled([
+        statsApi.overview(),
+        statsApi.accuracy(),
+        statsApi.heatmap(),
+        statsApi.fragile(),
+      ]);
+      if (results[0].status === 'fulfilled') setOverview(results[0].value.data);
+      if (results[1].status === 'fulfilled') setAccuracy(results[1].value.data);
+      if (results[2].status === 'fulfilled') setHeatmap(results[2].value.data);
+      if (results[3].status === 'fulfilled') setFragile(results[3].value.data);
+      setLoading(false);
     }
     load();
   }, []);

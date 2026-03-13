@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --surface: #1e1e2e;
-    --surface-alt: #11111b;
-    --surface-hover: #313244;
-    --surface-active: #313244;
+    --surface: #2a2a3c;
+    --surface-alt: #1a1a2e;
+    --surface-hover: #3a3a50;
+    --surface-active: #3a3a50;
 
-    --content: #cdd6f4;
-    --content-secondary: #bac2de;
-    --content-tertiary: #a6adc8;
-    --content-muted: #9399b2;
-    --content-faint: #7f849c;
+    --content: #e2e8f0;
+    --content-secondary: #cbd5e1;
+    --content-tertiary: #b0b8c9;
+    --content-muted: #94a3b8;
+    --content-faint: #8892a8;
 
-    --line: #313244;
-    --line-strong: #45475a;
-    --line-subtle: #1e1e2e;
+    --line: #3a3a50;
+    --line-strong: #4a4a60;
+    --line-subtle: #2a2a3c;
   }
 
   html {
     color-scheme: dark;
-    font-size: 20px;
+    font-size: 22px;
   }
 
   body {

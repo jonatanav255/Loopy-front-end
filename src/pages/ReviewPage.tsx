@@ -199,6 +199,7 @@ export function ReviewPage() {
         {session.currentCard && (
           <>
             <ReviewCard
+              key={session.currentCard.id}
               card={session.currentCard}
               showBack={session.phase !== 'front'}
               onReveal={session.reveal}

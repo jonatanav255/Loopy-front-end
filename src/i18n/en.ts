@@ -200,6 +200,7 @@ export const en = {
     navigation: 'Navigation',
     actions: 'Actions',
     review: 'Review',
+    general: 'General',
     goToDashboard: 'Go to Dashboard',
     goToTopics: 'Go to Topics',
     goToReview: 'Go to Review',
@@ -211,6 +212,11 @@ export const en = {
     revealAnswer: 'Reveal answer',
     rateCard: 'Rate card',
     confidenceLevel: 'Confidence level',
+    confirmAction: 'Confirm action',
+    practiceAgain: 'Practice again',
+    backToDashboard: 'Back to dashboard',
+    selectByNumber: 'Select by number',
+    cycleTheme: 'Cycle theme',
   },
 
   // Stats

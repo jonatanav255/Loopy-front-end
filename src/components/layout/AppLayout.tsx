@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useState, useCallback } from 'react';
 import { Sidebar } from './Sidebar';
 import { useKeyboard } from '../../hooks/useKeyboard';
+import { useTheme, themeNames } from '../../contexts/ThemeContext';
 import { KeyboardShortcutsHelp } from '../ui/KeyboardShortcutsHelp';
 
 // Shift+1-5 produces !, @, #, $, % on US keyboards
@@ -17,6 +18,7 @@ const shiftNavKeys: Record<string, string> = {
 export function AppLayout() {
   const navigate = useNavigate();
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const handleKeyboard = useCallback((key: string, e: KeyboardEvent) => {
     // Shift+letter for navigation
@@ -34,8 +36,16 @@ export function AppLayout() {
     // Escape to close shortcuts help
     if (key === 'Escape' && showShortcuts) {
       setShowShortcuts(false);
+      return;
     }
-  }, [navigate, showShortcuts]);
+
+    // T to cycle through themes
+    if (key === 't' || key === 'T') {
+      const currentIndex = themeNames.indexOf(theme);
+      const nextIndex = (currentIndex + 1) % themeNames.length;
+      setTheme(themeNames[nextIndex]);
+    }
+  }, [navigate, showShortcuts, theme, setTheme]);
 
   useKeyboard(handleKeyboard);
 

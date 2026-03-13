@@ -9,7 +9,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
   return (
     <div className="flex items-center gap-3">
       <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-active">
-        <div className="h-full rounded-full bg-indigo-600 transition-all duration-300" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-accent transition-all duration-300" style={{ width: `${pct}%` }} />
       </div>
       <span className="text-sm font-medium text-content-tertiary">{current}/{total}</span>
     </div>

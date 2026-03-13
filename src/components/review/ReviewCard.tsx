@@ -18,7 +18,7 @@ export function ReviewCard({ card, showBack, onReveal }: ReviewCardProps) {
         {!showBack && (
           <button
             onClick={onReveal}
-            className="mt-6 w-full rounded-lg bg-indigo-600 py-3 text-sm font-medium text-white hover:bg-indigo-700"
+            className="mt-6 w-full rounded-lg bg-accent py-3 text-sm font-medium text-white hover:bg-accent-hover"
           >
             {t.review.showAnswer}
           </button>

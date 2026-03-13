@@ -67,7 +67,7 @@ export function TopicsPage() {
         <h2 className="text-2xl font-semibold text-content">{t.topics.title}</h2>
         <button
           onClick={() => setShowForm(true)}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           {t.topics.newTopic} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>

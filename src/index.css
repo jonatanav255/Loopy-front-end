@@ -18,6 +18,17 @@
     --line: #3a3a50;
     --line-strong: #4a4a60;
     --line-subtle: #2a2a3c;
+
+    --accent: #6366f1;
+    --accent-hover: #5457e5;
+    --accent-subtle: rgba(99,102,241,0.2);
+    --accent-text: #a5b4fc;
+    --accent-muted: #818cf8;
+
+    --heat-low: #166534;
+    --heat-med: #16a34a;
+    --heat-high: #22c55e;
+    --heat-max: #4ade80;
   }
 
   html {

@@ -190,6 +190,7 @@ export const es: Translations = {
     navigation: 'Navegación',
     actions: 'Acciones',
     review: 'Repaso',
+    general: 'General',
     goToDashboard: 'Ir al Inicio',
     goToTopics: 'Ir a Temas',
     goToReview: 'Ir a Repasar',
@@ -201,6 +202,11 @@ export const es: Translations = {
     revealAnswer: 'Mostrar respuesta',
     rateCard: 'Calificar tarjeta',
     confidenceLevel: 'Nivel de confianza',
+    confirmAction: 'Confirmar acción',
+    practiceAgain: 'Practicar de nuevo',
+    backToDashboard: 'Volver al inicio',
+    selectByNumber: 'Seleccionar por número',
+    cycleTheme: 'Cambiar tema',
   },
 
   stats: {

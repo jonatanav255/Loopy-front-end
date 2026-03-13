@@ -60,6 +60,8 @@ export function KeyboardShortcutsHelp({ open, onClose }: KeyboardShortcutsHelpPr
             </h4>
             <div className="divide-y divide-line">
               <Row keys={['N']} label={t.shortcuts.newItem} />
+              <Row keys={['1', '–', '9']} label={t.shortcuts.selectByNumber} />
+              <Row keys={['Enter']} label={t.shortcuts.confirmAction} />
               <Row keys={['Esc']} label={t.shortcuts.closeCancel} />
               <Row keys={['?']} label={t.shortcuts.showShortcuts} />
             </div>
@@ -73,6 +75,17 @@ export function KeyboardShortcutsHelp({ open, onClose }: KeyboardShortcutsHelpPr
               <Row keys={['Space']} label={t.shortcuts.revealAnswer} />
               <Row keys={['1', '–', '6']} label={t.shortcuts.rateCard} />
               <Row keys={['1', '–', '3']} label={t.shortcuts.confidenceLevel} />
+              <Row keys={['P']} label={t.shortcuts.practiceAgain} />
+              <Row keys={['Enter']} label={t.shortcuts.backToDashboard} />
+            </div>
+          </div>
+
+          <div>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-content-faint">
+              {t.shortcuts.general}
+            </h4>
+            <div className="divide-y divide-line">
+              <Row keys={['T']} label={t.shortcuts.cycleTheme} />
             </div>
           </div>
         </div>

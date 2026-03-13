@@ -25,6 +25,19 @@ export default {
           strong: 'var(--line-strong)',
           subtle: 'var(--line-subtle)',
         },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          hover: 'var(--accent-hover)',
+          subtle: 'var(--accent-subtle)',
+          text: 'var(--accent-text)',
+          muted: 'var(--accent-muted)',
+        },
+        heat: {
+          low: 'var(--heat-low)',
+          med: 'var(--heat-med)',
+          high: 'var(--heat-high)',
+          max: 'var(--heat-max)',
+        },
       },
       boxShadow: {
         sm: '0 1px 2px 0 rgb(0 0 0 / 0.2)',

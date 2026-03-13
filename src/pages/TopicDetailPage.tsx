@@ -78,7 +78,7 @@ export function TopicDetailPage() {
   return (
     <div>
       <div className="mb-1">
-        <Link to="/topics" className="text-sm text-indigo-400 hover:text-indigo-300">
+        <Link to="/topics" className="text-sm text-accent-text hover:text-accent-muted">
           ← {t.common.backTo} {t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
         </Link>
       </div>
@@ -94,7 +94,7 @@ export function TopicDetailPage() {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           {t.concepts.newConcept} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>

@@ -1,8 +1,9 @@
-// Dependencies: useState — see DEPENDENCY_GUIDE.md
-import { useState } from 'react';
+// Dependencies: useState, useCallback — see DEPENDENCY_GUIDE.md
+import { useState, useCallback } from 'react';
 import { useTeachBack } from '../hooks/useTeachBack';
 import { useToast } from '../contexts/ToastContext';
 import { useI18n } from '../contexts/I18nContext';
+import { useKeyboard } from '../hooks/useKeyboard';
 import { PendingList } from '../components/teachback/PendingList';
 import { TeachBackPrompt } from '../components/teachback/TeachBackPrompt';
 import { SelfEvalScreen } from '../components/teachback/SelfEvalScreen';
@@ -52,6 +53,20 @@ export function TeachBackPage() {
     setResult(null);
     refetch();
   };
+
+  const handleKeyboard = useCallback((key: string) => {
+    if (step === 'list') {
+      const num = parseInt(key);
+      if (num >= 1 && num <= 9 && num <= pending.length) {
+        handleSelect(pending[num - 1]);
+      }
+    }
+    if (step === 'result' && (key === 'Enter' || key === 'Escape')) {
+      handleDone();
+    }
+  }, [step, pending]);
+
+  useKeyboard(handleKeyboard);
 
   if (loading) return <LoadingSpinner className="py-20" />;
 

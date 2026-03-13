@@ -9,7 +9,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
   const { t } = useI18n();
 
   const cards = [
-    { label: t.stats.dueToday, value: stats.cardsDueToday, color: 'text-indigo-400' },
+    { label: t.stats.dueToday, value: stats.cardsDueToday, color: 'text-accent-text' },
     { label: t.stats.reviewsToday, value: stats.cardsReviewedToday, color: 'text-green-400' },
     { label: t.stats.totalCards, value: stats.totalCards, color: 'text-blue-400' },
     { label: t.stats.avgAccuracy, value: `${Math.round(stats.accuracyToday)}%`, color: 'text-emerald-400' },

@@ -71,8 +71,12 @@ export function ReviewPage() {
       if (num >= 1 && num <= 3) session.submitConfidence(num);
     } else if (session.phase === 'idle' && key === 'Enter') {
       if (selectedTopicIds.length > 0) handleStart();
+    } else if (session.phase === 'done') {
+      if (key === 'Enter') navigate('/');
+      if ((key === 'p' || key === 'P') && session.results.length === 0) session.startPractice();
+      if ((key === 'p' || key === 'P') && session.results.length > 0) session.practiceAgain();
     }
-  }, [session, selectedTopicIds, handleStart]);
+  }, [session, selectedTopicIds, handleStart, navigate]);
 
   useKeyboard(handleKeyboard);
 
@@ -98,7 +102,7 @@ export function ReviewPage() {
                     type="checkbox"
                     checked={allSelected}
                     onChange={toggleAll}
-                    className="accent-indigo-600"
+                    className="accent-accent"
                   />
                   <span className="text-sm text-content">{t.review.allTopics}</span>
                 </label>
@@ -110,7 +114,7 @@ export function ReviewPage() {
                         type="checkbox"
                         checked={selectedTopicIds.includes(topic.id)}
                         onChange={() => toggleTopic(topic.id)}
-                        className="accent-indigo-600"
+                        className="accent-accent"
                       />
                       <span
                         className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0"
@@ -127,7 +131,7 @@ export function ReviewPage() {
           <button
             onClick={handleStart}
             disabled={selectedTopicIds.length === 0}
-            className="mt-6 w-full rounded-lg bg-indigo-600 px-8 py-3 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full rounded-lg bg-accent px-8 py-3 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t.review.startReview} <span className="text-xs opacity-60">(Enter)</span>
           </button>
@@ -146,11 +150,11 @@ export function ReviewPage() {
           <h2 className="text-2xl font-semibold text-content">{t.review.allCaughtUp}</h2>
           <p className="mt-2 text-content-tertiary">{t.review.noCardsDue}</p>
           <div className="mt-6 flex gap-3">
-            <button onClick={() => session.startPractice()} className="rounded-lg border border-indigo-600 px-6 py-3 text-sm font-medium text-indigo-400 hover:bg-indigo-600/10">
-              {t.review.practiceAll}
+            <button onClick={() => session.startPractice()} className="rounded-lg border border-accent px-6 py-3 text-sm font-medium text-accent-text hover:bg-accent-subtle">
+              {t.review.practiceAll} <span className="text-xs opacity-60">(P)</span>
             </button>
-            <button onClick={() => navigate('/')} className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
-              {t.review.backToDashboard}
+            <button onClick={() => navigate('/')} className="rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white hover:bg-accent-hover">
+              {t.review.backToDashboard} <span className="text-xs opacity-60">(Enter)</span>
             </button>
           </div>
         </div>

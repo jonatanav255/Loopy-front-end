@@ -21,6 +21,9 @@ export function AIPage() {
     if (key === 'Enter' && generatedCards.length === 0 && formRef.current) {
       formRef.current.requestSubmit();
     }
+    if (key === 'Escape' && generatedCards.length > 0) {
+      setGeneratedCards([]);
+    }
   });
 
   const handleGenerate = async (conceptId: string, content: string, numCards: number) => {

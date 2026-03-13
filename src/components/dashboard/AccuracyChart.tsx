@@ -19,7 +19,7 @@ export function AccuracyChart({ data }: AccuracyChartProps) {
             </div>
             <div className="h-3 overflow-hidden rounded-full bg-surface-active">
               <div
-                className="h-full rounded-full bg-indigo-500 transition-all duration-500"
+                className="h-full rounded-full bg-accent transition-all duration-500"
                 style={{ width: `${topic.accuracy * 100}%` }}
               />
             </div>

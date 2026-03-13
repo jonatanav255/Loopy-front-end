@@ -52,6 +52,22 @@ describe('topicsApi', () => {
     expect(capturedBody).toEqual(data);
   });
 
+  it('reorder calls PUT /api/topics/reorder with orderedIds', async () => {
+    let capturedBody: { orderedIds: string[] } | null = null;
+    server.use(
+      http.put('/api/topics/reorder', async ({ request }) => {
+        capturedBody = await request.json() as { orderedIds: string[] };
+        const reversed = [...mockTopics].reverse().map((t, i) => ({ ...t, sortOrder: i + 1 }));
+        return HttpResponse.json(reversed);
+      }),
+    );
+
+    const res = await topicsApi.reorder(['topic-2', 'topic-1']);
+    expect(capturedBody).toEqual({ orderedIds: ['topic-2', 'topic-1'] });
+    expect(res.data[0].id).toBe('topic-2');
+    expect(res.data[1].id).toBe('topic-1');
+  });
+
   it('delete calls DELETE /api/topics/:id', async () => {
     let capturedId = '';
     server.use(

@@ -90,6 +90,26 @@ describe('useConcepts', () => {
     expect(result.current.concepts).toHaveLength(initialLength - 1);
   });
 
+  it('reorderConcepts updates order optimistically', async () => {
+    const reversedConcepts = [...mockConcepts].reverse().map((c, i) => ({ ...c, sortOrder: i + 1 }));
+    server.use(
+      http.put('/api/concepts/reorder', () => {
+        return HttpResponse.json(reversedConcepts);
+      }),
+    );
+
+    const { result } = renderHook(() => useConcepts('topic-1'));
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    const reversedIds = mockConcepts.map(c => c.id).reverse();
+    await act(async () => {
+      await result.current.reorderConcepts(reversedIds);
+    });
+
+    expect(result.current.concepts[0].id).toBe('concept-2');
+    expect(result.current.concepts[1].id).toBe('concept-1');
+  });
+
   it('sets error on fetch failure', async () => {
     server.use(
       http.get('/api/concepts', () => {

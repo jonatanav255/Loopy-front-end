@@ -52,6 +52,7 @@ export const handlers = [
       name: body.name,
       description: body.description ?? '',
       colorHex: body.colorHex ?? '#6366F1',
+      sortOrder: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       cardCount: 0,
@@ -64,6 +65,18 @@ export const handlers = [
     const topic = mockTopics.find(t => t.id === params.id);
     if (!topic) return new HttpResponse(null, { status: 404 });
     return HttpResponse.json({ ...topic, ...body, updatedAt: new Date().toISOString() });
+  }),
+
+  http.put('/api/topics/reorder', async ({ request }) => {
+    const body = await request.json() as { orderedIds: string[] };
+    const map = new Map(mockTopics.map(t => [t.id, t]));
+    const reordered = body.orderedIds
+      .map((id, i) => {
+        const topic = map.get(id);
+        return topic ? { ...topic, sortOrder: i + 1 } : null;
+      })
+      .filter(Boolean);
+    return HttpResponse.json(reordered);
   }),
 
   http.delete('/api/topics/:id', () => {
@@ -93,6 +106,7 @@ export const handlers = [
       notes: body.notes ?? null,
       referenceExplanation: null,
       status: 'LEARNING' as const,
+      sortOrder: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -104,6 +118,18 @@ export const handlers = [
     const concept = mockConcepts.find(c => c.id === params.id);
     if (!concept) return new HttpResponse(null, { status: 404 });
     return HttpResponse.json({ ...concept, ...body, updatedAt: new Date().toISOString() });
+  }),
+
+  http.put('/api/concepts/reorder', async ({ request }) => {
+    const body = await request.json() as { orderedIds: string[] };
+    const map = new Map(mockConcepts.map(c => [c.id, c]));
+    const reordered = body.orderedIds
+      .map((id, i) => {
+        const concept = map.get(id);
+        return concept ? { ...concept, sortOrder: i + 1 } : null;
+      })
+      .filter(Boolean);
+    return HttpResponse.json(reordered);
   }),
 
   http.delete('/api/concepts/:id', () => {

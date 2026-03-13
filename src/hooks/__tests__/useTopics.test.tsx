@@ -81,6 +81,26 @@ describe('useTopics', () => {
     expect(result.current.topics.find(t => t.id === 'topic-1')).toBeUndefined();
   });
 
+  it('reorderTopics updates order optimistically', async () => {
+    const reversedTopics = [...mockTopics].reverse().map((t, i) => ({ ...t, sortOrder: i + 1 }));
+    server.use(
+      http.put('/api/topics/reorder', () => {
+        return HttpResponse.json(reversedTopics);
+      }),
+    );
+
+    const { result } = renderHook(() => useTopics());
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    const reversedIds = mockTopics.map(t => t.id).reverse();
+    await act(async () => {
+      await result.current.reorderTopics(reversedIds);
+    });
+
+    expect(result.current.topics[0].id).toBe('topic-2');
+    expect(result.current.topics[1].id).toBe('topic-1');
+  });
+
   it('sets loading during fetch and error on failure', async () => {
     server.use(
       http.get('/api/topics', () => {

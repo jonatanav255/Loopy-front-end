@@ -5,12 +5,13 @@ import { Sidebar } from './Sidebar';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import { KeyboardShortcutsHelp } from '../ui/KeyboardShortcutsHelp';
 
+// Shift+1-5 produces !, @, #, $, % on US keyboards
 const shiftNavKeys: Record<string, string> = {
-  D: '/',
-  T: '/topics',
-  R: '/review',
-  B: '/teach-back',
-  A: '/ai',
+  '!': '/',
+  '@': '/topics',
+  '#': '/review',
+  '$': '/teach-back',
+  '%': '/ai',
 };
 
 export function AppLayout() {

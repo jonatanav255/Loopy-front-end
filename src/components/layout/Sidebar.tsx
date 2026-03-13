@@ -8,11 +8,11 @@ export function Sidebar() {
   const { t, lang, toggleLang } = useI18n();
 
   const navItems = [
-    { to: '/', label: t.nav.dashboard, icon: '□', shortcut: '⇧D' },
-    { to: '/topics', label: t.nav.topics, icon: '▦', shortcut: '⇧T' },
-    { to: '/review', label: t.nav.review, icon: '↻', shortcut: '⇧R' },
-    { to: '/teach-back', label: t.nav.teachBack, icon: '✎', shortcut: '⇧B' },
-    { to: '/ai', label: t.nav.ai, icon: '◇', shortcut: '⇧A' },
+    { to: '/', label: t.nav.dashboard, icon: '□', shortcut: '⇧1' },
+    { to: '/topics', label: t.nav.topics, icon: '▦', shortcut: '⇧2' },
+    { to: '/review', label: t.nav.review, icon: '↻', shortcut: '⇧3' },
+    { to: '/teach-back', label: t.nav.teachBack, icon: '✎', shortcut: '⇧4' },
+    { to: '/ai', label: t.nav.ai, icon: '◇', shortcut: '⇧5' },
   ];
 
   return (

@@ -7,7 +7,7 @@ import type { UserResponse } from '../types/auth';
 interface AuthContextType {
   user: UserResponse | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -24,9 +24,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserResponse | null>(null);
   const [loading, setLoading] = useState(true); // True until initial auth check completes
 
+  /** Returns the active storage (localStorage if remembered, sessionStorage otherwise). */
+  const getStorage = useCallback(() => {
+    if (localStorage.getItem('accessToken')) return localStorage;
+    if (sessionStorage.getItem('accessToken')) return sessionStorage;
+    return localStorage;
+  }, []);
+
   /** Checks if we have a stored token and loads the user profile from /api/auth/me. */
   const fetchUser = useCallback(async () => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
     if (!token) {
       setLoading(false);
       return;
@@ -36,7 +43,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(data);
     } catch {
       // Token is invalid/expired and refresh failed — clear everything
-      localStorage.clear();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
       setUser(null);
     } finally {
       setLoading(false);
@@ -49,10 +59,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchUser]);
 
   /** Authenticates, stores tokens, then fetches user profile. */
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, rememberMe = true) => {
     const { data } = await authApi.login({ email, password });
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem('accessToken', data.accessToken);
+    storage.setItem('refreshToken', data.refreshToken);
     await fetchUser();
   };
 
@@ -66,7 +77,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   /** Revokes refresh token on server, then clears local state. */
   const logout = async () => {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const storage = getStorage();
+    const refreshToken = storage.getItem('refreshToken');
     if (refreshToken) {
       try {
         await authApi.logout(refreshToken);
@@ -74,7 +86,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Server might be down — still clear local state
       }
     }
-    localStorage.clear();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
     setUser(null);
   };
 

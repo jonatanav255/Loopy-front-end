@@ -25,10 +25,10 @@ export function useReviewSession() {
     startTime: 0,
   });
 
-  const loadCards = useCallback(async () => {
+  const loadCards = useCallback(async (params?: { limit?: number; topicIds?: string[] }) => {
     setState(prev => ({ ...prev, phase: 'loading' }));
     try {
-      const res = await reviewsApi.getDueToday();
+      const res = await reviewsApi.getDueToday(params);
       const cards = res.data;
       if (cards.length === 0) {
         setState(prev => ({ ...prev, phase: 'done', cards: [], results: [] }));

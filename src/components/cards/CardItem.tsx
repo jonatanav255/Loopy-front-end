@@ -32,7 +32,7 @@ export function CardItem({ card, onEdit, onDelete, onSwitchAlgorithm }: CardItem
         </div>
       </div>
       <div className="mt-3 flex items-center gap-3 border-t border-line-subtle pt-3">
-        <Badge label={card.schedulingAlgorithm} color={card.schedulingAlgorithm === 'FSRS' ? 'indigo' : 'blue'} />
+        <Badge label={card.schedulingAlgorithm} color={card.schedulingAlgorithm === 'FSRS' ? 'teal' : 'cyan'} />
         <span className="text-xs text-content-faint">
           Next: {new Date(card.nextReviewDate).toLocaleDateString()} · Interval: {card.intervalDays}d
         </span>

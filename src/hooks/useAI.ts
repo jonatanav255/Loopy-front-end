@@ -14,8 +14,8 @@ export function useAI() {
       .finally(() => setLoading(false));
   }, []);
 
-  const generateCards = async (conceptId: string, content: string) => {
-    const res = await aiApi.generateCards({ conceptId, content });
+  const generateCards = async (conceptId: string, content: string, numCards: number) => {
+    const res = await aiApi.generateCards({ conceptId, content, numCards });
     return res.data as GeneratedCard[];
   };
 

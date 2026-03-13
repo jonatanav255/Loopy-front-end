@@ -7,7 +7,7 @@ import type { ConceptResponse } from '../../types/concept';
 import type { GeneratedCard } from '../../types/ai';
 
 interface GenerateCardsPanelProps {
-  onGenerate: (conceptId: string, content: string) => Promise<GeneratedCard[]>;
+  onGenerate: (conceptId: string, content: string, numCards: number) => Promise<GeneratedCard[]>;
   onCardsGenerated: (conceptId: string, cards: GeneratedCard[]) => void;
 }
 
@@ -17,6 +17,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
   const [topicId, setTopicId] = useState('');
   const [conceptId, setConceptId] = useState('');
   const [content, setContent] = useState('');
+  const [numCards, setNumCards] = useState(5);
   const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
     if (!conceptId || !content.trim()) return;
     setGenerating(true);
     try {
-      const cards = await onGenerate(conceptId, content.trim());
+      const cards = await onGenerate(conceptId, content.trim(), numCards);
       onCardsGenerated(conceptId, cards);
     } finally {
       setGenerating(false);
@@ -76,9 +77,24 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
           onChange={e => setContent(e.target.value)}
           rows={6}
           required
+          maxLength={5000}
           placeholder="Paste study material, notes, or text to generate flashcards from..."
-          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="mt-1 block w-full resize-none rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
+        <p className={`mt-1 text-right text-xs ${content.length > 4500 ? 'text-yellow-400' : 'text-content-faint'}`}>
+          {content.length} / 5,000
+        </p>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-content-secondary">Number of Cards</label>
+        <select
+          value={numCards}
+          onChange={e => setNumCards(Number(e.target.value))}
+          className="mt-1 block w-full rounded-md border border-line-strong px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        >
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+        </select>
       </div>
       <div className="flex justify-end">
         <button

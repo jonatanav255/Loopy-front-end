@@ -12,8 +12,14 @@ const api = axios.create({
  * REQUEST interceptor — attaches the JWT access token to every outgoing request.
  * The backend's JwtAuthenticationFilter reads this to authenticate the user.
  */
+/** Returns the storage that holds the current session's tokens. */
+function getStorage(): Storage {
+  if (localStorage.getItem('accessToken')) return localStorage;
+  return sessionStorage;
+}
+
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -34,9 +40,13 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const refreshToken = localStorage.getItem('refreshToken');
+      const storage = getStorage();
+      const refreshToken = storage.getItem('refreshToken');
       if (!refreshToken) {
-        localStorage.clear();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
         window.location.href = '/login';
         return Promise.reject(error);
       }
@@ -44,13 +54,16 @@ api.interceptors.response.use(
       try {
         // Use raw axios (not the api instance) to avoid triggering this interceptor again
         const { data } = await axios.post('/api/auth/refresh', { refreshToken });
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
+        storage.setItem('accessToken', data.accessToken);
+        storage.setItem('refreshToken', data.refreshToken);
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest); // Retry the original request with new token
       } catch {
         // Refresh failed — token is expired or revoked, force re-login
-        localStorage.clear();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
         window.location.href = '/login';
         return Promise.reject(error);
       }

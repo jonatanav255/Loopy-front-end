@@ -2,13 +2,13 @@
 import { useState, type FormEvent } from 'react';
 import type { CardResponse, CardType } from '../../types/card';
 
-const CARD_TYPES: { value: CardType; label: string }[] = [
-  { value: 'STANDARD', label: 'Standard' },
-  { value: 'CODE_OUTPUT', label: 'Code Output' },
-  { value: 'SPOT_THE_BUG', label: 'Spot the Bug' },
-  { value: 'FILL_BLANK', label: 'Fill in the Blank' },
-  { value: 'EXPLAIN_WHEN', label: 'Explain When' },
-  { value: 'COMPARE', label: 'Compare' },
+const CARD_TYPES: { value: CardType; label: string; description: string }[] = [
+  { value: 'STANDARD', label: 'Standard', description: 'Classic question and answer flashcard' },
+  { value: 'CODE_OUTPUT', label: 'Code Output', description: 'Given code, predict what it outputs' },
+  { value: 'SPOT_THE_BUG', label: 'Spot the Bug', description: 'Find the error in the code snippet' },
+  { value: 'FILL_BLANK', label: 'Fill in the Blank', description: 'Complete the missing part of a statement' },
+  { value: 'EXPLAIN_WHEN', label: 'Explain When', description: 'Explain when or why you would use something' },
+  { value: 'COMPARE', label: 'Compare', description: 'Compare and contrast two or more concepts' },
 ];
 
 interface CardFormProps {
@@ -57,6 +57,9 @@ export function CardForm({ initial, onSubmit, onCancel }: CardFormProps) {
             <option key={t.value} value={t.value}>{t.label}</option>
           ))}
         </select>
+        <p className="mt-1 text-xs text-content-muted">
+          {CARD_TYPES.find(t => t.value === cardType)?.description}
+        </p>
       </div>
       <div>
         <label className="block text-sm font-medium text-content-secondary">Front</label>

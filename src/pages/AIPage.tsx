@@ -13,9 +13,9 @@ export function AIPage() {
   const [generatedCards, setGeneratedCards] = useState<GeneratedCard[]>([]);
   const [targetConceptId, setTargetConceptId] = useState('');
 
-  const handleGenerate = async (conceptId: string, content: string) => {
+  const handleGenerate = async (conceptId: string, content: string, numCards: number) => {
     try {
-      return await generateCards(conceptId, content);
+      return await generateCards(conceptId, content, numCards);
     } catch {
       addToast('Failed to generate cards', 'error');
       return [];

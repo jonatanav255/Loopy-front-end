@@ -5,6 +5,7 @@ export interface AIStatusResponse {
 export interface GenerateCardsRequest {
   conceptId: string;
   content: string;
+  numCards: number;
 }
 
 export interface GeneratedCard {

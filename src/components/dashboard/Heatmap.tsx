@@ -6,18 +6,29 @@ interface HeatmapProps {
   data: HeatmapEntry[];
 }
 
+function formatLocalDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 export function Heatmap({ data }: HeatmapProps) {
-  const { grid, maxCount, months } = useMemo(() => {
+  const { grid, maxCount, months, year } = useMemo(() => {
     const countMap = new Map(data.map(d => [d.date, d.count]));
     const today = new Date();
+    const yr = today.getFullYear();
     const cells: { date: string; count: number; dayOfWeek: number }[] = [];
     let max = 1;
 
-    // Last 365 days
-    for (let i = 364; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+    // Current year: start from the Sunday on or before Jan 1 through today
+    const jan1 = new Date(yr, 0, 1);
+    const start = new Date(jan1);
+    start.setDate(start.getDate() - start.getDay()); // back to Sunday
+    const end = new Date(yr, today.getMonth(), today.getDate());
+
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const dateStr = formatLocalDate(d);
       const count = countMap.get(dateStr) ?? 0;
       if (count > max) max = count;
       cells.push({ date: dateStr, count, dayOfWeek: d.getDay() });
@@ -35,18 +46,25 @@ export function Heatmap({ data }: HeatmapProps) {
     }
     if (week.length > 0) weeks.push(week);
 
-    // Month labels
+    // Month labels — only for current year, placed at the week containing the 1st of each month
     const monthLabels: { label: string; col: number }[] = [];
     let lastMonth = -1;
     weeks.forEach((w, i) => {
-      const month = new Date(w[0].date).getMonth();
-      if (month !== lastMonth) {
-        monthLabels.push({ label: new Date(w[0].date).toLocaleString('default', { month: 'short' }), col: i });
-        lastMonth = month;
+      for (const cell of w) {
+        const d = new Date(cell.date);
+        const month = d.getMonth();
+        if (d.getFullYear() === yr && month !== lastMonth) {
+          monthLabels.push({
+            label: d.toLocaleString('default', { month: 'short' }),
+            col: i,
+          });
+          lastMonth = month;
+          break;
+        }
       }
     });
 
-    return { grid: weeks, maxCount: max, months: monthLabels };
+    return { grid: weeks, maxCount: max, months: monthLabels, year: yr };
   }, [data]);
 
   const getColor = (count: number) => {
@@ -58,28 +76,33 @@ export function Heatmap({ data }: HeatmapProps) {
     return 'bg-green-400';
   };
 
+  const cellSize = 16; // h-4 w-4
+  const gap = 4;
+  const colWidth = cellSize + gap;
+
   return (
     <div className="rounded-lg border border-line bg-surface p-5">
-      <h3 className="mb-4 font-medium text-content">Activity</h3>
+      <h3 className="mb-4 font-medium text-content">Activity {year}</h3>
       <div className="overflow-x-auto">
-        <div className="mb-1 flex gap-[3px]" style={{ paddingLeft: '16px' }}>
+        {/* Month labels positioned absolutely over the grid */}
+        <div className="relative mb-1" style={{ height: 16 }}>
           {months.map(m => (
             <span
               key={m.label + m.col}
-              className="text-[10px] text-content-faint"
-              style={{ position: 'relative', left: `${m.col * 15}px` }}
+              className="absolute text-xs text-content-faint"
+              style={{ left: m.col * colWidth }}
             >
               {m.label}
             </span>
           ))}
         </div>
-        <div className="flex gap-[3px]">
+        <div className="flex gap-[4px]">
           {grid.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-[3px]">
+            <div key={wi} className="flex flex-col gap-[4px]">
               {week.map(cell => (
                 <div
                   key={cell.date}
-                  className={`h-3 w-3 rounded-sm ${getColor(cell.count)}`}
+                  className={`h-4 w-4 rounded-sm ${getColor(cell.count)}`}
                   title={`${cell.date}: ${cell.count} reviews`}
                 />
               ))}

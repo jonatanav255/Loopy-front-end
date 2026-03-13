@@ -9,6 +9,41 @@ const typeConfig: Record<CardType, { label: string; description: string; color: 
   COMPARE: { label: 'Compare', description: 'Compare and contrast two or more concepts', color: 'bg-orange-500/20 text-orange-300' },
 };
 
+/** Renders text with inline `code` and ```code blocks``` styled properly. */
+function renderContent(text: string) {
+  // Split on triple-backtick code blocks first
+  const blockParts = text.split(/(```[\s\S]*?```)/g);
+
+  return blockParts.map((part, i) => {
+    // Triple-backtick code block
+    if (part.startsWith('```') && part.endsWith('```')) {
+      const inner = part.slice(3, -3).replace(/^\w*\n?/, ''); // strip optional language tag
+      return (
+        <pre key={i} className="my-2 whitespace-pre-wrap rounded-md bg-gray-900 p-4 font-mono text-sm text-green-400">
+          {inner}
+        </pre>
+      );
+    }
+
+    // Process inline backticks within regular text
+    const inlineParts = part.split(/(`[^`]+`)/g);
+    return (
+      <span key={i}>
+        {inlineParts.map((seg, j) => {
+          if (seg.startsWith('`') && seg.endsWith('`')) {
+            return (
+              <code key={j} className="rounded bg-surface-active px-1.5 py-0.5 font-mono text-sm text-indigo-300">
+                {seg.slice(1, -1)}
+              </code>
+            );
+          }
+          return <span key={j}>{seg}</span>;
+        })}
+      </span>
+    );
+  });
+}
+
 interface CardRendererProps {
   front: string;
   back?: string;
@@ -22,17 +57,11 @@ export function CardRenderer({ front, back, cardType, hint, showBack = false }: 
 
   return (
     <div>
-      <span className="group relative inline-flex items-center gap-1.5">
-        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${typeConfig[cardType].color}`}>
-          {typeConfig[cardType].label}
-        </span>
-        <span className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-surface-active text-[10px] text-content-faint">?</span>
-        <span className="invisible absolute bottom-full left-0 z-10 mb-1 w-48 rounded-md bg-surface-hover px-2.5 py-1.5 text-xs text-content-secondary shadow-lg group-hover:visible">
-          {typeConfig[cardType].description}
-        </span>
+      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${typeConfig[cardType].color}`}>
+        {typeConfig[cardType].label}
       </span>
       <div className={`mt-2 ${isCode ? 'whitespace-pre-wrap rounded-md bg-gray-900 p-4 font-mono text-sm text-green-400' : 'text-content'}`}>
-        {front}
+        {isCode ? front : renderContent(front)}
       </div>
       {hint && !showBack && (
         <p className="mt-2 text-sm italic text-content-faint">Hint: {hint}</p>
@@ -41,7 +70,7 @@ export function CardRenderer({ front, back, cardType, hint, showBack = false }: 
         <div className="mt-4 border-t border-line pt-4">
           <span className="text-xs font-medium uppercase tracking-wider text-content-faint">Answer</span>
           <div className={`mt-2 ${isCode ? 'whitespace-pre-wrap rounded-md bg-gray-900 p-4 font-mono text-sm text-green-400' : 'text-content'}`}>
-            {back}
+            {isCode ? back : renderContent(back)}
           </div>
         </div>
       )}

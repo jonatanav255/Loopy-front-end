@@ -70,8 +70,8 @@ export function Heatmap({ data }: HeatmapProps) {
   const getColor = (count: number) => {
     if (count === 0) return 'bg-surface-active';
     const intensity = count / maxCount;
-    if (intensity <= 0.25) return 'bg-green-900';
-    if (intensity <= 0.5) return 'bg-green-700';
+    if (intensity <= 0.25) return 'bg-green-700';
+    if (intensity <= 0.5) return 'bg-green-600';
     if (intensity <= 0.75) return 'bg-green-500';
     return 'bg-green-400';
   };

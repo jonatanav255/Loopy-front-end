@@ -195,19 +195,23 @@ export function ReviewPage() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center px-6">
-        {session.currentCard && (
-          <>
-            <ReviewCard
-              key={session.currentCard.id}
-              card={session.currentCard}
-              showBack={session.phase !== 'front'}
-              onReveal={session.reveal}
-            />
-            {session.phase === 'back' && <RatingButtons onRate={session.rate} />}
-            {session.phase === 'confidence' && <ConfidenceRating onSelect={session.submitConfidence} />}
-          </>
-        )}
+      <div className="flex-1 overflow-y-auto px-6">
+        <div className="mx-auto flex max-w-4xl flex-col items-center pt-[10vh]">
+          {session.currentCard && (
+            <>
+              <div className="w-full">
+                <ReviewCard
+                  key={session.currentCard.id}
+                  card={session.currentCard}
+                  showBack={session.phase !== 'front'}
+                  onReveal={session.reveal}
+                />
+              </div>
+              {session.phase === 'back' && <RatingButtons onRate={session.rate} />}
+              {session.phase === 'confidence' && <ConfidenceRating onSelect={session.submitConfidence} />}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

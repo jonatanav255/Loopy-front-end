@@ -13,12 +13,12 @@ export function ReviewCard({ card, showBack, onReveal }: ReviewCardProps) {
 
   return (
     <div className="mx-auto w-full max-w-4xl">
-      <div className="flip-card rounded-xl border border-line bg-surface p-8 shadow-sm">
+      <div className="flip-card">
         <div className={`flip-card-inner${showBack ? ' flipped' : ''}`}>
-          <div className="flip-card-face">
+          <div className="flip-card-face flip-face-front rounded-xl border p-8 shadow-sm">
             <CardRenderer front={card.front} cardType={card.cardType} hint={card.hint} showBack={false} />
           </div>
-          <div className="flip-card-face flip-card-back">
+          <div className="flip-card-face flip-card-back flip-face-back rounded-xl border p-8 shadow-sm">
             <CardRenderer front={card.front} back={card.back} cardType={card.cardType} hint={card.hint} showBack={true} />
           </div>
         </div>

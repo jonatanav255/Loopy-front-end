@@ -59,8 +59,9 @@ describe('ReviewPage', () => {
     await user.click(screen.getByText(/Start Review/));
 
     await waitFor(() => {
-      // Should show the first card
-      expect(screen.getByText(/What is a closure/)).toBeInTheDocument();
+      // Two-face flip renders the question on both front and back faces
+      const matches = screen.getAllByText(/What is a closure/);
+      expect(matches.length).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -75,7 +76,7 @@ describe('ReviewPage', () => {
     await user.click(screen.getByText(/Start Review/));
 
     await waitFor(() => {
-      expect(screen.getByText(/What is a closure/)).toBeInTheDocument();
+      expect(screen.getAllByText(/What is a closure/).length).toBeGreaterThanOrEqual(1);
     });
 
     // Show answer button should be visible
@@ -96,7 +97,7 @@ describe('ReviewPage', () => {
     await waitFor(() => expect(screen.getByText('Start Review')).toBeInTheDocument());
 
     await user.click(screen.getByText(/Start Review/));
-    await waitFor(() => expect(screen.getByText(/What is a closure/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText(/What is a closure/).length).toBeGreaterThanOrEqual(1));
 
     await user.click(screen.getByText('Show Answer (Space)'));
     await waitFor(() => expect(screen.getByText('Good')).toBeInTheDocument());
@@ -129,7 +130,7 @@ describe('ReviewPage', () => {
     await waitFor(() => expect(screen.getByText('Start Review')).toBeInTheDocument());
 
     await user.click(screen.getByText(/Start Review/));
-    await waitFor(() => expect(screen.getByText(/What is a closure/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText(/What is a closure/).length).toBeGreaterThanOrEqual(1));
 
     await user.click(screen.getByText('Show Answer (Space)'));
     await waitFor(() => expect(screen.getByText('Good')).toBeInTheDocument());

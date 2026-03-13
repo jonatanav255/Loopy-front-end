@@ -1,6 +1,7 @@
 // Dependencies: useState, FormEvent — see DEPENDENCY_GUIDE.md
 import { useState, type FormEvent } from 'react';
 import { useI18n } from '../../contexts/I18nContext';
+
 import type { CardResponse, CardType } from '../../types/card';
 
 const CARD_TYPES: { value: CardType; label: string; description: string }[] = [

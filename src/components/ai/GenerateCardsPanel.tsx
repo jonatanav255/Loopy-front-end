@@ -1,6 +1,7 @@
 // Dependencies: useState, useEffect, FormEvent — see DEPENDENCY_GUIDE.md
 import { useState, useEffect, type FormEvent } from 'react';
 import { useI18n } from '../../contexts/I18nContext';
+
 import { topicsApi } from '../../api/topics';
 import { conceptsApi } from '../../api/concepts';
 import type { TopicResponse } from '../../types/topic';

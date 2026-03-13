@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import type { ConceptResponse } from '../../types/concept';
 import { Badge } from '../ui/Badge';
 
+
 const statusColor: Record<string, 'blue' | 'yellow' | 'green' | 'red'> = {
   LEARNING: 'blue',
   REVIEW: 'yellow',
@@ -31,11 +32,11 @@ export function ConceptList({ topicId, concepts, onEdit, onDelete }: ConceptList
         <div key={concept.id} className="group flex items-center justify-between rounded-lg border border-line bg-surface px-4 py-3 transition-shadow hover:shadow-sm">
           <Link to={`/topics/${topicId}/concepts/${concept.id}`} className="flex-1">
             <div className="flex items-center gap-3">
+              <span className="font-medium text-content">{concept.title}</span>
+              <Badge label={statusLabel[concept.status]} color={statusColor[concept.status]} />
               {index < 9 && (
                 <span className="flex h-5 w-5 items-center justify-center rounded bg-surface-alt text-[10px] font-medium text-content-faint">{index + 1}</span>
               )}
-              <span className="font-medium text-content">{concept.title}</span>
-              <Badge label={statusLabel[concept.status]} color={statusColor[concept.status]} />
             </div>
             {concept.notes && (
               <p className="mt-0.5 line-clamp-1 text-sm text-primary-text">{concept.notes}</p>

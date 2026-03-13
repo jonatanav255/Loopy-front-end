@@ -10,6 +10,7 @@ import { TopicForm } from '../components/topics/TopicForm';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { EmptyState } from '../components/ui/EmptyState';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+
 import type { TopicResponse, CreateTopicRequest } from '../types/topic';
 
 export function TopicsPage() {
@@ -61,6 +62,26 @@ export function TopicsPage() {
 
   if (loading) return <LoadingSpinner className="py-20" />;
 
+  if (showForm || editing) {
+    return (
+      <div>
+        <div className="mb-3">
+          <h2 className="text-2xl font-semibold text-content">{t.topics.title}</h2>
+        </div>
+        <div className="rounded-lg border border-line bg-surface p-6">
+          <h3 className="mb-4 text-lg font-medium text-content">
+            {editing ? t.topics.editTopic : t.topics.newTopic}
+          </h3>
+          <TopicForm
+            initial={editing ?? undefined}
+            onSubmit={editing ? handleUpdate : handleCreate}
+            onCancel={() => { setShowForm(false); setEditing(null); }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
@@ -72,19 +93,6 @@ export function TopicsPage() {
           {t.topics.newTopic} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>
       </div>
-
-      {(showForm || editing) && (
-        <div className="mb-6 rounded-lg border border-line bg-surface p-6">
-          <h3 className="mb-4 text-lg font-medium text-content">
-            {editing ? t.topics.editTopic : t.topics.newTopic}
-          </h3>
-          <TopicForm
-            initial={editing ?? undefined}
-            onSubmit={editing ? handleUpdate : handleCreate}
-            onCancel={() => { setShowForm(false); setEditing(null); }}
-          />
-        </div>
-      )}
 
       {topics.length === 0 ? (
         <EmptyState

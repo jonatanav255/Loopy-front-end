@@ -1,6 +1,7 @@
 // Dependencies: useState, FormEvent — see DEPENDENCY_GUIDE.md
 import { useState, type FormEvent } from 'react';
 import { useI18n } from '../../contexts/I18nContext';
+
 import type { ConceptResponse } from '../../types/concept';
 
 interface ConceptFormProps {

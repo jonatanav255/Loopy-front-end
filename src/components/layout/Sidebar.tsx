@@ -49,13 +49,13 @@ export function Sidebar() {
               `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 isActive
                   ? 'bg-primary-subtle text-primary-text'
-                  : 'text-content-secondary hover:bg-surface-hover'
+                  : 'text-content hover:bg-surface-hover'
               }`
             }
           >
             <span className="text-base">{item.icon}</span>
             <span className="flex-1">{item.label}</span>
-            <span className="text-[10px] text-content-faint opacity-60">{item.shortcut}</span>
+            <span className="text-[10px] text-content-muted">{item.shortcut}</span>
           </NavLink>
         ))}
       </nav>

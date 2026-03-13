@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import type { TopicResponse } from '../../types/topic';
 
+
 interface TopicCardProps {
   topic: TopicResponse;
   index?: number;
@@ -20,11 +21,11 @@ export function TopicCard({ topic, index, onEdit, onDelete }: TopicCardProps) {
         </div>
         <Link to={`/topics/${topic.id}`} className="block cursor-pointer">
           <div className="flex items-center gap-2">
+            <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: topic.colorHex }} />
+            <h3 className="text-lg font-semibold text-content">{topic.name}</h3>
             {index !== undefined && (
               <span className="flex h-5 w-5 items-center justify-center rounded bg-surface-alt text-[10px] font-medium text-content-faint">{index}</span>
             )}
-            <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: topic.colorHex }} />
-            <h3 className="text-lg font-semibold text-content">{topic.name}</h3>
           </div>
           {topic.description && <p className="mt-1 ml-[18px] line-clamp-2 text-xs text-content-muted">{topic.description}</p>}
         </Link>

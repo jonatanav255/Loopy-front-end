@@ -13,6 +13,7 @@ import { ProgressBar } from '../components/review/ProgressBar';
 import { SessionSummary } from '../components/review/SessionSummary';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
+
 export function ReviewPage() {
   const navigate = useNavigate();
   const session = useReviewSession();
@@ -144,7 +145,7 @@ export function ReviewPage() {
             disabled={selectedTopicIds.length === 0}
             className="mt-6 w-full rounded-lg bg-primary px-8 py-3 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {t.review.startReview} <span className="text-xs opacity-60">(Enter)</span>
+            {t.review.startReview} <span className="ml-1 text-xs opacity-60">(Enter)</span>
           </button>
         </div>
       </div>
@@ -162,10 +163,10 @@ export function ReviewPage() {
           <p className="mt-2 text-content-tertiary">{t.review.noCardsDue}</p>
           <div className="mt-6 flex gap-3">
             <button onClick={() => session.startPractice()} className="rounded-lg border border-primary px-6 py-3 text-sm font-medium text-primary-text hover:bg-primary-subtle">
-              {t.review.practiceAll} <span className="text-xs opacity-60">(P)</span>
+              {t.review.practiceAll} <span className="ml-1 text-xs opacity-60">(P)</span>
             </button>
             <button onClick={() => navigate('/')} className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white hover:bg-primary-hover">
-              {t.review.backToDashboard} <span className="text-xs opacity-60">(Enter)</span>
+              {t.review.backToDashboard} <span className="ml-1 text-xs opacity-60">(Enter)</span>
             </button>
           </div>
         </div>
@@ -181,11 +182,14 @@ export function ReviewPage() {
   // Active session — full-screen overlay
   return (
     <div className="fixed inset-0 z-40 flex flex-col bg-surface-alt">
-      <div className="border-b border-line bg-surface px-6 py-4">
+      <div className="border-b border-line bg-surface px-6 py-5">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
-          <button onClick={session.reset} className="text-sm text-content-muted hover:text-content-secondary">
-            ✕ {t.review.endSession} <span className="text-xs opacity-60">(Esc)</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <button onClick={session.reset} className="flex h-8 w-8 items-center justify-center rounded-full border border-content-muted text-content hover:bg-surface-hover" title="End Session (Esc)">
+              ✕
+            </button>
+            <span className="text-sm text-content">{t.review.endSession} <span className="text-xs text-content-muted">(Esc)</span></span>
+          </div>
           {session.practiceMode && <span className="text-xs text-yellow-400">{t.review.practiceMode}</span>}
           <ProgressBar current={session.reviewed} total={session.total} />
         </div>

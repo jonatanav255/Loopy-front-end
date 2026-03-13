@@ -11,6 +11,7 @@ import { ConceptForm } from '../components/topics/ConceptForm';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { EmptyState } from '../components/ui/EmptyState';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+
 import type { TopicResponse } from '../types/topic';
 import type { ConceptResponse } from '../types/concept';
 
@@ -75,6 +76,39 @@ export function TopicDetailPage() {
 
   if (loading) return <LoadingSpinner className="py-20" />;
 
+  if (showForm || editing) {
+    return (
+      <div>
+        <div className="mb-1">
+          <Link to="/topics" className="text-sm text-primary-text hover:text-primary-muted">
+            ← {t.common.backTo} {t.topics.title} <span className="text-xs opacity-60">(Esc)</span>
+          </Link>
+        </div>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              {topic && <div className="h-4 w-4 rounded-full" style={{ backgroundColor: topic.colorHex }} />}
+              <h2 className="text-2xl font-semibold text-content">{topic?.name ?? t.topics.title}</h2>
+            </div>
+            {topic?.description && (
+              <p className="mt-1 ml-7 text-sm text-content-tertiary">{topic.description}</p>
+            )}
+          </div>
+        </div>
+        <div className="rounded-lg border border-line bg-surface p-6">
+          <h3 className="mb-4 text-lg font-medium text-content">
+            {editing ? t.concepts.editConcept : t.concepts.newConcept}
+          </h3>
+          <ConceptForm
+            initial={editing ?? undefined}
+            onSubmit={editing ? handleUpdate : handleCreate}
+            onCancel={() => { setShowForm(false); setEditing(null); }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-1">
@@ -99,19 +133,6 @@ export function TopicDetailPage() {
           {t.concepts.newConcept} <span className="ml-1 text-xs opacity-60">(N)</span>
         </button>
       </div>
-
-      {(showForm || editing) && (
-        <div className="mb-6 rounded-lg border border-line bg-surface p-6">
-          <h3 className="mb-4 text-lg font-medium text-content">
-            {editing ? t.concepts.editConcept : t.concepts.newConcept}
-          </h3>
-          <ConceptForm
-            initial={editing ?? undefined}
-            onSubmit={editing ? handleUpdate : handleCreate}
-            onCancel={() => { setShowForm(false); setEditing(null); }}
-          />
-        </div>
-      )}
 
       {concepts.length === 0 ? (
         <EmptyState

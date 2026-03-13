@@ -1,4 +1,5 @@
 import { useI18n } from '../../contexts/I18nContext';
+
 import type { ReviewResponse } from '../../types/review';
 
 interface SessionSummaryProps {
@@ -33,11 +34,11 @@ export function SessionSummary({ results, onDone, onPracticeAgain }: SessionSumm
       <div className="mt-8 flex gap-3 justify-center">
         {onPracticeAgain && (
           <button onClick={onPracticeAgain} className="rounded-lg border border-primary px-6 py-3 text-sm font-medium text-primary-text hover:bg-primary-subtle">
-            {t.review.practiceAgain} <span className="text-xs opacity-60">(P)</span>
+            {t.review.practiceAgain} <span className="ml-1 text-xs opacity-60">(P)</span>
           </button>
         )}
         <button onClick={onDone} className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white hover:bg-primary-hover">
-          {t.review.backToDashboard} <span className="text-xs opacity-60">(Enter)</span>
+          {t.review.backToDashboard} <span className="ml-1 text-xs opacity-60">(Enter)</span>
         </button>
       </div>
     </div>

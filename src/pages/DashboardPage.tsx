@@ -9,6 +9,7 @@ import { Heatmap } from '../components/dashboard/Heatmap';
 import { FragileCards } from '../components/dashboard/FragileCards';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
+
 export function DashboardPage() {
   const { overview, heatmap, fragile, loading } = useStats();
   const { t } = useI18n();

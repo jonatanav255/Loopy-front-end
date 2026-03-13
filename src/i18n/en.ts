@@ -9,6 +9,8 @@ export const en = {
     review: 'Review',
     teachBack: 'Teach-Back',
     ai: 'AI',
+    search: 'Search',
+    dataport: 'Export / Import',
     signOut: 'Sign out',
   },
 
@@ -206,6 +208,8 @@ export const en = {
     goToReview: 'Go to Review',
     goToTeachBack: 'Go to Teach-Back',
     goToAI: 'Go to AI',
+    goToSearch: 'Go to Search',
+    goToDataPort: 'Go to Export/Import',
     newItem: 'New item',
     closeCancel: 'Close / Cancel',
     showShortcuts: 'Show shortcuts',
@@ -231,6 +235,44 @@ export const en = {
     noFragileDesc: 'Cards that need extra attention will appear here.',
     activity: 'Activity',
     reviews: 'reviews',
+  },
+
+  // Search
+  search: {
+    title: 'Search',
+    placeholder: 'Search topics, concepts, and cards...',
+    hint: 'Press / to focus, Esc to clear',
+    noResults: 'No results found',
+    noResultsDesc: 'No matches for "{query}". Try a different search term.',
+    topicsSection: 'Topics',
+    conceptsSection: 'Concepts',
+    cardsSection: 'Cards',
+    startSearching: 'Search your library',
+    startSearchingDesc: 'Find topics, concepts, and cards across your entire collection.',
+  },
+
+  // Data Port (Export / Import)
+  dataport: {
+    title: 'Export / Import',
+    exportTitle: 'Export Data',
+    exportDesc: 'Download your topics, concepts, and cards as a JSON file.',
+    selectTopics: 'Filter by topics (optional)',
+    selectNone: 'Leave unchecked to export all.',
+    exportBtn: 'Export JSON',
+    exporting: 'Exporting...',
+    exportSuccess: 'Data exported successfully',
+    exportFailed: 'Failed to export data',
+    importTitle: 'Import Data',
+    importDesc: 'Upload a previously exported JSON file to add topics, concepts, and cards.',
+    importBtn: 'Choose File',
+    importing: 'Importing...',
+    importSuccess: 'Imported {topics} topics, {concepts} concepts, {cards} cards',
+    importFailed: 'Failed to import data',
+    invalidFile: 'Invalid file format',
+    importComplete: 'Import Complete',
+    topicsCreated: 'Topics created',
+    conceptsCreated: 'Concepts created',
+    cardsCreated: 'Cards created',
   },
 
   // Language

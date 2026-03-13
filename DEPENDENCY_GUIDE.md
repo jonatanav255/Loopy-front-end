@@ -40,7 +40,7 @@ Does nothing in production. No visible output.
 
 ### `useState(initialValue)`
 **From:** `react`
-**Used in:** `AuthContext.tsx`, `LoginPage.tsx`, `RegisterPage.tsx`, `TopicsPage.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `TeachBackPage.tsx`, `AIPage.tsx`, `TopicForm.tsx`, `ConceptForm.tsx`, `CardForm.tsx`, `CardItem.tsx`, `AlgorithmToggle.tsx`, `GenerateCardsPanel.tsx`, `GeneratedCardPreview.tsx`, `SelfEvalScreen.tsx`
+**Used in:** `AuthContext.tsx`, `LoginPage.tsx`, `RegisterPage.tsx`, `TopicsPage.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `TeachBackPage.tsx`, `AIPage.tsx`, `TopicForm.tsx`, `ConceptForm.tsx`, `CardForm.tsx`, `CardItem.tsx`, `AlgorithmToggle.tsx`, `GenerateCardsPanel.tsx`, `GeneratedCardPreview.tsx`, `SelfEvalScreen.tsx`, `SearchPage.tsx`, `DataPortPage.tsx`, `useSearch.ts`, `useDataport.ts`
 
 Returns a `[value, setter]` pair. The value persists across re-renders (unlike a regular variable which resets every render). Calling the setter triggers a re-render with the new value. React batches multiple setter calls in the same event handler into a single re-render.
 
@@ -51,7 +51,7 @@ setEmail('user@example.com'); // triggers re-render with new value
 
 ### `useEffect(fn, deps)`
 **From:** `react`
-**Used in:** `AuthContext.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `useTopics.ts`, `useConcepts.ts`, `useCards.ts`, `useStats.ts`, `useTeachBack.ts`, `useAI.ts`, `GenerateCardsPanel.tsx`
+**Used in:** `AuthContext.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `useTopics.ts`, `useConcepts.ts`, `useCards.ts`, `useStats.ts`, `useTeachBack.ts`, `useAI.ts`, `GenerateCardsPanel.tsx`, `SearchPage.tsx`
 
 Runs a side effect after the component renders. The dependency array controls when:
 - `[]` — once after initial render (mount)
@@ -68,7 +68,7 @@ useEffect(() => {
 
 ### `useCallback(fn, deps)`
 **From:** `react`
-**Used in:** `AuthContext.tsx`, `useTopics.ts`, `useConcepts.ts`, `useCards.ts`, `useTeachBack.ts`, `useReviewSession.ts`, `ReviewPage.tsx`
+**Used in:** `AuthContext.tsx`, `useTopics.ts`, `useConcepts.ts`, `useCards.ts`, `useTeachBack.ts`, `useReviewSession.ts`, `ReviewPage.tsx`, `useSearch.ts`, `useDataport.ts`, `SearchPage.tsx`, `DataPortPage.tsx`
 
 Wraps a function so it keeps the same reference across re-renders, unless dependencies change. Without it, a new function is created every render, which can cause infinite loops when used as a `useEffect` dependency.
 
@@ -83,6 +83,8 @@ const fetchUser = useCallback(async () => {
 **Used in:** `useKeyboard.ts`
 
 Returns a mutable ref object whose `.current` property persists across re-renders without triggering re-renders when changed. Used to hold the latest callback reference for event listeners, so the listener always calls the current handler without needing to re-register.
+
+**Also used in:** `SearchPage.tsx` (input focus), `DataPortPage.tsx` (file input ref)
 
 ### `useMemo(fn, deps)`
 **From:** `react`
@@ -187,7 +189,7 @@ const { topicId } = useParams<{ topicId: string }>();
 ```
 
 ### `Link`
-**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`, `TopicCard.tsx`, `ConceptList.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `DashboardPage.tsx`
+**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`, `TopicCard.tsx`, `ConceptList.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `DashboardPage.tsx`, `SearchPage.tsx`
 
 Renders an `<a>` tag that does client-side navigation (no full page reload). Unlike a plain `<a href>`, it uses React Router so app state is preserved.
 
@@ -223,7 +225,7 @@ const api = axios.create({
 ```
 
 ### `api.get<T>(url)` / `api.post<T>(url, data)` / `api.put<T>(url, data)` / `api.delete(url)`
-**Used in:** `api/auth.ts`, `api/topics.ts`, `api/concepts.ts`, `api/cards.ts`, `api/reviews.ts`, `api/stats.ts`, `api/teachback.ts`, `api/ai.ts`
+**Used in:** `api/auth.ts`, `api/topics.ts`, `api/concepts.ts`, `api/cards.ts`, `api/reviews.ts`, `api/stats.ts`, `api/teachback.ts`, `api/ai.ts`, `api/search.ts`, `api/dataport.ts`
 
 Makes an HTTP request. Returns `Promise<{ data: T, status, headers }>`. The `<T>` generic types the `data` field for TypeScript autocompletion — it does NOT validate the response shape at runtime.
 
@@ -362,3 +364,22 @@ Utility that returns a new array with an element moved from one index to another
 **Used in:** `SortableTopicCard.tsx`, `SortableConceptItem.tsx`
 
 Converts a `Transform` object (from `useSortable`) into a CSS `transform` string (e.g. `translate3d(0px, 50px, 0)`). Applied as an inline style to animate the dragged element.
+
+---
+
+## Browser APIs (additional)
+
+### `URL.createObjectURL(blob)` / `URL.revokeObjectURL(url)`
+**Used in:** `DataPortPage.tsx`
+
+Creates a temporary URL pointing to a `Blob` in memory. Used to trigger a file download by creating a `<a>` element with this URL and programmatically clicking it. `revokeObjectURL` releases the memory when done.
+
+### `Blob`
+**Used in:** `DataPortPage.tsx`
+
+Represents raw binary data. Created with `new Blob([content], { type })`. Used to convert the JSON export string into a downloadable file.
+
+### `File.prototype.text()`
+**Used in:** `DataPortPage.tsx`
+
+Reads the entire contents of a `File` object as a UTF-8 string. Returns a `Promise<string>`. Used to read the uploaded JSON import file.

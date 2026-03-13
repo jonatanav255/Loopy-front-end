@@ -15,6 +15,8 @@ import { ConceptDetailPage } from './pages/ConceptDetailPage';
 import { ReviewPage } from './pages/ReviewPage';
 import { TeachBackPage } from './pages/TeachBackPage';
 import { AIPage } from './pages/AIPage';
+import { SearchPage } from './pages/SearchPage';
+import { DataPortPage } from './pages/DataPortPage';
 
 /**
  * Root component — sets up routing, auth context, toast notifications, and i18n.
@@ -42,6 +44,8 @@ function App() {
                   <Route path="review" element={<ReviewPage />} />
                   <Route path="teach-back" element={<TeachBackPage />} />
                   <Route path="ai" element={<AIPage />} />
+                  <Route path="search" element={<SearchPage />} />
+                  <Route path="data" element={<DataPortPage />} />
                 </Route>
 
                 {/* Catch-all */}

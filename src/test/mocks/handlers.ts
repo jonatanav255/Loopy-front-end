@@ -237,6 +237,83 @@ export const handlers = [
     });
   }),
 
+  // Search
+  http.get('/api/search', ({ request }) => {
+    const url = new URL(request.url);
+    const q = (url.searchParams.get('q') ?? '').toLowerCase();
+    if (!q) {
+      return HttpResponse.json({ topics: [], concepts: [], cards: [] });
+    }
+    const topics = mockTopics
+      .filter(t => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q))
+      .map(t => ({ id: t.id, name: t.name, description: t.description, colorHex: t.colorHex }));
+    const concepts = mockConcepts
+      .filter(c => c.title.toLowerCase().includes(q) || (c.notes ?? '').toLowerCase().includes(q))
+      .map(c => {
+        const topic = mockTopics.find(t => t.id === c.topicId);
+        return { id: c.id, title: c.title, notes: c.notes, status: c.status, topicId: c.topicId, topicName: topic?.name ?? '' };
+      });
+    const cards = mockCards
+      .filter(c => c.front.toLowerCase().includes(q) || c.back.toLowerCase().includes(q))
+      .map(c => {
+        const concept = mockConcepts.find(co => co.id === c.conceptId);
+        const topic = concept ? mockTopics.find(t => t.id === concept.topicId) : undefined;
+        return { id: c.id, front: c.front, back: c.back, hint: c.hint, cardType: c.cardType, conceptId: c.conceptId, conceptTitle: concept?.title ?? '', topicId: topic?.id ?? '', topicName: topic?.name ?? '' };
+      });
+    return HttpResponse.json({ topics, concepts, cards });
+  }),
+
+  // Data Port
+  http.get('/api/dataport/export', () => {
+    return HttpResponse.json({
+      exportVersion: '1.0',
+      exportedAt: new Date().toISOString(),
+      topicCount: mockTopics.length,
+      conceptCount: mockConcepts.length,
+      cardCount: mockCards.length,
+      topics: mockTopics.map(topic => ({
+        name: topic.name,
+        description: topic.description,
+        colorHex: topic.colorHex,
+        concepts: mockConcepts
+          .filter(c => c.topicId === topic.id)
+          .map(concept => ({
+            title: concept.title,
+            notes: concept.notes,
+            referenceExplanation: concept.referenceExplanation,
+            cards: mockCards
+              .filter(card => card.conceptId === concept.id)
+              .map(card => ({
+                front: card.front,
+                back: card.back,
+                cardType: card.cardType,
+                hint: card.hint,
+                sourceUrl: card.sourceUrl,
+              })),
+          })),
+      })),
+    });
+  }),
+
+  http.post('/api/dataport/import', async ({ request }) => {
+    const body = await request.json() as { topics?: { concepts?: { cards?: unknown[] }[] }[] };
+    let topicsCreated = 0;
+    let conceptsCreated = 0;
+    let cardsCreated = 0;
+    if (body.topics) {
+      topicsCreated = body.topics.length;
+      for (const topic of body.topics) {
+        if (topic.concepts) {
+          conceptsCreated += topic.concepts.length;
+          for (const concept of topic.concepts) {
+            if (concept.cards) cardsCreated += concept.cards.length;
+          }
+        }
+      }
+    }
+    return HttpResponse.json({ topicsCreated, conceptsCreated, cardsCreated }, { status: 201 });
+  }),
+
   // Teach-Back
   http.get('/api/teach-back/pending', () => {
     return HttpResponse.json(mockConcepts);

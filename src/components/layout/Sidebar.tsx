@@ -23,6 +23,8 @@ export function Sidebar() {
     { to: '/review', label: t.nav.review, icon: '↻', shortcut: '⇧3' },
     { to: '/teach-back', label: t.nav.teachBack, icon: '✎', shortcut: '⇧4' },
     { to: '/ai', label: t.nav.ai, icon: '◇', shortcut: '⇧5' },
+    { to: '/search', label: t.nav.search, icon: '⌕', shortcut: '⇧6' },
+    { to: '/data', label: t.nav.dataport, icon: '⇄', shortcut: '⇧7' },
   ];
 
   return (

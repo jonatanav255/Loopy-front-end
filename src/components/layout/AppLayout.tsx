@@ -13,6 +13,8 @@ const shiftNavKeys: Record<string, string> = {
   '#': '/review',
   '$': '/teach-back',
   '%': '/ai',
+  '^': '/search',
+  '&': '/data',
 };
 
 export function AppLayout() {

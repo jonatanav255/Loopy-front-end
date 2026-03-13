@@ -59,7 +59,9 @@ export function ReviewPage() {
   }, [allSelected, selectedTopicIds, session]);
 
   const handleKeyboard = useCallback((key: string) => {
-    if (session.phase === 'front' && key === ' ') {
+    if (key === 'Escape' && (session.phase === 'front' || session.phase === 'back' || session.phase === 'confidence')) {
+      session.reset();
+    } else if (session.phase === 'front' && key === ' ') {
       session.reveal();
     } else if (session.phase === 'back') {
       const num = parseInt(key);

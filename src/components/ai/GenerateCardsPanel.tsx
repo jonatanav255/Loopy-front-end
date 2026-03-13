@@ -10,9 +10,10 @@ import type { GeneratedCard } from '../../types/ai';
 interface GenerateCardsPanelProps {
   onGenerate: (conceptId: string, content: string, numCards: number) => Promise<GeneratedCard[]>;
   onCardsGenerated: (conceptId: string, cards: GeneratedCard[]) => void;
+  formRef?: React.Ref<HTMLFormElement>;
 }
 
-export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCardsPanelProps) {
+export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: GenerateCardsPanelProps) {
   const { t } = useI18n();
   const [topics, setTopics] = useState<TopicResponse[]>([]);
   const [concepts, setConcepts] = useState<ConceptResponse[]>([]);
@@ -45,7 +46,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-line bg-surface p-6">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-line bg-surface p-6">
       <h3 className="font-medium text-content">{t.ai.generateTitle}</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -104,7 +105,7 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated }: GenerateCar
           disabled={generating || !conceptId || !content.trim()}
           className="rounded-md bg-indigo-600 px-6 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
         >
-          {generating ? t.ai.generating : t.ai.generate}
+          {generating ? t.ai.generating : t.ai.generate} {!generating && <span className="text-xs opacity-60">(Enter)</span>}
         </button>
       </div>
     </form>

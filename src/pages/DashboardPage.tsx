@@ -1,7 +1,9 @@
-// Dependencies: Link — see DEPENDENCY_GUIDE.md
-import { Link } from 'react-router-dom';
+// Dependencies: Link, useNavigate, useCallback — see DEPENDENCY_GUIDE.md
+import { Link, useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 import { useStats } from '../hooks/useStats';
 import { useI18n } from '../contexts/I18nContext';
+import { useKeyboard } from '../hooks/useKeyboard';
 import { StatsOverview } from '../components/dashboard/StatsOverview';
 import { Heatmap } from '../components/dashboard/Heatmap';
 import { FragileCards } from '../components/dashboard/FragileCards';
@@ -10,6 +12,15 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 export function DashboardPage() {
   const { overview, heatmap, fragile, loading } = useStats();
   const { t } = useI18n();
+  const navigate = useNavigate();
+
+  const handleKeyboard = useCallback((key: string) => {
+    if (key === 'Enter' && overview && overview.cardsDueToday > 0) {
+      navigate('/review');
+    }
+  }, [overview, navigate]);
+
+  useKeyboard(handleKeyboard);
 
   if (loading) return <LoadingSpinner className="py-20" />;
 
@@ -22,7 +33,7 @@ export function DashboardPage() {
             to="/review"
             className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
           >
-            {t.dashboard.reviewCards.replace('{count}', String(overview.cardsDueToday))} <span className="ml-1 text-xs opacity-60">(⇧R)</span>
+            {t.dashboard.reviewCards.replace('{count}', String(overview.cardsDueToday))} <span className="ml-1 text-xs opacity-60">(Enter)</span>
           </Link>
         )}
       </div>

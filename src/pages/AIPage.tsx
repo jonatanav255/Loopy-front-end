@@ -1,8 +1,9 @@
-// Dependencies: useState — see DEPENDENCY_GUIDE.md
-import { useState } from 'react';
+// Dependencies: useState, useRef — see DEPENDENCY_GUIDE.md
+import { useState, useRef } from 'react';
 import { useAI } from '../hooks/useAI';
 import { useToast } from '../contexts/ToastContext';
 import { useI18n } from '../contexts/I18nContext';
+import { useKeyboard } from '../hooks/useKeyboard';
 import { GenerateCardsPanel } from '../components/ai/GenerateCardsPanel';
 import { GeneratedCardPreview } from '../components/ai/GeneratedCardPreview';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
@@ -14,6 +15,13 @@ export function AIPage() {
   const { t } = useI18n();
   const [generatedCards, setGeneratedCards] = useState<GeneratedCard[]>([]);
   const [targetConceptId, setTargetConceptId] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useKeyboard((key: string) => {
+    if (key === 'Enter' && generatedCards.length === 0 && formRef.current) {
+      formRef.current.requestSubmit();
+    }
+  });
 
   const handleGenerate = async (conceptId: string, content: string, numCards: number) => {
     try {
@@ -58,7 +66,7 @@ export function AIPage() {
           onDone={() => setGeneratedCards([])}
         />
       ) : (
-        <GenerateCardsPanel onGenerate={handleGenerate} onCardsGenerated={handleCardsGenerated} />
+        <GenerateCardsPanel onGenerate={handleGenerate} onCardsGenerated={handleCardsGenerated} formRef={formRef} />
       )}
     </div>
   );

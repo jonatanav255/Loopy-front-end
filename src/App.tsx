@@ -1,40 +1,49 @@
 // Dependencies: BrowserRouter, Routes, Route, Navigate — see DEPENDENCY_GUIDE.md
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
 import { ProtectedRoute } from './components/ui/ProtectedRoute';
+import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { TopicsPage } from './pages/TopicsPage';
+import { TopicDetailPage } from './pages/TopicDetailPage';
+import { ConceptDetailPage } from './pages/ConceptDetailPage';
+import { ReviewPage } from './pages/ReviewPage';
+import { TeachBackPage } from './pages/TeachBackPage';
+import { AIPage } from './pages/AIPage';
 
 /**
- * Root component — sets up routing and auth context.
- * AuthProvider wraps everything so all pages can access useAuth().
+ * Root component — sets up routing, auth context, and toast notifications.
  * Public routes: /login, /register
- * Protected routes: / (dashboard) — redirects to /login if not authenticated.
- * Catch-all: any unknown path redirects to /.
+ * Protected routes use AppLayout with sidebar navigation.
  */
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          {/* Public routes — accessible without login */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+        <ToastProvider>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
-          {/* Protected routes — requires valid JWT */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected routes with sidebar layout */}
+            <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+              <Route index element={<DashboardPage />} />
+              <Route path="topics" element={<TopicsPage />} />
+              <Route path="topics/:topicId" element={<TopicDetailPage />} />
+              <Route path="topics/:topicId/concepts/:conceptId" element={<ConceptDetailPage />} />
+              <Route path="review" element={<ReviewPage />} />
+              <Route path="teach-back" element={<TeachBackPage />} />
+              <Route path="ai" element={<AIPage />} />
+            </Route>
 
-          {/* Catch-all — redirect unknown paths to dashboard */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* Catch-all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </ToastProvider>
       </AuthProvider>
     </BrowserRouter>
   );

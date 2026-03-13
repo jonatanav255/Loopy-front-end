@@ -1,33 +1,41 @@
-import { useAuth } from '../hooks/useAuth';
+// Dependencies: Link — see DEPENDENCY_GUIDE.md
+import { Link } from 'react-router-dom';
+import { useStats } from '../hooks/useStats';
+import { StatsOverview } from '../components/dashboard/StatsOverview';
+import { AccuracyChart } from '../components/dashboard/AccuracyChart';
+import { Heatmap } from '../components/dashboard/Heatmap';
+import { FragileCards } from '../components/dashboard/FragileCards';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
 export function DashboardPage() {
-  const { user, logout } = useAuth();
+  const { overview, accuracy, heatmap, fragile, loading } = useStats();
+
+  if (loading) return <LoadingSpinner className="py-20" />;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-bold text-gray-900">Loopy</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">{user?.email}</span>
-            <button
-              onClick={logout}
-              className="rounded-md bg-gray-100 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-200"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </nav>
+    <div>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl font-semibold text-gray-900">Dashboard</h2>
+        {overview && overview.cardsDueToday > 0 && (
+          <Link
+            to="/review"
+            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          >
+            Review {overview.cardsDueToday} cards
+          </Link>
+        )}
+      </div>
 
-      <main className="mx-auto max-w-7xl px-4 py-8">
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Welcome, {user?.email}
-        </h2>
-        <p className="mt-2 text-gray-600">
-          Your learning dashboard will appear here in Phase 2.
-        </p>
-      </main>
+      {overview && <StatsOverview stats={overview} />}
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <AccuracyChart data={accuracy} />
+        <FragileCards cards={fragile} />
+      </div>
+
+      <div className="mt-6">
+        <Heatmap data={heatmap} />
+      </div>
     </div>
   );
 }

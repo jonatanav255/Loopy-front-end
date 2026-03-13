@@ -40,7 +40,7 @@ Does nothing in production. No visible output.
 
 ### `useState(initialValue)`
 **From:** `react`
-**Used in:** `AuthContext.tsx`, `LoginPage.tsx`, `RegisterPage.tsx`
+**Used in:** `AuthContext.tsx`, `LoginPage.tsx`, `RegisterPage.tsx`, `TopicsPage.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `TeachBackPage.tsx`, `AIPage.tsx`, `TopicForm.tsx`, `ConceptForm.tsx`, `CardForm.tsx`, `CardItem.tsx`, `AlgorithmToggle.tsx`, `GenerateCardsPanel.tsx`, `GeneratedCardPreview.tsx`, `SelfEvalScreen.tsx`
 
 Returns a `[value, setter]` pair. The value persists across re-renders (unlike a regular variable which resets every render). Calling the setter triggers a re-render with the new value. React batches multiple setter calls in the same event handler into a single re-render.
 
@@ -51,7 +51,7 @@ setEmail('user@example.com'); // triggers re-render with new value
 
 ### `useEffect(fn, deps)`
 **From:** `react`
-**Used in:** `AuthContext.tsx`
+**Used in:** `AuthContext.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `useTopics.ts`, `useConcepts.ts`, `useCards.ts`, `useStats.ts`, `useTeachBack.ts`, `useAI.ts`, `GenerateCardsPanel.tsx`
 
 Runs a side effect after the component renders. The dependency array controls when:
 - `[]` — once after initial render (mount)
@@ -68,7 +68,7 @@ useEffect(() => {
 
 ### `useCallback(fn, deps)`
 **From:** `react`
-**Used in:** `AuthContext.tsx`
+**Used in:** `AuthContext.tsx`, `useTopics.ts`, `useConcepts.ts`, `useCards.ts`, `useTeachBack.ts`, `useReviewSession.ts`, `ReviewPage.tsx`
 
 Wraps a function so it keeps the same reference across re-renders, unless dependencies change. Without it, a new function is created every render, which can cause infinite loops when used as a `useEffect` dependency.
 
@@ -78,9 +78,21 @@ const fetchUser = useCallback(async () => {
 }, []); // same reference across renders
 ```
 
+### `useRef(initialValue)`
+**From:** `react`
+**Used in:** `useKeyboard.ts`
+
+Returns a mutable ref object whose `.current` property persists across re-renders without triggering re-renders when changed. Used to hold the latest callback reference for event listeners, so the listener always calls the current handler without needing to re-register.
+
+### `useMemo(fn, deps)`
+**From:** `react`
+**Used in:** `Heatmap.tsx`
+
+Memoizes a computed value. The factory function `fn` only re-runs when dependencies change. Used for expensive computations (like building the 365-day heatmap grid) to avoid recalculating on every render.
+
 ### `useContext(Context)`
 **From:** `react`
-**Used in:** `useAuth.ts`
+**Used in:** `useAuth.ts`, `ToastContext.tsx`
 
 Reads the current value from a React Context. The value comes from the nearest `<Context.Provider>` above in the component tree. Re-renders the component whenever the context value changes.
 
@@ -102,7 +114,7 @@ Type representing anything React can render: elements, strings, numbers, boolean
 
 ### `FormEvent`
 **From:** `react` (TypeScript type)
-**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`
+**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`, `TopicForm.tsx`, `ConceptForm.tsx`, `CardForm.tsx`, `TeachBackPrompt.tsx`, `GenerateCardsPanel.tsx`
 
 Type for the event object passed to form `onSubmit` handlers. Call `e.preventDefault()` to stop the browser's default form submission (which causes a full page reload).
 
@@ -131,6 +143,19 @@ Maps a URL path to a component:
 <Route path="/login" element={<LoginPage />} />
 ```
 
+### `Outlet`
+**From:** `react-router-dom`
+**Used in:** `AppLayout.tsx`
+
+Renders the child route's component inside a parent layout route. When a `<Route>` contains nested `<Route>` children, the parent's element renders `<Outlet />` to mark where child content appears. This enables shared layouts (sidebar, nav) across pages.
+
+```tsx
+<Route element={<AppLayout />}>        {/* layout route — renders sidebar + Outlet */}
+  <Route index element={<DashboardPage />} /> {/* fills the Outlet */}
+  <Route path="topics" element={<TopicsPage />} />
+</Route>
+```
+
 ### `Navigate`
 **Used in:** `App.tsx`, `ProtectedRoute.tsx`
 
@@ -140,8 +165,29 @@ Component that immediately redirects to another path when rendered. `replace` pr
 <Navigate to="/login" replace />
 ```
 
+### `NavLink`
+**From:** `react-router-dom`
+**Used in:** `Sidebar.tsx`
+
+Like `<Link>` but adds active styling. Accepts a `className` prop that receives `{ isActive }` — a boolean indicating whether the link's `to` path matches the current URL. The `end` prop ensures exact matching (e.g., `/` only matches `/`, not `/topics`).
+
+```tsx
+<NavLink to="/topics" className={({ isActive }) => isActive ? 'active' : ''}>
+```
+
+### `useParams()`
+**From:** `react-router-dom`
+**Used in:** `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`
+
+Returns an object of URL parameters from the current route. Parameters are defined in the route path with `:paramName` syntax. All values are strings (or undefined if optional).
+
+```tsx
+// Route: /topics/:topicId
+const { topicId } = useParams<{ topicId: string }>();
+```
+
 ### `Link`
-**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`
+**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`, `TopicCard.tsx`, `ConceptList.tsx`, `TopicDetailPage.tsx`, `ConceptDetailPage.tsx`, `DashboardPage.tsx`
 
 Renders an `<a>` tag that does client-side navigation (no full page reload). Unlike a plain `<a href>`, it uses React Router so app state is preserved.
 
@@ -150,7 +196,7 @@ Renders an `<a>` tag that does client-side navigation (no full page reload). Unl
 ```
 
 ### `useNavigate()`
-**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`
+**Used in:** `LoginPage.tsx`, `RegisterPage.tsx`, `ReviewPage.tsx`
 
 Returns a function for programmatic navigation. Used after async operations (e.g. redirect to dashboard after login). Unlike `<Navigate>`, this is called from event handlers, not rendered in JSX.
 
@@ -176,8 +222,8 @@ const api = axios.create({
 });
 ```
 
-### `api.get<T>(url)` / `api.post<T>(url, data)`
-**Used in:** `api/auth.ts`
+### `api.get<T>(url)` / `api.post<T>(url, data)` / `api.put<T>(url, data)` / `api.delete(url)`
+**Used in:** `api/auth.ts`, `api/topics.ts`, `api/concepts.ts`, `api/cards.ts`, `api/reviews.ts`, `api/stats.ts`, `api/teachback.ts`, `api/ai.ts`
 
 Makes an HTTP request. Returns `Promise<{ data: T, status, headers }>`. The `<T>` generic types the `data` field for TypeScript autocompletion — it does NOT validate the response shape at runtime.
 

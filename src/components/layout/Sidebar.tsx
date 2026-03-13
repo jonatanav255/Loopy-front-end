@@ -34,6 +34,7 @@ export function Sidebar() {
             key={item.to}
             to={item.to}
             end={item.to === '/'}
+            onClick={e => (e.currentTarget as HTMLElement).blur()}
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 isActive

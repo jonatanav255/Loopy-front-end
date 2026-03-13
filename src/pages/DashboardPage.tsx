@@ -13,7 +13,7 @@ export function DashboardPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-content">Dashboard</h2>
         {overview && overview.cardsDueToday > 0 && (
           <Link

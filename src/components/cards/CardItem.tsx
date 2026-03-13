@@ -23,10 +23,10 @@ export function CardItem({ card, onEdit, onDelete, onSwitchAlgorithm }: CardItem
           <CardRenderer front={card.front} back={card.back} cardType={card.cardType} hint={card.hint} showBack={expanded} />
         </div>
         <div className="ml-4 flex flex-shrink-0 gap-1">
-          <button onClick={onEdit} className="rounded p-1 text-content-faint hover:bg-surface-hover hover:text-content-tertiary" title="Edit">
+          <button onClick={onEdit} className="rounded p-1 text-content-secondary hover:bg-surface-hover hover:text-content" title="Edit">
             ✎
           </button>
-          <button onClick={onDelete} className="rounded p-1 text-content-faint hover:bg-red-500/10 hover:text-red-400" title="Delete">
+          <button onClick={onDelete} className="rounded p-1 text-content-secondary hover:bg-red-500/10 hover:text-red-400" title="Delete">
             ✕
           </button>
         </div>

@@ -33,7 +33,8 @@ export function AIPage() {
   if (!available) {
     return (
       <div>
-        <h2 className="mb-4 text-2xl font-semibold text-content">AI Features</h2>
+        <h2 className="mb-3 text-2xl font-semibold text-content">AI Features</h2>
+
         <div className="rounded-lg border-2 border-dashed border-line-strong py-12 text-center">
           <h3 className="text-sm font-medium text-content">AI not configured</h3>
           <p className="mt-1 text-sm text-content-muted">
@@ -47,7 +48,7 @@ export function AIPage() {
 
   return (
     <div>
-      <h2 className="mb-6 text-2xl font-semibold text-content">AI Features</h2>
+      <h2 className="mb-3 text-2xl font-semibold text-content">AI Features</h2>
 
       {generatedCards.length > 0 ? (
         <GeneratedCardPreview

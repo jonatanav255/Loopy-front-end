@@ -14,8 +14,8 @@ export function TopicCard({ topic, onEdit, onDelete }: TopicCardProps) {
       <div className="h-1.5" style={{ backgroundColor: topic.colorHex }} />
       <div className="p-5">
         <div className="absolute right-3 top-5 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-          <button onClick={onEdit} className="rounded p-1 text-content-faint hover:bg-surface-hover hover:text-content-tertiary" title="Edit">✎</button>
-          <button onClick={onDelete} className="rounded p-1 text-content-faint hover:bg-red-500/10 hover:text-red-400" title="Delete">✕</button>
+          <button onClick={onEdit} className="rounded p-1 text-content-secondary hover:bg-surface-hover hover:text-content" title="Edit">✎</button>
+          <button onClick={onDelete} className="rounded p-1 text-content-secondary hover:bg-red-500/10 hover:text-red-400" title="Delete">✕</button>
         </div>
         <Link to={`/topics/${topic.id}`} className="block">
           <div className="flex items-center gap-2">

@@ -24,7 +24,7 @@ export function AlgorithmToggle({ current, onSwitch }: AlgorithmToggleProps) {
     <button
       onClick={handleSwitch}
       disabled={switching}
-      className="ml-auto text-xs text-indigo-600 hover:text-indigo-800 disabled:opacity-50"
+      className="ml-auto text-xs text-indigo-400 hover:text-indigo-300 disabled:opacity-50"
     >
       {switching ? 'Switching...' : `Switch to ${next}`}
     </button>

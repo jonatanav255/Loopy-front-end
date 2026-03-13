@@ -40,7 +40,7 @@ export function TopicsPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-content">Topics</h2>
         <button
           onClick={() => setShowForm(true)}

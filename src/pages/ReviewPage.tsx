@@ -74,8 +74,8 @@ export function ReviewPage() {
   if (session.phase === 'idle') {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <h2 className="text-2xl font-semibold text-content">Review Session</h2>
-        <p className="mt-2 text-content-tertiary">Configure your review session.</p>
+        <h2 className="mb-3 text-2xl font-semibold text-content">Review Session</h2>
+        <p className="text-content-tertiary">Configure your review session.</p>
 
         <div className="mt-6 w-full max-w-md rounded-lg border border-line bg-surface p-6">
           {/* Topic Selection */}

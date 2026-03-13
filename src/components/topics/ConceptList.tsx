@@ -39,10 +39,10 @@ export function ConceptList({ topicId, concepts, onEdit, onDelete }: ConceptList
             )}
           </Link>
           <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-            <button onClick={() => onEdit(concept)} className="rounded p-1 text-content-faint hover:bg-surface-hover hover:text-content-tertiary" title="Edit">
+            <button onClick={() => onEdit(concept)} className="rounded p-1 text-content-secondary hover:bg-surface-hover hover:text-content" title="Edit">
               ✎
             </button>
-            <button onClick={() => onDelete(concept)} className="rounded p-1 text-content-faint hover:bg-red-500/10 hover:text-red-400" title="Delete">
+            <button onClick={() => onDelete(concept)} className="rounded p-1 text-content-secondary hover:bg-red-500/10 hover:text-red-400" title="Delete">
               ✕
             </button>
           </div>

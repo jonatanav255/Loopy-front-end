@@ -31,8 +31,8 @@ function renderContent(text: string) {
           key={i}
           language={lang}
           style={vscDarkPlus}
-          customStyle={{ margin: '0.5rem 0', borderRadius: '0.5rem', fontSize: '22px', lineHeight: '1.5' }}
-          codeTagProps={{ style: { fontSize: '22px' } }}
+          customStyle={{ margin: '0.5rem 0', borderRadius: '0.5rem', fontSize: '20px', lineHeight: '1.5' }}
+          codeTagProps={{ style: { fontSize: '20px' } }}
           showLineNumbers
         >
           {inner.trim()}

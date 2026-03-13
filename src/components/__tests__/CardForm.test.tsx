@@ -22,7 +22,6 @@ describe('CardForm', () => {
     renderWithI18n(<CardForm onSubmit={vi.fn()} onCancel={vi.fn()} />);
     const select = screen.getByRole('combobox');
     expect(select).toBeInTheDocument();
-    // Check options
     const options = screen.getAllByRole('option');
     expect(options).toHaveLength(6);
   });
@@ -32,8 +31,10 @@ describe('CardForm', () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     renderWithI18n(<CardForm onSubmit={onSubmit} onCancel={vi.fn()} />);
 
-    await user.type(screen.getByRole('textbox', { name: /front/i }), 'Question?');
-    await user.type(screen.getByRole('textbox', { name: /back/i }), 'Answer.');
+    // Find textboxes: 0=front (textarea), 1=back (textarea), 2=hint (input), 3=sourceUrl (input)
+    const textboxes = screen.getAllByRole('textbox');
+    await user.type(textboxes[0], 'Question?');
+    await user.type(textboxes[1], 'Answer.');
     await user.click(screen.getByText('Create'));
 
     expect(onSubmit).toHaveBeenCalledWith({

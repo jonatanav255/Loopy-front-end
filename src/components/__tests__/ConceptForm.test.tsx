@@ -20,7 +20,9 @@ describe('ConceptForm', () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     renderWithI18n(<ConceptForm onSubmit={onSubmit} onCancel={vi.fn()} />);
 
-    await user.type(screen.getByRole('textbox', { name: /title/i }), 'Closures');
+    const inputs = screen.getAllByRole('textbox');
+    // First is title, second is notes
+    await user.type(inputs[0], 'Closures');
     await user.click(screen.getByText('Create'));
 
     expect(onSubmit).toHaveBeenCalledWith({

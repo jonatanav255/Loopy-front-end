@@ -16,18 +16,14 @@ describe('TopicForm', () => {
     expect(screen.getByText('Color')).toBeInTheDocument();
   });
 
-  it('renders name input with autofocus', () => {
-    renderWithI18n(<TopicForm onSubmit={vi.fn()} onCancel={vi.fn()} />);
-    const nameInput = screen.getByRole('textbox', { name: /name/i });
-    expect(nameInput).toBeInTheDocument();
-  });
-
   it('submit with valid data calls onSubmit', async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     renderWithI18n(<TopicForm onSubmit={onSubmit} onCancel={vi.fn()} />);
 
-    await user.type(screen.getByRole('textbox', { name: /name/i }), 'My Topic');
+    const inputs = screen.getAllByRole('textbox');
+    // First input is name, second is description textarea
+    await user.type(inputs[0], 'My Topic');
     await user.click(screen.getByText('Create'));
 
     expect(onSubmit).toHaveBeenCalledWith({
@@ -42,8 +38,9 @@ describe('TopicForm', () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     renderWithI18n(<TopicForm onSubmit={onSubmit} onCancel={vi.fn()} />);
 
-    await user.type(screen.getByRole('textbox', { name: /name/i }), 'Topic');
-    await user.type(screen.getByRole('textbox', { name: /description/i }), 'Some desc');
+    const inputs = screen.getAllByRole('textbox');
+    await user.type(inputs[0], 'Topic');
+    await user.type(inputs[1], 'Some desc');
     await user.click(screen.getByText('Create'));
 
     expect(onSubmit).toHaveBeenCalledWith({

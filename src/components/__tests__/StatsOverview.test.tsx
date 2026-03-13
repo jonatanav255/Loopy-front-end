@@ -44,6 +44,8 @@ describe('StatsOverview', () => {
     renderWithI18n(<StatsOverview stats={zeroStats} />);
 
     expect(screen.getByText('0%')).toBeInTheDocument();
-    expect(screen.getByText('0d', { exact: true })).toBeInTheDocument();
+    // Both streak and best show "0d" — use getAllByText
+    const streakElements = screen.getAllByText('0d');
+    expect(streakElements).toHaveLength(2);
   });
 });

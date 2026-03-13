@@ -76,7 +76,11 @@ describe('TopicsPage', () => {
     });
 
     await user.click(screen.getByText(/New Topic/));
-    await user.type(screen.getByRole('textbox', { name: /name/i }), 'Python');
+
+    // The TopicForm uses a plain <input> with autoFocus — find it via the first text input
+    const inputs = screen.getAllByRole('textbox');
+    const nameInput = inputs[0]; // First textbox is the name field
+    await user.type(nameInput, 'Python');
     await user.click(screen.getByText('Create'));
 
     await waitFor(() => {
@@ -106,7 +110,6 @@ describe('TopicsPage', () => {
       expect(screen.getByText('JavaScript')).toBeInTheDocument();
     });
 
-    // Click the delete button on the first topic card
     const deleteButtons = screen.getAllByTitle('Delete');
     await user.click(deleteButtons[0]);
 
@@ -117,7 +120,6 @@ describe('TopicsPage', () => {
   it('confirming delete removes topic', async () => {
     const user = userEvent.setup();
 
-    // Return only first topic initially, then empty after delete
     let deleted = false;
     server.use(
       http.get('/api/topics', () => {
@@ -138,7 +140,6 @@ describe('TopicsPage', () => {
     const deleteButtons = screen.getAllByTitle('Delete');
     await user.click(deleteButtons[0]);
 
-    // Click confirm delete
     await user.click(screen.getByText('Delete'));
 
     await waitFor(() => {

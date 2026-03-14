@@ -1,3 +1,4 @@
+import { useI18n } from '../../contexts/I18nContext';
 import type { TeachBackEvaluation } from '../../types/ai';
 
 interface AIEvaluationProps {
@@ -6,15 +7,16 @@ interface AIEvaluationProps {
 }
 
 export function AIEvaluation({ evaluation, onDone }: AIEvaluationProps) {
+  const { t } = useI18n();
   const scores = [
-    { label: 'Clarity', value: evaluation.clarityScore, color: 'bg-blue-500' },
-    { label: 'Accuracy', value: evaluation.accuracyScore, color: 'bg-green-500' },
-    { label: 'Completeness', value: evaluation.completenessScore, color: 'bg-purple-500' },
+    { label: t.ai.clarity, value: evaluation.clarityScore, color: 'bg-blue-500' },
+    { label: t.ai.accuracyLabel, value: evaluation.accuracyScore, color: 'bg-green-500' },
+    { label: t.ai.completeness, value: evaluation.completenessScore, color: 'bg-purple-500' },
   ];
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <h3 className="text-lg font-semibold text-content">AI Evaluation</h3>
+      <h3 className="text-lg font-semibold text-content">{t.ai.evaluation}</h3>
 
       <div className="grid grid-cols-3 gap-4">
         {scores.map(s => (
@@ -29,13 +31,13 @@ export function AIEvaluation({ evaluation, onDone }: AIEvaluationProps) {
       </div>
 
       <div className="rounded-lg bg-blue-500/10 p-4">
-        <p className="mb-1 text-sm font-medium text-blue-300">Feedback</p>
+        <p className="mb-1 text-sm font-medium text-blue-300">{t.ai.feedback}</p>
         <p className="text-sm text-blue-200 whitespace-pre-wrap">{evaluation.feedback}</p>
       </div>
 
       {evaluation.detectedGaps.length > 0 && (
         <div className="rounded-lg bg-orange-500/10 p-4">
-          <p className="mb-2 text-sm font-medium text-orange-300">Detected Gaps</p>
+          <p className="mb-2 text-sm font-medium text-orange-300">{t.ai.detectedGaps}</p>
           <ul className="space-y-1">
             {evaluation.detectedGaps.map((gap, i) => (
               <li key={i} className="text-sm text-orange-200">• {gap}</li>
@@ -46,7 +48,7 @@ export function AIEvaluation({ evaluation, onDone }: AIEvaluationProps) {
 
       {evaluation.followUpQuestions.length > 0 && (
         <div className="rounded-lg bg-purple-500/10 p-4">
-          <p className="mb-2 text-sm font-medium text-purple-300">Follow-up Questions</p>
+          <p className="mb-2 text-sm font-medium text-purple-300">{t.ai.followUpQuestions}</p>
           <ul className="space-y-1">
             {evaluation.followUpQuestions.map((q, i) => (
               <li key={i} className="text-sm text-purple-200">{i + 1}. {q}</li>
@@ -59,7 +61,7 @@ export function AIEvaluation({ evaluation, onDone }: AIEvaluationProps) {
         onClick={onDone}
         className="rounded-md bg-primary px-6 py-2 text-sm font-medium text-white hover:bg-primary-hover"
       >
-        Done
+        {t.ai.done}
       </button>
     </div>
   );

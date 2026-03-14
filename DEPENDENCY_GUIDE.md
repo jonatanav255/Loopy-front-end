@@ -367,6 +367,22 @@ Converts a `Transform` object (from `useSortable`) into a CSS `transform` string
 
 ---
 
+## React Syntax Highlighter (react-syntax-highlighter)
+
+### `SyntaxHighlighter` (Prism)
+**From:** `react-syntax-highlighter/dist/esm/prism`
+**Used in:** `CardRenderer.tsx`
+
+React component that renders syntax-highlighted code blocks. Wraps Prism.js for language detection and tokenization. Accepts `language` (e.g. `"javascript"`, `"python"`) and `style` props for theming. Renders a `<pre>` element with colored spans for each token.
+
+### `vscDarkPlus`
+**From:** `react-syntax-highlighter/dist/esm/styles/prism`
+**Used in:** `CardRenderer.tsx`
+
+VS Code Dark+ theme for Prism-based syntax highlighting. A style object mapping token types (keyword, string, comment, etc.) to CSS properties. Provides a dark background with colored syntax tokens matching the VS Code Dark+ color scheme.
+
+---
+
 ## Browser APIs (additional)
 
 ### `URL.createObjectURL(blob)` / `URL.revokeObjectURL(url)`

@@ -25,12 +25,12 @@ export function GenerateCardsPanel({ onGenerate, onCardsGenerated, formRef }: Ge
   const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
-    topicsApi.list().then(res => setTopics(res.data));
+    topicsApi.list().then(res => setTopics(res.data)).catch(() => {});
   }, []);
 
   useEffect(() => {
     if (!topicId) { setConcepts([]); setConceptId(''); return; }
-    conceptsApi.list(topicId).then(res => setConcepts(res.data));
+    conceptsApi.list(topicId).then(res => setConcepts(res.data)).catch(() => {});
     setConceptId('');
   }, [topicId]);
 

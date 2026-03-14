@@ -1,5 +1,6 @@
 // Dependencies: useState — see DEPENDENCY_GUIDE.md
 import { useState } from 'react';
+import { useI18n } from '../../contexts/I18nContext';
 import type { SchedulingAlgorithm } from '../../types/card';
 
 interface AlgorithmToggleProps {
@@ -8,6 +9,7 @@ interface AlgorithmToggleProps {
 }
 
 export function AlgorithmToggle({ current, onSwitch }: AlgorithmToggleProps) {
+  const { t } = useI18n();
   const [switching, setSwitching] = useState(false);
   const next: SchedulingAlgorithm = current === 'SM2' ? 'FSRS' : 'SM2';
 
@@ -26,7 +28,7 @@ export function AlgorithmToggle({ current, onSwitch }: AlgorithmToggleProps) {
       disabled={switching}
       className="ml-auto text-xs text-primary-text hover:text-primary-muted disabled:opacity-50"
     >
-      {switching ? 'Switching...' : `Switch to ${next}`}
+      {switching ? t.ai.switching : t.ai.switchTo.replace('{algorithm}', next)}
     </button>
   );
 }

@@ -1,3 +1,4 @@
+// Dependencies: api.get, api.post — see DEPENDENCY_GUIDE.md
 import api from './client';
 import type { LoginRequest, RegisterRequest, TokenResponse, UserResponse } from '../types/auth';
 

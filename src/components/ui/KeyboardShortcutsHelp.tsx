@@ -1,4 +1,3 @@
-// Dependencies: useI18n — see DEPENDENCY_GUIDE.md
 import { useI18n } from '../../contexts/I18nContext';
 
 interface KeyboardShortcutsHelpProps {

@@ -13,8 +13,8 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
     { label: t.stats.reviewsToday, value: stats.cardsReviewedToday, color: 'text-green-400' },
     { label: t.stats.totalCards, value: stats.totalCards, color: 'text-blue-400' },
     { label: t.stats.avgAccuracy, value: `${Math.round(stats.accuracyToday)}%`, color: 'text-emerald-400' },
-    { label: 'Streak', value: `${stats.currentStreak}d`, color: 'text-orange-400' },
-    { label: 'Best', value: `${stats.longestStreak}d`, color: 'text-purple-400' },
+    { label: t.stats.streak, value: `${stats.currentStreak}d`, color: 'text-orange-400' },
+    { label: t.stats.best, value: `${stats.longestStreak}d`, color: 'text-purple-400' },
   ];
 
   return (

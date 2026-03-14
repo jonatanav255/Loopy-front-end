@@ -399,3 +399,41 @@ Represents raw binary data. Created with `new Blob([content], { type })`. Used t
 **Used in:** `DataPortPage.tsx`
 
 Reads the entire contents of a `File` object as a UTF-8 string. Returns a `Promise<string>`. Used to read the uploaded JSON import file.
+
+---
+
+## vitest-axe (accessibility testing)
+
+### `axe(container, options?)`
+**From:** `vitest-axe`
+**Used in:** `components/__tests__/accessibility.test.tsx`, `pages/__tests__/accessibility.test.tsx`
+
+Runs axe-core accessibility analysis on a rendered DOM container. Returns `Promise<AxeResults>` with violations, passes, and incomplete checks. Used with `expect(results).toHaveNoViolations()` to assert WCAG compliance. Accepts an optional `options` parameter to enable/disable specific rules.
+
+```ts
+const results = await axe(container);
+expect(results).toHaveNoViolations();
+```
+
+### `configureAxe(options)`
+**From:** `vitest-axe`
+**Used in:** `components/__tests__/accessibility.test.tsx`, `pages/__tests__/accessibility.test.tsx`
+
+Creates a configured axe runner with default options (e.g., disabling specific rules globally). Returns a function with the same signature as `axe()`. Used to skip known issues (like color-contrast in jsdom) while still testing other accessibility aspects.
+
+```ts
+const axeNoColor = configureAxe({ rules: { 'color-contrast': { enabled: false } } });
+const results = await axeNoColor(container);
+```
+
+### `toHaveNoViolations`
+**From:** `vitest-axe/matchers`
+**Used in:** `test/setup.ts` (registered globally)
+
+Custom Vitest matcher that asserts an axe-core result has zero violations. Provides detailed error messages listing each violation, the affected HTML elements, and links to WCAG documentation. Registered via `expect.extend(matchers)` in the test setup file.
+
+### `vitest-axe/extend-expect`
+**From:** `vitest-axe`
+**Used in:** `test/setup.ts`
+
+Type augmentation import that adds `toHaveNoViolations` to Vitest's `expect` TypeScript types. Must be imported in the setup file for proper type checking.

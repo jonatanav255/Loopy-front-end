@@ -150,7 +150,7 @@ export function DataPortPage() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={loading}
-            className="rounded-md border border-line bg-surface-hover px-4 py-2 text-sm font-medium text-content hover:bg-surface-active disabled:opacity-50"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50"
           >
             {loading ? t.dataport.importing : t.dataport.importBtn}
           </button>

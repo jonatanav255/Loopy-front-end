@@ -5,11 +5,8 @@ import { useI18n } from '../../contexts/I18nContext';
 import { useTheme, themeNames, type ThemeName } from '../../contexts/ThemeContext';
 
 const themeLabels: Record<ThemeName, string> = {
-  midnight: 'Midnight',
-  ember: 'Ember',
-  ocean: 'Ocean',
-  forest: 'Forest',
-  amethyst: 'Amethyst',
+  midnight: 'Dark',
+  daylight: 'Light',
 };
 
 export function Sidebar() {
@@ -64,7 +61,7 @@ export function Sidebar() {
 
       {/* Theme switcher */}
       <div className="border-t border-line px-4 py-3">
-        <div className="flex items-center justify-between gap-1">
+        <div className="flex items-center gap-3">
           {themeNames.map(name => (
             <button
               key={name}
@@ -78,7 +75,7 @@ export function Sidebar() {
               style={{ backgroundColor: colors.swatch !== undefined && theme === name ? colors.swatch : undefined }}
             >
               <span
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-0 rounded-full border border-line-strong"
                 style={{ backgroundColor: themeSwatches[name] }}
               />
             </button>
@@ -101,9 +98,6 @@ export function Sidebar() {
 
 /** Static swatch colors for each theme (not dependent on active theme) */
 const themeSwatches: Record<ThemeName, string> = {
-  midnight: '#6366f1',
-  ember: '#e87b35',
-  ocean: '#0891b2',
-  forest: '#16a34a',
-  amethyst: '#9333ea',
+  midnight: '#2a2a3c',
+  daylight: '#f8f9fb',
 };
